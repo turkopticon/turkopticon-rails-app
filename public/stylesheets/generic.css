@@ -1,0 +1,446 @@
+html {
+  font-family: Helvetica, Arial, "Courier New", Courier, sans-serif;
+  font-size: 0.8em;
+  margin: 0;
+  padding: 0;
+  background: #ffd597;
+  color: #523100;
+  line-height: 1.1em;
+}
+
+body {
+  width: 800px;
+  margin: 0;
+  padding: 10px;
+  background: url(http://turkopticon.differenceengines.com/images/bg_tile.png) repeat-y;
+}
+
+a {
+  color: #f00;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+.strong {
+  font-weight: bold;
+}
+
+#login_nav {
+  text-align: right;
+  margin-right: 10px;
+}
+
+#header {
+  height: 98px;
+  width: 593px;
+  background: url(http://turkopticon.differenceengines.com/images/title.png) no-repeat;
+}
+
+#header:hover {
+	cursor: pointer;
+}
+
+#subhead {
+  border-bottom: 1px solid #ccc;
+  margin-bottom: 30px;
+}
+
+#nav {
+  font-family: Monaco;
+  margin-bottom: 25px;
+  font-size: 1.2em;
+  text-transform: uppercase;
+  color: #523100;
+//  background-color: #c4bf98;
+  background-color: #ccc;
+  padding: 10px 15px 10px 15px;
+  font-weight: bold;
+  min-height: 1em;
+}
+
+.box, .post, #post {
+  background-color: #FBEACC;
+  padding: 1px 15px 3px 15px;
+}
+
+.lightbox {
+  background-color: #EEEEEE;
+  border: 1px solid #BF9A4F;
+  padding: 5px;
+  margin-top: 5px;
+}
+
+.bigtextbutton{
+  background-image: url('http://turkopticon.differenceengines.com/images/button_blank.png');
+  width: 240px;
+  height: 29px;
+  text-align: center;
+  font-size: 180%;
+  color: #cccccc;
+  float: left;
+  padding-top: 20px;
+  margin: 0 8px 0 15px;
+}
+
+.bigtextbutton a {
+  color: #cccccc;
+  text-decoration: none;
+  padding: 10px 13px;
+}
+
+#downloadtext {
+  padding: 0.5em 0 0.5em 0;
+  color: #666;
+}
+
+#content, #login_nav {
+  font-family: Helvetica, Arial, sans-serif;
+}
+
+#content {
+  margin: 0;
+  padding: 0;
+}
+
+.success, .error {
+  font-size: 1.2em;
+}
+
+.success:before {
+  content: url(../images/accept.gif);
+}
+
+.success {
+  padding: 5px;
+  margin: 10px 0;
+  color: #090;
+  font-weight: bold;
+}
+
+.error:before {
+  content: url(../images/error.gif);
+}
+
+.error {
+  padding: 5px;
+  margin: 10px 0;
+  color: #f00;
+  font-weight: bold;
+}
+
+.pagetitle {
+  font-weight: bold;
+}
+
+.label {
+  width: 10em;
+  display: inline-block;
+  vertical-align: top;
+  font-weight: bold;
+}
+
+.smlabel {
+  width: 4em;
+  display: inline-block;
+  text-transform: uppercase;
+  font-size: 0.8em;
+  color: #666;
+}
+
+.button {
+  width: 25.7em;
+  text-align: right;
+}
+
+.buttonr {
+  width: 36.5em;
+  text-align: right;
+}
+
+table {
+  line-height: 1.2;
+}
+
+table#reports {
+  margin-top: -1em;
+}
+
+#reports th {
+  border-bottom: 1px solid #523100;
+  font-weight: bold;
+  text-align: left;
+}
+
+tr {
+  color: #523100;
+}
+
+td {
+  border-bottom: 1px solid #C59957;
+}
+
+.fieldWithErrors {
+  border: 1px solid #f00;
+  width: 17.5em;
+  margin: -1.5em 0 0 10.5em;
+}
+
+.errorExplanation > h2 {
+  display: none;
+}
+
+#footer {
+  width: 100%;
+  padding: 1em 0;
+  clear: both;
+  border-top: 1px solid #999;
+  margin-top: 15px;
+}
+
+/* two column layout css */
+#wrapper {
+	text-align: left;
+	margin: 0px auto;
+	padding: 0px;
+	border:0;
+	width: 700px;
+}
+
+#header {
+	margin: 0 0 5px 0;
+}
+
+#side-a {
+	float: left;
+	width: 230px;
+	padding: 0 15px 0 0;
+	margin-top: -10px;
+        margin-bottom: 15px;
+}
+
+#side-b { 
+	margin-top: -10px;
+	float: left;
+	width: 553px;
+	height: 1% /* Holly hack for Peekaboo Bug */
+}
+
+#container {
+	font-family: Helvetica, Arial, sans-serif;
+}
+
+.big {
+	font-size: 1.2em;
+	padding: 0;
+}
+
+.bigger {
+        font-size: 1.4em;
+}
+
+#ad {
+	text-align:center;
+	border-bottom: 1px solid #666;
+	padding: 15px 0 0 0;
+	color: #000;
+}
+
+#ad > #title {
+	background-color: #000;
+	color: #fff;
+	padding: 8px;
+	margin-bottom: 1em;
+}
+
+.title {
+	font-weight: bold;
+}
+
+.clear_r {
+	clear: right;
+}
+
+
+.clear {
+	clear: both;
+}
+
+#reports td, #reports th {
+	text-align: top;
+        padding-right: 20px;
+}
+
+#reports th.rating {
+	width: 30%;
+}
+
+.report {
+	color: #eee;
+	background-color: #523100;
+	padding: 1px 15px;
+	width: 50%;
+}
+
+.flag_comment {
+	text-indent: -20px;
+	margin-left: 20px;
+}
+
+.posted_by {
+	font-size: 0.9em;
+	color: #666;
+        margin-top: 5px;
+}
+
+.radioheader {
+	text-align: center;
+}
+
+.progress-meter {
+	font-size: 0.5em;
+        line-height: 1.5;
+}
+
+.progress-meter-done {
+	background-color: #03af00;
+}
+
+.progress-meter-done#red {
+	background-color: #f00;
+}
+
+.progress-meter-done#yellow {
+        background-color: #ff0;
+}
+
+.progress-meter-undone {
+	background-color: #ddd;
+}
+
+.indent {
+	margin-left: 1em;
+	font-size: 0.9em;
+}
+
+/* NOTE STYLES APPLIED TO .box ARE APPLIED TO BOTH .post AND #post */
+
+#post {  /* this is used on post.haml, for entire post displayed on own page */
+
+}
+
+.post {  /* this is used on _post.haml, for many posts displayed on one page */
+
+}
+
+.pagination {
+	text-align: right;
+	padding: 5px 0;
+}
+
+#search {
+	position: relative;
+		top: -3px;
+	margin-left: 23em;
+	max-width: 220px;
+}
+
+.red {
+  color: #f00;
+}
+
+.tosviol {
+  margin-top: 1em;
+  width: 14em;
+  color: #fff;
+  background-color: #000;
+  padding: 4px;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 0.8em;
+}
+
+#notice {
+  color: #f00;
+  font-weight: bold;
+  padding: 5px;
+}
+
+ul#tabs {
+  list-style-type: none;
+  border-bottom: 2px solid #523100;
+  padding: 0 0 9px 10px;
+  margin: 2em 0 0 0;
+}
+
+ul#tabs li {
+  margin-right: 1em;
+  display: inline;
+  padding: 10px;
+  border: 1px solid #999;
+  border-bottom: 0;
+}
+
+ul#tabs li a {
+  font-weight: normal;
+  text-decoration: underline;
+  color: #666;
+}
+
+ul#tabs li.here {
+  background-color: #523100;
+  font-weight: bold;
+  color: #fff;
+  border: 0;
+}
+
+.hidden_notice {
+  font-weight: bold;
+  color: #fff;
+  background-color: #c0994c;
+  padding: 5px;
+}
+
+#advisory {
+  background-color: #FBEACC;
+  padding: 8px;
+  border: 1px solid #523100;
+  line-height: 1.5;
+}
+
+#advisory_reverse {
+  padding: 8px;
+  line-height: 1.5;
+  color: #FBEACC;
+  background-color: #523100;
+}
+
+.edit_note {
+  font-size: 0.8em;
+  color: #900;
+}
+
+del {
+  color: #999;
+}
+
+#letter-outer {
+  border: 10px solid #ddd;
+  width: 500px;
+  margin: auto;
+}
+
+#letter-inner {
+  padding: 5px 20px;
+  background-color: #fafaee;
+  line-height: 1.7em;
+  font-size: 1.2em;
+}
+
+#warning {
+  background-color: #f00;
+  color: #fff;
+  font-size: 2em;
+}

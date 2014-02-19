@@ -1,0 +1,14 @@
+- if @location == "about"
+  About&nbsp;
+- else
+  = link_to "About", :controller => "main", :action => "info"
+  &nbsp;
+- if @location == "blog"
+  Blog
+- else
+  = link_to "Blog", "/blog"
+&nbsp;
+- if @location == "help"
+  Help
+- else 
+  = link_to "Help", :controller => "main", :action => "help"

@@ -1,0 +1,26 @@
+<html>
+<body>
+<script type="application/x-javascript">
+<!--
+function install (aEvent)
+{
+  var params = {
+    "Turkopticon": { URL: aEvent.target.href,
+             IconURL: aEvent.target.getAttribute("iconURL"),
+             Hash: aEvent.target.getAttribute("hash"),
+             toString: function () { return this.URL; }
+    }
+  };
+  InstallTrigger.install(params);
+
+  return false;
+}
+-->
+</script>
+
+<a href="http://turkopticon.differenceengines.com/turkopticon.xpi"
+  iconURL="http://turkopticon.differenceengines.com/images/bg_tile.png"
+  hash="sha256:355580fd9e2c308b354a58b2e65cced37b261db8df133db151bb0f75e35e92e3"
+  onclick="return install(event);">Install Extension!</a>
+</body>
+</html>

@@ -1,0 +1,15 @@
+%div{:class => "lightbox", :id => @report.id}
+  %strong Flag this report
+  - if Person.find(session[:person_id]).is_moderator
+    %span{:style => "font-size: 0.8em; margin-left: 0.8em;"}
+      %a{:href => "javascript:void(0)", :onclick => "javascript:addText(#{@report.id}, 'profanity');"} profanity
+      |
+      %a{:href => "javascript:void(0);", :onclick => "javascript:addText(#{@report.id}, 'agree with flagger');"} agree with flagger
+  = render :partial => 'main/how_to_flag'
+  - form_tag("/add_flag/#{@report.id}") do
+    = hidden_field :flag, :report_id, :value => @report.id
+    = hidden_field :flag, :person_id, :value => session[:person_id]
+    %p
+      = text_area :flag, :comment, :rows => 5, :cols => 47, :id => "box_#{@report.id}"
+    = submit_tag "Flag Report"
+    = link_to_remote "Cancel", :url => {:action => "cancel_flag", :id => @report.id}

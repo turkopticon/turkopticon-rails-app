@@ -1,0 +1,18 @@
+# config
+database.yml
+environment.rb
+
+## config/initializers
+cookie_verification_secret.rb
+log.rb
+session_store.rb
+smtp_gmail.rb
+
+# index
+index/
+
+# log
+log/
+
+# tmp
+tmp/

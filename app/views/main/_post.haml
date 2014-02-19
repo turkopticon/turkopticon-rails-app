@@ -1,0 +1,13 @@
+.post
+  %h2= link_to post.title, :action => "post", :id => post.slug
+  %h3= post.created_at.strftime("%a %b %d %Y %H:%M %Z")
+  %h3
+    - if session[:person_id] and Person.find(session[:person_id]).is_admin
+      = Person.find(post.person_id).email
+    - else
+      = post.author_email
+  - if session[:person_id] and post.person_id == session[:person_id]
+    %h4= link_to "edit", :action => "edit_post", :id => post.id
+  %p= post.body.gsub(/\n/,"<br/>")
+  - if post.parent_id.nil?
+    %p= link_to post.children.length.to_s + " comments &raquo;", :action => "post", :id => post.slug
