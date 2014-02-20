@@ -53,7 +53,7 @@
           = link_to report.person.mod_display_name, :controller => "main", :action => "reports_by", :id => report.person_id
         - else
           = link_to report.person.public_email, :controller => "main", :action => "reports_by", :id => report.person_id
-        - if report.person_id == session[:person_id]
+        - if report.person_id == session[:person_id] or Person.find(session[:person_id]).is_admin
           &nbsp;|&nbsp;
           = link_to "edit", :controller => "main", :action => "edit_report", :id => report.id
         - unless session[:person_id].nil?
