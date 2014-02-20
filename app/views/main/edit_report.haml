@@ -37,6 +37,6 @@
     %strong Please briefly explain any issues you've had with this requester:
     %br/
     = text_area :report, :description
-  = hidden_field :report, :person_id, :value => session[:person_id]
+  = hidden_field :report, :person_id, :value => @report.person_id
   %p
     .button= submit_tag 'Update'
