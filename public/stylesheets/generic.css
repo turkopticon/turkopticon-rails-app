@@ -422,6 +422,11 @@ ul#tabs li.here {
   color: #900;
 }
 
+.notes {
+  font-size: 0.8em;
+  color: #666;
+}
+
 del {
   color: #999;
 }

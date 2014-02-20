@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131230165343) do
+ActiveRecord::Schema.define(:version => 20140220231231) do
 
   create_table "Dolores_A2IR8TEVONNLZO", :id => false, :force => true do |t|
     t.integer  "id",            :default => 0, :null => false
@@ -121,6 +121,7 @@ ActiveRecord::Schema.define(:version => 20131230165343) do
     t.boolean  "is_hidden"
     t.boolean  "tos_viol"
     t.string   "amzn_requester_id"
+    t.text     "displayed_notes"
   end
 
   create_table "reports_purgatory", :id => false, :force => true do |t|

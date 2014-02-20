@@ -43,6 +43,8 @@
           %a{:href => "/help#tos"} [?]
     %td{:valign => "top"}
       = h(report.description.to_s.censor).gsub("\r\n","<br/>")
+      - if report.displayed_notes
+        %p.notes= report.displayed_notes
       .posted_by
         - if Person.find(session[:person_id]).is_admin
           = report.created_at.strftime("%b %d %Y %H:%M")
