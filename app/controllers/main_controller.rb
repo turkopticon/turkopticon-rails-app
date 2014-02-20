@@ -300,6 +300,16 @@ class MainController < ApplicationController
     end
   end
 
+  def edit_comment
+    @pagetitle = "edit comment"
+    @comment = Comment.find(params[:id])
+    @report = @comment.report
+    if request.post? and @comment.update_attributes(params[:comment])
+      flash[:notice] = "<div class=\"success\">Comment updated.</div>"
+      redirect_to :action => "report", :id => @comment.report_id.to_s
+    end
+  end
+
   def requester_stats
     @requester = Requester.find_by_amzn_requester_id(params[:id])
     if @requester.nil?
