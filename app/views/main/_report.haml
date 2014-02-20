@@ -95,7 +95,7 @@
                 = link_to c.person.mod_display_name, :controller => "main", :action => "reports_by", :id => c.person_id
               - else
                 = link_to c.person.public_email, :controller => "main", :action => "reports_by", :id => c.person_id
-              - if Person.find(session[:person_id]).is_admin
+              - if c.person_id == session[:person_id] or Person.find(session[:person_id]).is_admin
                 &nbsp;|&nbsp;
                 = link_to "edit", :controller => "main", :action => "edit_comment", :id => c.id.to_s
       %div{:class => "placeholder", :id => report.id.to_s}
