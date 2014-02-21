@@ -316,10 +316,22 @@ class MainController < ApplicationController
   def edit_comment
     @pagetitle = "edit comment"
     @comment = Comment.find(params[:id])
-    @report = @comment.report
-    if request.post? and @comment.update_attributes(params[:comment])
-      flash[:notice] = "<div class=\"success\">Comment updated.</div>"
-      redirect_to :action => "report", :id => @comment.report_id.to_s
+    if session[:person_id] == @comment.person_id or Person.find(session[:person_id]).is_admin
+      @report = @comment.report
+      if request.post? and @comment.update_attributes(params[:comment])
+        if session[:person_id] == @comment.person_id
+          editor = "the author "
+        else
+          editor = "<strong>" + Person.find(session[:person_id]).display_name + " (admin)</strong> "
+        end
+        note = "This comment was edited by " + editor + Time.now.strftime("%a %b %d %H:%M %Z") + ".<br/>"
+        @comment.update_attributes(:displayed_notes => note + @comment.displayed_notes.to_s)
+        flash[:notice] = "<div class=\"success\">Comment updated.</div>"
+        redirect_to :action => "report", :id => @comment.report_id.to_s
+      end
+    else
+      flash[:notice] = "<div class=\"error\">You can't edit that comment.</div>"
+      redirect_to :action => "index"
     end
   end
 
