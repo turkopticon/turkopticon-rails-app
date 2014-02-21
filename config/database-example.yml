@@ -1,0 +1,13 @@
+development:
+  adapter: mysql
+  database: turkopticon_development
+  host: localhost
+  username: user
+  password: password
+
+production:
+  adapter: mysql
+  database: turkopticon_production
+  host: localhost
+  username: user
+  password: password
