@@ -90,6 +90,8 @@
               = "<span style='color: #f00'>" + h(c.body).gsub(/\n/, '<br/>') + "</span>"
             - else
               = h(c.body).gsub(/\n/, '<br/>').censor
+            - if c.displayed_notes
+              %p.notes= c.displayed_notes
             .posted_by
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
               = c.created_at.strftime("%b %d %Y") + "&nbsp;"
