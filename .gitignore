@@ -16,6 +16,3 @@ log/
 
 # tmp
 tmp/
-
-# example config files
-*-example.*
