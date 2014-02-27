@@ -96,10 +96,12 @@ class RegController < ApplicationController
     if @person.display_name
       flash[:errors] = {}
       flash[:errors][:display_name] = "You already have a display name."
-    elsif
-      Person.find_by_display_name(params[:person][:display_name])
+    elsif Person.find_by_display_name(params[:person][:display_name])
       flash[:errors] = {}
       flash[:errors][:display_name] = "The display name '#{params[:person][:display_name]}' is taken."
+    elsif params[:person][:display_name] == Person.find(session[:person_id]).public_email
+      flash[:errors] = {}
+      flash[:errors][:display_name] = "That's your default display name. You can't set your display name to the default display name."
     else
       @person.update_attributes(params[:person])
     end
