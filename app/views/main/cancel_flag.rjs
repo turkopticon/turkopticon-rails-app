@@ -1,1 +1,0 @@
-page.replace "#{@id}", "<div class='placeholder' id='#{@id}'"
