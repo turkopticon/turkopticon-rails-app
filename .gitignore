@@ -14,7 +14,12 @@ config/initializers/session_store.rb
 config/initializers/smtp_gmail.rb
 index/
 log/
-public/
+public/*
+!public/images/
+!public/javascripts/
+!public/stylesheets/
+!public/turkopticon_installpage/
+!public/turkopticon-2014.01.28.1207.user.js
 script/
 test/
 tmp/
