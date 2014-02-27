@@ -176,7 +176,6 @@ class MainController < ApplicationController
         flash[:notice] = "<div class=\"error\">Please fill in the requester ID.</div>"
         render :action => "add_report" and return
       end
-      
       if params[:requester][:amzn_name].blank? or params[:requester][:amzn_name] == "null"
         flash[:notice] = "<div class=\"error\">Please fill in the requester name.</div>"
         render :action => "add_report" and return
@@ -186,7 +185,7 @@ class MainController < ApplicationController
         render :action => "add_report" and return
       end
       if @report.save
-
+        @report.update_attributes(:amzn_requester_name => params[:requester][:amzn_name])
         r = Requester.find_by_amzn_requester_id(params[:requester][:amzn_id])
         if !r.nil? and r.amzn_requester_name == "null"
           r.update_attributes(:amzn_requester_name => params[:requester][:amzn_name])

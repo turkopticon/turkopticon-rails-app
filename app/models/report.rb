@@ -71,7 +71,11 @@ class Report < ActiveRecord::Base
   end
 
   def requester_amzn_name
-    requester.nil? ? "" : requester.amzn_requester_name
+    if amzn_requester_name.nil?
+      requester.nil? ? "" : requester.amzn_requester_name
+    else
+      amzn_requester_name
+    end
   end
 
   def self.requester_attrs
