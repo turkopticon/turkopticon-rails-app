@@ -1,0 +1,23 @@
+= javascript_include_tag :defaults
+
+:javascript
+  function addText(id, text) {
+    document.getElementById("box_" + id.toString()).value = text;
+  }
+
+%p#advisory
+  Reviews, comments, and flag content should follow the Turkopticon <a href="/main/rules">civility guidelines</a>. Please review them before posting. Content that does not follow the guidelines may be edited.
+
+%p#advisory
+  HITs that violate the <a href="https://requester.mturk.com/policies/conditionsofuse">Mechanical Turk Terms of Service</a> will be marked as such.
+
+%br/
+.box
+  = render :partial => 'main/tabs'
+  %p
+    %table#reports{ :cellpadding => "5", :cellspacing => "0" }
+      %tr.th
+        %th AMT Requester
+        %th.rating Rating <span style="font-weight: normal;">[<a href="/main/help#attr">info</a>]</span>
+        %th Description
+      = render :partial => 'main/report', :collection => @reports

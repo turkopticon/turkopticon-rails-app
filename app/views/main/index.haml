@@ -1,0 +1,32 @@
+= javascript_include_tag :defaults
+
+:javascript
+  function addText(id, text) {
+    document.getElementById("box_" + id.toString()).value = text;
+  }
+
+%p#advisory
+  Reviews, comments, and flag content should follow the Turkopticon <a href="/main/rules">civility guidelines</a>. Please review them before posting. Content that does not follow the guidelines may be edited.
+
+%br/
+.box
+  = render :partial => 'main/tabs'
+  %p
+    %table#reports{ :cellpadding => "5", :cellspacing => "0" }
+      %tr.th
+        %th AMT Requester
+        %th.rating Rating <span style="font-weight: normal;">[<a href="/main/help#attr">info</a>]</span>
+        %th Description
+      = render :partial => 'main/report', :collection => @reports
+  - if @no_flags
+    %p You haven't flagged any reviews.
+  - if @no_reviews
+    %p You haven't reviewed anybody yet.
+  .pagination= will_paginate @reports
+  - if params[:id] and Requester.find_by_amzn_requester_id(params[:id])
+    - unless params[:hidden]
+      - if Requester.find_by_amzn_requester_id(params[:id]).has_hidden_reports?
+        %p
+          = "This requester has " + Requester.find_by_amzn_requester_id(params[:id]).hidden_report_count.to_s + " hidden reviews. "
+          = link_to "Click here", :controller => "main", :action => "index", :id => params[:id], :hidden => true
+          to see them.

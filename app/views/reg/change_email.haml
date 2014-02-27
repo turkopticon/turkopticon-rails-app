@@ -1,0 +1,17 @@
+= error_messages_for :person
+
+- form_for :person do |f|
+  %p
+    Change email for
+    %strong= Person.find(session[:person_id]).email
+    to
+    %br/
+    = f.text_field :email
+
+  /%p
+  /  Confirm
+  /  %br/
+  /  = f.text_field :email_confirmation
+
+  %p
+    = submit_tag "Change my email"

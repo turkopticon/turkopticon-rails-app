@@ -1,0 +1,3 @@
+- form_tag(:action => 'search') do
+  = text_field_tag :query, params[:query] ||= "Search"
+  = submit_tag 'Search'

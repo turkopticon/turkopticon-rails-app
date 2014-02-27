@@ -1,0 +1,17 @@
+- if session[:person_id].nil?
+  = link_to "login", :controller => "reg", :action => "login"
+  &nbsp;&nbsp;
+  = link_to "register", :controller => "reg", :action => "register"
+- else
+  - person = Person.find(session[:person_id])
+  = person.email
+  - if person.is_moderator
+    (verified - moderator)
+  - elsif person.email_verified
+    (verified)
+  - else
+    %strong= link_to "(PLEASE VERIFY YOUR EMAIL ADDRESS)", :controller => "reg", :action => "send_verification_email"
+  &nbsp;&nbsp;
+  = link_to "settings", :controller => "reg", :action => "settings"
+  &nbsp;&nbsp;
+  = link_to "logout", :controller => "reg", :action => "logout"

@@ -1,0 +1,23 @@
+%tr
+  %td{:valign => "top"}
+    - rid = requester.amzn_requester_id.nil? ? requester.id : requester.amzn_requester_id
+    .strong= link_to h(requester.amzn_requester_name), :controller => "main", :action => "index", :id => rid
+    = h(requester.amzn_requester_id)
+    - unless requester.amzn_requester_id.nil?
+      %br/
+      = link_to "HIT Group &raquo;", "https://www.mturk.com/mturk/searchbar?requesterId=#{requester.amzn_requester_id}&selectedSearchType=hitgroups"
+  %td{:valign => "top"}
+    - for a,v in requester.avg_attrs
+      .smlabel= a + ": "
+      = Requester.attr_vis(v) + "&nbsp;"
+      - if v == 0
+        no data
+      - else
+        = sprintf("%0.02f", v) + " / 5"
+      %br/
+  %td{:align => "center", :valign => "top"}= requester.reports.length
+  %td{:valign => "top"}
+    - if session[:person_id] and Person.find(session[:person_id])
+      - r = Report.find_by_person_id_and_requester_id(session[:person_id], requester.id)
+      - unless r.nil?
+        = link_to "update my report", :controller => "main", :action => "edit_report", :id => r.id

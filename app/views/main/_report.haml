@@ -1,0 +1,105 @@
+- if report
+  - if report.is_hidden
+    %tr
+      %td.hidden_notice{:colspan => "3"}
+        The review below has been flagged as inappropriate. It does not affect the requester's rating.
+  %tr
+    %td{:valign => "top"}
+      - rid = report.requester_amzn_id.nil? ? report.requester_id.to_s : report.requester_amzn_id
+      .strong= link_to h(report.requester_amzn_name), :controller => "main", :action => "index", :id => rid
+      = h(report.requester_amzn_id)
+      %br/
+      - if session[:person_id] == 1
+        Req ID:
+        = report.requester_id.to_s
+        %br/
+        Report ID:
+        = link_to report.id.to_s, :controller => "main", :action => "report", :id => report.id.to_s
+        %br/
+      - if report.requester.nil?
+        [The requester object does not exist]
+      - else
+        = link_to "Averages &raquo;", :controller => "main", :action => "averages", :id => report.requester.amzn_requester_id
+      %br/
+      = link_to "HIT Group &raquo;", "https://www.mturk.com/mturk/searchbar?requesterId=#{report.requester_amzn_id}&selectedSearchType=hitgroups"
+      %br/
+      - if report.requester.nil?
+        [The requester object does not exist]
+      - else
+        = link_to "Review Requester &raquo;", "/report?requester[amzn_id]=#{report.requester.amzn_requester_id}&requester[amzn_name]=#{report.requester.amzn_requester_name}"
+    %td{:valign => "top"}
+      - for a in Report.requester_attrs
+        .smlabel= a + ": "
+        - if eval("report." + a) == 0
+          .smlabel no&nbsp;data
+        - else
+          .smlabel= eval("report." + a + ".to_s") + "&nbsp;/&nbsp;5"
+          = Requester.attr_vis(eval("report." + a))
+        %br/
+      - if report.tos_viol
+        .tosviol
+          violates mturk terms of service
+          &nbsp;&nbsp;&nbsp;&nbsp;
+          %a{:href => "/help#tos"} [?]
+    %td{:valign => "top"}
+      = h(report.description.to_s.censor).gsub("\r\n","<br/>")
+      - if report.displayed_notes
+        %p.notes= report.displayed_notes
+      .posted_by
+        - if Person.find(session[:person_id]).is_admin
+          = report.created_at.strftime("%b %d %Y %H:%M")
+        - else
+          = report.created_at.strftime("%b %d %Y")
+        &nbsp;|&nbsp;
+        - if Person.find(session[:person_id]).is_moderator
+          = link_to report.person.mod_display_name, :controller => "main", :action => "reports_by", :id => report.person_id
+        - else
+          = link_to report.person.public_email, :controller => "main", :action => "reports_by", :id => report.person_id
+        - if report.person_id == session[:person_id] or Person.find(session[:person_id]).is_admin
+          &nbsp;|&nbsp;
+          = link_to "edit", :controller => "main", :action => "edit_report", :id => report.id
+        - unless session[:person_id].nil?
+          - flag = Flag.find_by_report_id_and_person_id(report.id, session[:person_id])
+          &nbsp;|&nbsp;
+          - if flag
+            = link_to "unflag", {:controller => "main", :action => "convert_flag", :id => flag.id}, :confirm => "Are you sure? This will convert your flag to a comment."
+          - else
+            = link_to_remote "flag", :url => {:controller => "main", :action => "flag", :id => report.id}
+          &nbsp;|&nbsp;
+          = link_to "comment", :controller => "main", :action => "add_comment", :id => report.id
+      %br/
+      - for f in report.flags
+        .flag_comment
+          %img(src='/images/warning.gif' alt='flag' border='0')
+          &nbsp;
+          = h(f.comment).gsub(/\n/, '<br/>').censor
+        .posted_by
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          = f.created_at.strftime("%b %d %Y")
+          &nbsp;
+          - if Person.find(session[:person_id]).is_moderator
+            = link_to f.person.mod_display_name, :controller => "main", :action => "reports_by", :id => f.person_id
+          - else
+            = link_to f.person.public_email, :controller => "main", :action => "reports_by", :id => f.person_id
+      - unless report.comments.empty?
+        %br/
+        - for c in report.comments
+          .flag_comment
+            %img(src='/images/bubble.png' alt='bubble' border='0')
+            - if c.person.is_admin
+              = "<span style='color: #f00'>" + h(c.body).gsub(/\n/, '<br/>') + "</span>"
+            - else
+              = h(c.body).gsub(/\n/, '<br/>').censor
+            - if c.displayed_notes
+              %p.notes= c.displayed_notes
+            .posted_by
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              = c.created_at.strftime("%b %d %Y") + "&nbsp;"
+              - if Person.find(session[:person_id]).is_moderator
+                = link_to c.person.mod_display_name, :controller => "main", :action => "reports_by", :id => c.person_id
+              - else
+                = link_to c.person.public_email, :controller => "main", :action => "reports_by", :id => c.person_id
+              - if c.person_id == session[:person_id] or Person.find(session[:person_id]).is_admin
+                &nbsp;|&nbsp;
+                = link_to "edit", :controller => "main", :action => "edit_comment", :id => c.id.to_s
+      %div{:class => "placeholder", :id => report.id.to_s}

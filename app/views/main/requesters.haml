@@ -1,0 +1,23 @@
+%p#advisory
+  These requesters have been reviewed in the last five days.
+
+%br/
+.box
+  %p
+    %table#reports{ :cellpadding => "5", :cellspacing => "0" }
+      %tr.th
+        %th
+          AMT Requester Name &amp; ID
+          %a{:href => "/requesters"}&&#9650;
+          %a{:href => "/requesters?order=amzn_requester_name DESC"}&&#9660;
+        %th
+          Ratings <span style="font-weight: normal;">[<a href="/main/help#attr" style="color: #fff; text-decoration: underline;">?</a>]</span> (averaged)
+          %a{:href => "/requesters?order=ava ASC"}&&#9650;
+          %a{:href => "/requesters?order=ava DESC"}&&#9660;
+        %th
+          \# of Reports
+          %a{:href => "/requesters?order=nrs ASC"}&&#9650;
+          %a{:href => "/requesters?order=nrs DESC"}&&#9660;
+        %th
+      = render :partial => 'main/requester', :collection => @requesters
+  .pagination= will_paginate @requesters

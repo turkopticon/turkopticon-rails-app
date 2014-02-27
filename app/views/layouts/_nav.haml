@@ -1,0 +1,22 @@
+%div{:style => "float: left;"}
+  - if @location == "requesters"
+    Requester List&nbsp;
+  - else
+    = link_to "Requester List", :controller => "main", :action => "requesters"
+    &nbsp;
+  - if @location == "reports"
+    Reviews&nbsp;
+  - else
+    = link_to "Reviews", :controller => "main", :action => "index"
+    &nbsp;
+
+- if session[:person_id]
+  #search= render :partial => 'layouts/search'
+
+- if session[:person_id]
+  %div{:style => "text-align: right; margin-top: -1.4em;"}
+    = render :partial => 'layouts/nav_right'
+- else
+  %div{:style => "text-align: right;"}
+    = render :partial => 'layouts/nav_right'
+

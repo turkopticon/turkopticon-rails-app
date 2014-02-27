@@ -1,0 +1,28 @@
+:javascript
+  function validate(form_id,email) {
+    var reg = /^([a-z0-9])([a-z0-9_\-\.\+])*([a-z0-9])\@([a-z0-9])([a-z0-9\-\.])+\.([a-z]{2,4})$/;
+    var dom = /^.*(\@mailinator|\@.*mial\.|\@spamcatch|\@spambob|\@spamavert|\@spamherelots|\.\.).*$/;
+    var address = document.forms[form_id].elements[email].value.toLowerCase();
+    if(reg.test(address) == false || dom.test(address) == true) {
+      alert('Please check that your personal email address is entered correctly.');
+      return false;
+    }
+  }
+
+= error_messages_for :person
+
+- form_for :person do |f|
+  %p
+    .label Email Address
+    = f.text_field 'email', :size => 20
+
+  %p
+    .label Select Password
+    = f.password_field 'password', :size => 20
+
+  %p
+    .label Confirm Password
+    = f.password_field 'password_confirmation', :size => 20
+
+  %p
+    .button= submit_tag 'Register'

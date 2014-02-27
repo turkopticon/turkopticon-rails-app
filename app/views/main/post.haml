@@ -1,0 +1,10 @@
+#post
+  %h1= @post.title
+  %h2= @post.created_at.strftime("%a %b %d %Y %H:%M %Z")
+  %h2= @post.author_email
+  - if session[:person_id] and @post.person_id == session[:person_id]
+    %h3= link_to "edit", :action => "edit_post", :id => @post.id
+  %p= @post.body.gsub(/\n/,"<br/>")
+  .indent= render :partial => "post", :collection => @post.children
+  - if session[:person_id]
+    = render :partial => "comment_form"

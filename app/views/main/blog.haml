@@ -1,0 +1,5 @@
+%h1 Blog
+- if session[:person_id] and Person.find(session[:person_id]).is_admin
+  %h2= link_to "Add post", :action => "add_post"
+
+= render :partial => "post", :collection => @posts
