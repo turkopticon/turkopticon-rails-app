@@ -132,6 +132,13 @@ class MainController < ApplicationController
     @reports.delete_if{|r| r.is_hidden}
     @reports = @reports.sort_by{|r| r.created_at}.reverse
     @hidden_rep_count = total_rep_count - @reports.length
+
+    # log search queries to separate log file
+    # for search redesign
+    log_str = "[" + Time.now.strftime("%Y-%m-%d %H:%M:%S") + "] "
+    log_str += "[" + request.remote_ip + "] "
+    log_str += params[:query] + "\n"
+    File.open("#{RAILS_ROOT}/log/search.log", 'a') {|f| f.write(log_str)}
   end
 
   def search_all
