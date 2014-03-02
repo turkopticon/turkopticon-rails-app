@@ -361,6 +361,10 @@ class MainController < ApplicationController
     @location = "about"
   end
 
+  def info2
+    @location = "about"
+  end
+
   def install_welcome
     @location = "install_welcome"
   end
