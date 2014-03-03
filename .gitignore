@@ -14,7 +14,7 @@ config/initializers/session_store.rb
 config/initializers/smtp_gmail.rb
 index/
 log/
-php_api/*
+php_api/
 public/*
 !public/images/
 !public/javascripts/
