@@ -237,6 +237,10 @@ td {
 	padding: 0;
 }
 
+.biggish {
+    font-size: 1.2em;
+}
+
 .bigger {
         font-size: 1.4em;
 }
@@ -448,4 +452,26 @@ del {
   background-color: #f00;
   color: #fff;
   font-size: 2em;
+}
+
+.wide {
+  line-height: 1.2;
+}
+
+.mediumtextbutton {
+  background-color: #8a4332;
+  color: #ccc;
+  padding: 15px;
+  margin: 5px;
+  font-size: 1.4em;
+  display: inline-block;
+  border: 1px solid #eee;
+}
+
+.mediumtextbutton > a {
+  color: #ccc;
+}
+
+.mediumtextbutton > a:hover {
+  text-decoration: none;
 }

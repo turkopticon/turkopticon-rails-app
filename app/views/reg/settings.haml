@@ -14,7 +14,7 @@
         = f.text_field "display_name", :value => @person.public_email
         - if flash[:errors] and flash[:errors][:display_name]
           %span.error= flash[:errors][:display_name]
-      %p= submit_tag "Set my display name"
+      %p= submit_tag "Save this as my display name"
   - else
     %p
       Your display name:

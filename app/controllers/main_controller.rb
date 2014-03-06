@@ -23,7 +23,6 @@ class MainController < ApplicationController
     if params[:id].nil?
       cond = "requester_id is not null"
     elsif !Requester.find_by_amzn_requester_id(params[:id]).nil?
-      # cond = {:requester_id => Requester.find_by_amzn_requester_id(params[:id]).id}
       cond = {:amzn_requester_id => params[:id]}
       if params[:hidden]
         cond[:is_hidden] = true
@@ -34,8 +33,6 @@ class MainController < ApplicationController
       cond = {:requester_id => params[:id]}
     end
     @reports = Report.paginate :page => params[:page], :order => "id DESC", :conditions => cond
-#    @reports.delete_if{|r| r.requester_id.nil?}
-#    @reports = Report.find(:all, :order => params[:order] ||= "id DESC", :conditions => cond)
   end
 
   def averages
@@ -135,8 +132,13 @@ class MainController < ApplicationController
     @reports.delete_if{|r| r.is_hidden}
     @reports = @reports.sort_by{|r| r.created_at}.reverse
     @hidden_rep_count = total_rep_count - @reports.length
-    # flash[:notice] = "Search results for <span id='squery'>" + params[:query] + "</span>:"
-    # flash[:notice] = "Note: search index is updated every 12 hours.<br/><br/>Search results for <span id='squery'>" + params[:query] + "</span>:"
+
+    # log search queries to separate log file
+    # for search redesign
+    log_str = "[" + Time.now.strftime("%Y-%m-%d %H:%M:%S") + "] "
+    log_str += "[" + request.remote_ip + "] "
+    log_str += params[:query] + "\n"
+    File.open("#{RAILS_ROOT}/log/search.log", 'a') {|f| f.write(log_str)}
   end
 
   def search_all
@@ -181,13 +183,6 @@ class MainController < ApplicationController
         flash[:notice] = "<div class=\"error\">Please fill in the requester ID.</div>"
         render :action => "add_report" and return
       end
-      
-      # BLOCKING NEW REPORTS FROM USERS CREATED AFTER 2013 OCT 1 ON PANAGIOTIS PAPAECONOMOPOULOS, 2013 OCT 17 12:25 AM / REVISED 12:37 PM
-      # if params[:requester][:amzn_id] == "A1CTS4XHYPJ5VJ" and Person.find(session[:person_id]).created_at > Time.local(2013, "oct", 1)
-      #  render :text => "Turkopticon is not accepting new reviews of this requester from new reviewers right now. Please try again later. If you have questions, please post to turkopticon-discuss@googlegroups.com." and return
-      # end
-      # END AD HOC BLOCK
-
       if params[:requester][:amzn_name].blank? or params[:requester][:amzn_name] == "null"
         flash[:notice] = "<div class=\"error\">Please fill in the requester name.</div>"
         render :action => "add_report" and return
@@ -197,16 +192,14 @@ class MainController < ApplicationController
         render :action => "add_report" and return
       end
       if @report.save
-
+        @report.update_attributes(:amzn_requester_name => params[:requester][:amzn_name])
         r = Requester.find_by_amzn_requester_id(params[:requester][:amzn_id])
-        #r = Requester.find_by_amzn_requester_id_and_amzn_requester_name(params[:requester][:amzn_id], params[:requester][:amzn_name])
         if !r.nil? and r.amzn_requester_name == "null"
           r.update_attributes(:amzn_requester_name => params[:requester][:amzn_name])
         end
         if r.nil?
           Requester.new(:amzn_requester_id => params[:requester][:amzn_id], :amzn_requester_name => params[:requester][:amzn_name]).save
           r = Requester.find_by_amzn_requester_id(params[:requester][:amzn_id])
-          # r = Requester.find_by_amzn_requester_id_and_amzn_requester_name(params[:requester][:amzn_id], params[:requester][:amzn_name])
         end
         if @report.update_attributes(:requester_id => r.id, :amzn_requester_id => r.amzn_requester_id)
 
@@ -372,6 +365,10 @@ class MainController < ApplicationController
   end
 
   def info
+    @location = "about"
+  end
+
+  def info2
     @location = "about"
   end
 

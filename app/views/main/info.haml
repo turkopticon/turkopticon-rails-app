@@ -19,6 +19,32 @@
   //  TINY.box.show('box.html', 1, 0, 0, 1);
   //};
 
+%p#advisory.big{:style => "padding: 15px;"}
+  %strong Feb 27 2014
+  &nbsp;&nbsp;&nbsp;&nbsp;
+  %strong Please consider using the <a href="/turkopticon.user.js">most recent user script</a>. It is the most recent version of Turkopticon (updated today). It is probably faster and more reliable than the extensions.
+  %br/
+  %br/
+  If you use Chrome, you can install the script manually or use the <a href="https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo">Tampermonkey extension</a>.
+  %br/
+  %br/
+  If you use Firefox, you can use <a href="https://addons.mozilla.org/en-us/firefox/addon/greasemonkey">Greasemonkey</a> to install the script and the <a href="https://addons.mozilla.org/en-us/firefox/addon/toggle-mixed-active-content/">Toggle Mixed Active Content extension</a> to disable Firefox's mixed content blocking. (I hope for this to be unnecessary soon.)
+  %br/
+  %br/
+  By "more reliable", I mean you are probably less likely to get a JavaScript error.
+  %br/
+  %br/
+  This is because it calls this server (turkopticon.ucsd.edu) directly, rather than calling our old server, which the extensions still point to and sometimes gets overloaded.
+  %br/
+  %br/
+  Also, when you click "report your experience with this requester", the user script puts the right name in the requester name field of the review form. If a requester has changed their name, the extensions put the old name in the form.
+  %br/
+  %br/
+  All this said, my goal for tomorrow is to update both extensions. So to be completely honest you could save yourself the trouble and wait...
+  %br/
+  %br/
+  &mdash;Six
+
 #container
   #side-a
     <a class="twitter-timeline" data-dnt="true" href="https://twitter.com/turkopticon" data-widget-id="365016898619981825">Tweets by @turkopticon</a>

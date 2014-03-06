@@ -1,18 +1,24 @@
-# config
-database.yml
-environment.rb
+API_INSTALL_LOG
+INSTALL_LOG
+LAST_BACKUP
+Rakefile
 
-## config/initializers
-cookie_verification_secret.rb
-log.rb
-session_store.rb
-smtp_gmail.rb
-
-# index
+backups/
+config/database.yml
+config/environment.rb
+config/initializers/app_url.rb
+config/initializers/cookie_verification_secret.rb
+config/initializers/log.rb
+config/initializers/session_store.rb
+config/initializers/smtp_gmail.rb
 index/
-
-# log
 log/
-
-# tmp
+php_api/
+public/*
+!public/images/
+!public/javascripts/
+!public/stylesheets/
+!public/turkopticon_installpage/
+!public/turkopticon-2014.01.28.1207.user.js
+test/
 tmp/
