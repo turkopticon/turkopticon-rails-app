@@ -10,7 +10,6 @@ config/initializers/app_url.rb
 config/initializers/cookie_verification_secret.rb
 config/initializers/log.rb
 config/initializers/session_store.rb
-config/initializers/smtp_gmail.rb
 index/
 log/
 php_api/
