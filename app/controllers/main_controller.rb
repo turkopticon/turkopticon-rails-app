@@ -117,6 +117,16 @@ class MainController < ApplicationController
     render :action => "index"
   end
 
+  def php_search
+    # call search.php
+    @result = `php /home/turkopticon/public/devel.turkopticon.info/turkopticon/php_api/search.php #{params[:query]} #{params[:field]} #{params[:type]}`
+    parsed_result = JSON[@result]
+    @reports = parsed_result["reviews"]
+    @render_time = parsed_result["render_time"]
+    @query_time = parsed_result["query_time"]
+    @result_count = parsed_result["results_count"]
+  end
+
   def search_mysql # good, but do not use, very slow; will choke site
     requesters = Requester.find(:all, :conditions => ["amzn_requester_name like ?", "%#{params[:query]}%"])
     @reports = requesters.collect{|r| r.reports}.flatten

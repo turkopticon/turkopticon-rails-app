@@ -1,0 +1,34 @@
+= javascript_include_tag :defaults
+
+:javascript
+  function addText(id, text) {
+    document.getElementById("box_" + id.toString()).value = text;
+  }
+
+- if @result_count == 0
+  %p
+    = "No search results for <span style='color: #f00; font-weight: bold;'>" + h(params[:query]) + "</span> :("
+- else
+  %p
+    = "Search results for <span style='color: #f00; font-weight: bold;'>" + h(params[:query]) + "</span>:"
+
+  .box
+    %p
+      %table#reports{ :cellpadding => "5", :cellspacing => "0" }
+        %tr.th
+          %th AMT Requester
+          %th.rating Rating <span style="font-weight: normal;">[<a href="/main/help#attr">info</a>]</span>
+          %th Description
+        - require 'time'
+        = render :partial => 'main/php_report', :collection => @reports
+    %p
+      = @result_count
+      results
+    %p
+      = "Query time: " + "%2.5f" % @query_time
+    %p
+      = "Render time: " + "%2.5f" % @render_time
+    - if @no_flags
+      %p You haven't flagged any reviews.
+    - if @no_reviews
+      %p You haven't reviewed anybody yet.

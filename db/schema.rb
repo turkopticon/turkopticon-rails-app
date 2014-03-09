@@ -168,4 +168,6 @@ ActiveRecord::Schema.define(:version => 20140227223516) do
     t.string   "old_name"
   end
 
+  add_index "requesters", ["amzn_requester_name"], :name => "amzn_requester_name"
+
 end
