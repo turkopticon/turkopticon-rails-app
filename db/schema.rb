@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140227223516) do
+ActiveRecord::Schema.define(:version => 20140310175041) do
 
   create_table "Dolores_A2IR8TEVONNLZO", :id => false, :force => true do |t|
     t.integer  "id",            :default => 0, :null => false
@@ -124,6 +124,8 @@ ActiveRecord::Schema.define(:version => 20140227223516) do
     t.string   "amzn_requester_id"
     t.text     "displayed_notes"
     t.string   "amzn_requester_name"
+    t.integer  "flag_count"
+    t.integer  "comment_count"
   end
 
   create_table "reports_purgatory", :id => false, :force => true do |t|
