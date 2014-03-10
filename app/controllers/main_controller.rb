@@ -237,6 +237,7 @@ class MainController < ApplicationController
         render :action => "add_flag", :id => @report.id and return
       end
       if @flag.save and @report.update_flag_data
+        @report.update_attributes(:flag_count => @report.flags.count)
         flash[:notice] = "<div class=\"success\">Report was flagged.</div>"
         FlagMailer::deliver_notify(@report.id, @flag.comment)
         redirect_to :controller => "main", :action => "index", :id => @report.requester_amzn_id
@@ -269,6 +270,7 @@ class MainController < ApplicationController
     @requester = @flag.report.requester
     @report = @flag.report
     @flag.convert_to_comment
+    @report.update_attributes(:flag_count => @report.flags.count, :comment_count => @report.comments.count)
     # @report.update_flag_data  # this is handled by Flag::convert_to_comment
     redirect_to :action => "index", :id => @requester.amzn_requester_id
   end
@@ -282,6 +284,7 @@ class MainController < ApplicationController
         render :action => "add_comment", :id => @report.id and return
       end
       if @comment.save
+        @report.update_attributes(:comment_count => @report.comments.count)
         flash[:notice] = "<div class=\"success\">Comment added.</div>"
         redirect_to :controller => "main", :action => "index", :id => @report.requester_amzn_id
       end
