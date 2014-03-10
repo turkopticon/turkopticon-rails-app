@@ -26,8 +26,7 @@ class Person < ActiveRecord::Base
 
   validates_presence_of :email
   validates_uniqueness_of :email
-  validates_format_of :email, :with => /^([a-z0-9])([a-z0-9_\-\.\+])*(?!\.{2,})([a-z0-9])\@(?!mailinator|.*mial\.|spamcatch|spambob|spamavert|spamherelots)([a-z0-9])([a-z0-9\-\.])*\.([a-z]{2,4})$/i,
-    :message => "is not a recognized email address"
+  validates_format_of :email, :with => /^([a-z0-9])([a-z0-9_\-\.\+])*(?!\.{2,})([a-z0-9])\@(?!mailinator|.*mial\.|spamcatch|spambob|spamavert|spamherelots)([a-z0-9])([a-z0-9\-\.])*\.([a-z]{2,4})$/i, :message => "is not a recognized email address"
 
   attr_accessor :password_confirmation
   #validates_presence_of :password

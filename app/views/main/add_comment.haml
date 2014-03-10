@@ -6,7 +6,8 @@
     = @report.requester_amzn_name + " (" + @report.requester_amzn_id + ")"
   %p
     %strong.label Description
-    = h(@report.description.censor).gsub(/\r\n/,"<br/>")
+    - if !@report.description.nil?
+      = h(@report.description.censor).gsub(/\r\n/,"<br/>")
   %p
     %strong.label Posted On
     = @report.created_at.strftime("%b %d %Y")

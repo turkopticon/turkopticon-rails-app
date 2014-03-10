@@ -29,5 +29,11 @@
       %p.notes= report["displayed_notes"]
     .posted_by
       = Time.parse(report["created_at"]).strftime("%b %d %Y")
-    %p
-      = link_to "See full report &raquo;", :controller => "main", :action => "report", :id => report["to_report_id"]
+      &nbsp;|&nbsp;
+      = link_to h(report["display_name"]), :controller => "main", :action => "reports_by", :id => report["reviewer_id"]
+      &nbsp;|&nbsp;
+      = link_to "flag", :controller => "main", :action => "add_flag", :id => report["to_report_id"]
+      &nbsp;|&nbsp;
+      = link_to "comment", :controller => "main", :action => "add_comment", :id => report["to_report_id"]
+      &nbsp;|&nbsp;
+      = link_to report["flag_count"].to_s + " flags, " + report["comment_count"].to_s + " comments &raquo;", :controller => "main", :action => "report", :id => report["to_report_id"]
