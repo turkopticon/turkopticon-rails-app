@@ -23,6 +23,7 @@ class RegController < ApplicationController
     @pagetitle = "register"
     @person = Person.new(params[:person])
     if request.post? and @person.save
+      @person.update_attributes(:display_name => @person.public_email)
       RegMailer::deliver_confirm(@person, confirmation_hash(@person.email))
       session[:person_id] = @person.id
       flash[:notice] = "Thanks for signing up. We've sent an email to #{@person.email}. Please click the link in the email to verify your address."
@@ -93,15 +94,12 @@ class RegController < ApplicationController
 
   def set_display_name
     @person = Person.find(session[:person_id])
-    if @person.display_name
+    if @person.display_name and @person.display_name != @person.public_email
       flash[:errors] = {}
       flash[:errors][:display_name] = "You already have a display name."
     elsif Person.find_by_display_name(params[:person][:display_name])
       flash[:errors] = {}
       flash[:errors][:display_name] = "The display name '#{params[:person][:display_name]}' is taken."
-    elsif params[:person][:display_name] == Person.find(session[:person_id]).public_email
-      flash[:errors] = {}
-      flash[:errors][:display_name] = "That's your default display name. You can't set your display name to the default display name."
     else
       @person.update_attributes(params[:person])
     end
