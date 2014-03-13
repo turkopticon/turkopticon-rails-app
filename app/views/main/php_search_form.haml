@@ -1,0 +1,7 @@
+.box{:style => "padding: 10px 30px 30px 30px;"}
+  %h2 Search for requesters
+  - form_tag(:action => 'php_search') do
+    = select_tag 'field', "<option value='name'>Requester name</option><option value='id'>Requster ID</option>"
+    = select_tag 'type', "<option value='contain'>contains</option><option value='start'>starts with</option><option value='end'>ends with</option><option value='exact'>is exactly</option>"
+    = text_field_tag 'query'
+    = submit_tag 'Search'
