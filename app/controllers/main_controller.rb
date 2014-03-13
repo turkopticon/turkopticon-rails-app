@@ -118,8 +118,7 @@ class MainController < ApplicationController
   end
 
   def php_search
-    # call search.php
-    @result = `php /home/turkopticon/public/devel.turkopticon.info/turkopticon/php_api/search.php #{params[:query]} #{params[:field]} #{params[:type]}`
+    @result = `php #{RAILS_ROOT}/php_api/search.php #{params[:query]} #{params[:field]} #{params[:type]}`
     parsed_result = JSON[@result]
     @reports = parsed_result["reviews"]
     @render_time = parsed_result["render_time"]
