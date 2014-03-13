@@ -347,8 +347,8 @@ td {
 #search {
 	position: relative;
 		top: -3px;
-	margin-left: 23em;
-	max-width: 220px;
+	margin-left: 17em;
+	max-width: 300px;
 }
 
 .red {
@@ -474,4 +474,18 @@ del {
 
 .mediumtextbutton > a:hover {
   text-decoration: none;
+}
+
+.little_link {
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 0.8em;
+  text-transform: none;
+  font-weight: normal;
+  display: inline-block;
+  float: right;
+  margin-top: -18px;
+}
+
+#search > form {
+  max-width: 215px;
 }

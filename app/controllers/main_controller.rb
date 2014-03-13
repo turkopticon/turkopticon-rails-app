@@ -126,6 +126,9 @@ class MainController < ApplicationController
     @result_count = parsed_result["results_count"]
   end
 
+  def php_search_form
+  end
+
   def search_mysql # good, but do not use, very slow; will choke site
     requesters = Requester.find(:all, :conditions => ["amzn_requester_name like ?", "%#{params[:query]}%"])
     @reports = requesters.collect{|r| r.reports}.flatten
