@@ -13,6 +13,7 @@ config/initializers/session_store.rb
 index/
 log/
 php_api/dbconn.php
+php_api/mysqli-dbconn.php
 public/*
 !public/images/
 !public/javascripts/

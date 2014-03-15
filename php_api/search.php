@@ -10,7 +10,7 @@
  * * * * * * * * * * * * * * * * * */
 
 header("Access-Control-Allow-Origin");
-include "dbconn.php";
+include "mysqli-dbconn.php";
 
 if( !$conn ) {
     die ("Could not connect: (" . mysqli_connect_error() . ") ");
@@ -111,12 +111,21 @@ if ( $argv[1] && $argv[2] && $argv[3]) {
 
     $json_results["reviews"] = $all_reviews;
     $json_results["query"] = "Searching for a " . $search_field . " that " . $search_type . "s " . $search_for;
-    $json_results["results_count"] = mysqli_num_rows( $result );
+    $results_count = mysqli_num_rows( $result );
+    $json_results["results_count"] = $results_count;
     $json_results["query_time"] = $query_time;
     $json_results["render_time"] = $render_time;
 
     echo json_encode( $json_results );
-    //var_dump($json_results);
+
+    $logfile = '/home/ssilberman/src/turkopticon/php_api/log/search.php.log';
+    $time = date('Y-m-j H:i:s');
+    $ip = $_SERVER['REMOTE_ADDR'];
+    $rounded_query_time = round($query_time, 5);
+    file_put_contents($logfile, "[$time]", FILE_APPEND);
+    file_put_contents($logfile, "[$ip] ", FILE_APPEND);
+    file_put_contents($logfile, "Search for requester $search_field $search_type '$search_for' ", FILE_APPEND);
+    file_put_contents($logfile, "  Returned $results_count results in $rounded_query_time s\n", FILE_APPEND);
 
 } else {
     echo "<p>Put some parameters to start searching!</p>";
