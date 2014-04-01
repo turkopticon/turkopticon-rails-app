@@ -285,6 +285,10 @@ td {
 	width: 30%;
 }
 
+#reports td > p.body {
+        max-width: 430px;
+}
+
 .report {
 	color: #eee;
 	background-color: #523100;
