@@ -275,6 +275,9 @@ td {
 #reports td, #reports th {
 	text-align: top;
         padding-right: 20px;
+}
+
+#reports td.attrs {
 	min-width: 14em;
 }
 
