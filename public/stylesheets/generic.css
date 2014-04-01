@@ -275,6 +275,7 @@ td {
 #reports td, #reports th {
 	text-align: top;
         padding-right: 20px;
+	min-width: 14em;
 }
 
 #reports th.rating {
