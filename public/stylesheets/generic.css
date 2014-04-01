@@ -168,6 +168,10 @@ table#reports {
   margin-top: -1em;
 }
 
+.report_body, .flag_comment {
+  word-break: break-word;
+}
+
 #reports th {
   border-bottom: 1px solid #523100;
   font-weight: bold;
@@ -282,11 +286,7 @@ td {
 }
 
 #reports th.rating {
-	width: 30%;
-}
-
-#reports td > p.body {
-        max-width: 430px;
+//	width: 30%;
 }
 
 .report {
