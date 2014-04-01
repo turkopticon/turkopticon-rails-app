@@ -121,8 +121,8 @@ class MainController < ApplicationController
     @result = `php #{RAILS_ROOT}/php_api/search.php #{params[:query]} #{params[:field]} #{params[:type]}`
     parsed_result = JSON[@result]
     @reports = parsed_result["reviews"]
-    @render_time = parsed_result["render_time"]
-    @query_time = parsed_result["query_time"]
+    @render_time = parsed_result["render_time"] ||= 0.0
+    @query_time = parsed_result["query_time"] ||= 0.0
     @result_count = parsed_result["results_count"]
   end
 
