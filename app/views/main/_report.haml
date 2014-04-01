@@ -26,7 +26,7 @@
       - if report.requester.nil?
         [The requester object does not exist]
       - else
-        = link_to "Review Requester&nbsp;&raquo;", "/report?requester[amzn_id]=#{report.requester.amzn_requester_id}&requester[amzn_name]=#{report.requester.amzn_requester_name}"
+        = link_to "Review&nbsp;Requester&nbsp;&raquo;", "/report?requester[amzn_id]=#{report.requester.amzn_requester_id}&requester[amzn_name]=#{report.requester.amzn_requester_name}"
     %td{:valign => "top", :class => "attrs"}
       - for a in Report.requester_attrs
         .smlabel= a + ": "
