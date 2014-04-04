@@ -16,13 +16,12 @@ if( !$conn ) {
     die ("Could not connect: (" . mysqli_connect_error() . ") ");
 }
 
-if ( $argv[1] && $argv[2] && $argv[3]) {
+if ( $argv[1] && $argv[2] ) {
     // Start timing query
     $start_time = microtime(true);
 
     $search_for = $argv[1]; //query
     $search_field = $argv[2]; //field
-    $search_type = $argv[3]; //type
 
     // Types of search field:
     // - NAME : search through requester names
@@ -38,25 +37,7 @@ if ( $argv[1] && $argv[2] && $argv[3]) {
             break;
     }
 
-
-    // Types of search types:
-    // - CONTAIN : contains the query string
-    // -   START : starts with query string
-    // -     END : ends with query string
-    // -   EXACT : looks for exact match to search query
-    switch ($search_type) {
-        case "contain":
-            $search_with_wildcard = "%{$search_for}%";
-            break;
-        case "start":
-            $search_with_wildcard = "{$search_for}%";
-            break;
-        case "end":
-            $search_with_wildcard = "%{$search_for}";
-            break;
-        case "exact":
-            $search_with_wildcard = "{$search_for}";
-    }
+    $search_with_wildcard = '%' . $search_for . '%';
 
     // Create and execute a prepared statement
     $stmt = mysqli_stmt_init( $conn );
@@ -124,7 +105,7 @@ if ( $argv[1] && $argv[2] && $argv[3]) {
     $rounded_query_time = round($query_time, 5);
     file_put_contents($logfile, "[$time]", FILE_APPEND);
     file_put_contents($logfile, "[$ip] ", FILE_APPEND);
-    file_put_contents($logfile, "Search for requester $search_field $search_type '$search_for' ", FILE_APPEND);
+    file_put_contents($logfile, "Search for requester $search_field containing '$search_for' ", FILE_APPEND);
     file_put_contents($logfile, "  Returned $results_count results in $rounded_query_time s\n", FILE_APPEND);
 
 } else {
