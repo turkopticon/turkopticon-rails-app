@@ -16,25 +16,18 @@ if( !$conn ) {
     die ("Could not connect: (" . mysqli_connect_error() . ") ");
 }
 
-if ( $argv[1] && $argv[2] ) {
+if ( $argv[1] ) {
     // Start timing query
     $start_time = microtime(true);
 
-    $search_for = $argv[1]; //query
-    $search_field = $argv[2]; //field
+    $search_for = $argv[1];
 
-    // Types of search field:
-    // - NAME : search through requester names
-    // -   ID : search through amzn requester ids
-    switch ($search_field) { 
-        case "name":
-            $search_attribute = "reports.amzn_requester_name";
-            break;
-        case "id" :
-            $search_attribute = "reports.amzn_requester_id";
-            break;
-        default : // TODO does this ensure security of $search_attribute?
-            break;
+    // Use regex to see if searching for requester ID
+    $pattern = '/\AA[0-9A-Z]{9,}\z/';
+    if (preg_match( $pattern , $search_for ) === 1) {
+        $search_attribute = 'reports.amzn_requester_id';
+    } else {
+        $search_attribute = 'reports.amzn_requester_name';
     }
 
     $search_with_wildcard = '%' . $search_for . '%';
@@ -61,7 +54,7 @@ if ( $argv[1] && $argv[2] ) {
                      people.id,
                      people.display_name";
     $query .= " FROM people, reports";
-    $query .= " WHERE " . $search_attribute; // TODO secure usage of $search_attribute?
+    $query .= " WHERE " . $search_attribute; 
     $query .= " LIKE ?";
     $query .= " AND reports.amzn_requester_id IS NOT NULL";
     $query .= " AND reports.amzn_requester_name IS NOT NULL";
@@ -91,7 +84,7 @@ if ( $argv[1] && $argv[2] ) {
     $render_time = ( (microtime(true)) - $start_render_time );
 
     $json_results["reviews"] = $all_reviews;
-    $json_results["query"] = "Searching for a " . $search_field . " that " . $search_type . "s " . $search_for;
+    $json_results["query"] = "Searching for " . $search_attribute . " that contains " . $search_for;
     $results_count = mysqli_num_rows( $result );
     $json_results["results_count"] = $results_count;
     $json_results["query_time"] = $query_time;
@@ -105,7 +98,7 @@ if ( $argv[1] && $argv[2] ) {
     $rounded_query_time = round($query_time, 5);
     file_put_contents($logfile, "[$time]", FILE_APPEND);
     file_put_contents($logfile, "[$ip] ", FILE_APPEND);
-    file_put_contents($logfile, "Search for requester $search_field containing '$search_for' ", FILE_APPEND);
+    file_put_contents($logfile, "Search for $search_attribute containing '$search_for' ", FILE_APPEND);
     file_put_contents($logfile, "  Returned $results_count results in $rounded_query_time s\n", FILE_APPEND);
 
 } else {
