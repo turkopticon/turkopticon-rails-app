@@ -104,3 +104,5 @@ if ( $argv[1] ) {
 } else {
     echo "<p>Put some parameters to start searching!</p>";
 }
+
+?>
