@@ -286,7 +286,7 @@ td {
 }
 
 #reports th.rating {
-//	width: 30%;
+	min-width: 180px;
 }
 
 .report {
