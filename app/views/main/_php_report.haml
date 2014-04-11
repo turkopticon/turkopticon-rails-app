@@ -20,7 +20,7 @@
         .smlabel= eval("report[\"" + attr + "\"]").to_s + "&nbsp;/&nbsp;5"
         = Requester.attr_vis(eval("report[\"" + attr + "\"]"))
       %br/
-    - if report["tos_viol"]
+    - if report["tos_viol"] == 1
       .tosviol violates mturk terms of service &nbsp;&nbsp;&nbsp; <a href="/help#tos">[?]</a>
   %td{:valign => "top"}
     - if !report["text"].nil?
