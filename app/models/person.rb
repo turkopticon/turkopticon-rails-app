@@ -49,6 +49,18 @@ class Person < ActiveRecord::Base
     errors.add_to_base("Missing password.") if hashed_password.blank?
   end
 
+  def truncated_email
+    begin
+      e = email.split("@")
+      f = e[0]
+      g = e[1]
+      dn = f[0,f.length/2] + "...@" + g[0,1] + "..."
+    rescue Exception
+      dn = email
+    end
+    dn
+  end
+
   def public_email
     if display_name.nil?
       begin

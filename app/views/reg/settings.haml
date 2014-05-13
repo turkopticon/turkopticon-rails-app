@@ -3,7 +3,7 @@
 .box{:style => "max-width: 500px"}
   %p
     %strong Display Name
-  - if @person.display_name.nil?
+  - if @person.display_name.nil? or @person.display_name == @person.truncated_email
     %p We're now encouraging display names to make it easier to get to know fellow reviewers on the site while keeping your email address private. We have been displaying a shortened version of your email address with your reviews. Choose the name you would like displayed instead.
     %p
       %strong Once you select a display name, you cannot change it.
@@ -11,7 +11,7 @@
       %strong Parentheses will not be displayed.
     - form_for :person, :url => {:controller => "reg", :action => "set_display_name"} do |f|
       %p
-        = f.text_field "display_name", :value => @person.public_email
+        = f.text_field "display_name", :value => @person.public_email, :onfocus => "if(this.value == '#{@person.public_email}') { this.value = ''; }"
         - if flash[:errors] and flash[:errors][:display_name]
           %span.error= flash[:errors][:display_name]
       %p= submit_tag "Save this as my display name"
