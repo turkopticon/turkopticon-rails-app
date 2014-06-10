@@ -343,6 +343,28 @@ class MainController < ApplicationController
     end
   end
 
+  def edit_flag
+    @pagetitle = "edit flag"
+    @flag = Flag.find(params[:id])
+    if session[:person_id] == @flag.person_id or Person.find(session[:person_id]).is_admin
+      @report = @flag.report
+      if request.post? and @flag.update_attributes(params[:flag])
+        if session[:person_id] == @flag.person_id
+          editor = "the author "
+        else
+          editor = "<strong>" + Person.find(session[:person_id]).display_name + " (admin)</strong> "
+        end
+        note = "This flag was edited by " + editor + Time.now.strftime("%a %b %d %H:%M %Z") + ".<br/>"
+        @flag.update_attributes(:displayed_notes => note + @flag.displayed_notes.to_s)
+        flash[:notice] = "<div class=\"success\">Flag updated.</div>"
+        redirect_to :action => "report", :id => @flag.report_id.to_s
+      end
+    else
+      flash[:notice] = "<div class=\"error\">You can't edit that flag.</div>"
+      redirect_to :action => "index"
+    end
+  end
+
   def requester_stats
     @requester = Requester.find_by_amzn_requester_id(params[:id])
     if @requester.nil?

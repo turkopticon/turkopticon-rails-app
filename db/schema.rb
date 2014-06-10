@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140310175041) do
+ActiveRecord::Schema.define(:version => 20140610175616) do
 
   create_table "Dolores_A2IR8TEVONNLZO", :id => false, :force => true do |t|
     t.integer  "id",            :default => 0, :null => false
@@ -58,6 +58,7 @@ ActiveRecord::Schema.define(:version => 20140310175041) do
     t.text     "comment"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.text     "displayed_notes"
   end
 
   create_table "flags_purgatory", :id => false, :force => true do |t|
@@ -128,6 +129,8 @@ ActiveRecord::Schema.define(:version => 20140310175041) do
     t.integer  "comment_count"
   end
 
+  add_index "reports", ["amzn_requester_name"], :name => "reports_requester_name_index"
+
   create_table "reports_purgatory", :id => false, :force => true do |t|
     t.integer  "id",            :default => 0, :null => false
     t.integer  "person_id"
@@ -169,7 +172,5 @@ ActiveRecord::Schema.define(:version => 20140310175041) do
     t.integer  "tos_flags"
     t.string   "old_name"
   end
-
-  add_index "requesters", ["amzn_requester_name"], :name => "amzn_requester_name"
 
 end

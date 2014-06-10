@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20130604141843
+# Schema version: 20140610175616
 #
 # Table name: requesters
 #
@@ -15,6 +15,7 @@
 #  av_fair             :decimal(3, 2)
 #  av_fast             :decimal(3, 2)
 #  tos_flags           :integer(4)
+#  old_name            :string(255)
 #
 
 # require 'ruport'

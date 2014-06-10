@@ -1,23 +1,28 @@
 # == Schema Information
-# Schema version: 20130604141843
+# Schema version: 20140610175616
 #
 # Table name: reports
 #
-#  id            :integer(4)      not null, primary key
-#  person_id     :integer(4)
-#  requester_id  :integer(4)
-#  hit_id        :string(255)
-#  description   :text
-#  created_at    :datetime
-#  updated_at    :datetime
-#  how_many_hits :string(255)
-#  fair          :integer(4)
-#  fast          :integer(4)
-#  pay           :integer(4)
-#  comm          :integer(4)
-#  is_flagged    :boolean(1)
-#  is_hidden     :boolean(1)
-#  tos_viol      :boolean(1)
+#  id                  :integer(4)      not null, primary key
+#  person_id           :integer(4)
+#  requester_id        :integer(4)
+#  hit_id              :string(255)
+#  description         :text
+#  created_at          :datetime
+#  updated_at          :datetime
+#  how_many_hits       :string(255)
+#  fair                :integer(4)
+#  fast                :integer(4)
+#  pay                 :integer(4)
+#  comm                :integer(4)
+#  is_flagged          :boolean(1)
+#  is_hidden           :boolean(1)
+#  tos_viol            :boolean(1)
+#  amzn_requester_id   :string(255)
+#  displayed_notes     :text
+#  amzn_requester_name :string(255)
+#  flag_count          :integer(4)
+#  comment_count       :integer(4)
 #
 
 require 'acts_as_ferret'

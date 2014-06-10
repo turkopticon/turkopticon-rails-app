@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20130604141843
+# Schema version: 20140610175616
 #
 # Table name: posts
 #
