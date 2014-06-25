@@ -278,6 +278,11 @@ class MainController < ApplicationController
   end
 
   def add_comment
+    render :text => "That function is disabled."
+  end
+
+  def add_comment_disabled
+  # def add_comment
     @report = Report.find(params[:id])
     @comment = Comment.new(params[:comment])
     if request.post?
