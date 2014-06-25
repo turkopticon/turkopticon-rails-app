@@ -83,9 +83,9 @@
             = link_to f.person.mod_display_name, :controller => "main", :action => "reports_by", :id => f.person_id
           - else
             = link_to f.person.public_email, :controller => "main", :action => "reports_by", :id => f.person_id
-          - if f.person_id == session[:person_id] or Person.find(session[:person_id]).is_admin
-            &nbsp;|&nbsp;
-            = link_to "edit", :controller => "main", :action => "edit_flag", :id => f.id.to_s
+          /- if f.person_id == session[:person_id] or Person.find(session[:person_id]).is_admin
+          /  &nbsp;|&nbsp;
+          /  = link_to "edit", :controller => "main", :action => "edit_flag", :id => f.id.to_s
       - unless report.comments.empty?
         %br/
         - for c in report.comments

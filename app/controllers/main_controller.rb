@@ -349,6 +349,11 @@ class MainController < ApplicationController
   end
 
   def edit_flag
+    render :text => "That function is disabled."
+  end
+
+  def edit_flag_disabled
+  # def edit_flag
     @pagetitle = "edit flag"
     @flag = Flag.find(params[:id])
     if session[:person_id] == @flag.person_id or Person.find(session[:person_id]).is_admin
