@@ -1,6 +1,6 @@
 class RegController < ApplicationController
 
-  @@email_log = '/home/turkopticon/public/turkopticon.info/log/email_changes.txt'
+  @@email_log = '/home/ssilberman/src/turkopticon/log/email_changes.txt'
 
   def change_email
     @person = Person.find(session[:person_id])

@@ -41,6 +41,35 @@ class AdminController < ApplicationController
     @ordered_flaggers = top_flaggers.sort_by{|k, v| v}.reverse
   end
 
+  def commenters
+    @commenters_and_comments = {}
+    Comment.all.each{|c|
+      if c.person_id
+        if @commenters_and_comments[c.person_id].nil?
+          p = Person.find(c.person_id)
+          @commenters_and_comments[c.person_id] = {:public_email => p.public_email, :mod_display_name => p.mod_display_name, :acct_date => p.created_at.strftime("%b %d %Y"), :can_comment => p.can_comment.to_s, :comments => []}
+        end
+        @commenters_and_comments[c.person_id][:comments] << {:comment_id => c.id, :date => c.created_at.strftime("%b %d %Y %H:%M"), :body => c.body}
+      end
+    }
+
+    @comment_counts = []
+    @commenters_and_comments.each_pair{|person_id, info|
+      @comment_counts << {:person_id => person_id, :comment_count => info[:comments].count, :last_comment_date => info[:comments].last[:date], :acct_date => info[:acct_date], :can_comment => info[:can_comment]}
+    }
+    @comment_counts = @comment_counts.sort_by{|e| e[:comment_count]}
+  end
+
+  def enable_commenting
+    Person.find(params[:id]).update_attributes(:can_comment => true)
+    render :text => "Enabled commenting for user #{params[:id]}."
+  end
+
+  def disable_commenting
+    Person.find(params[:id]).update_attributes(:can_comment => false)
+    render :text => "Disabled commenting for user #{params[:id]}."
+  end
+
   def duplicated_requesters
     ids = Requester.all.map{|r| r.amzn_requester_id}.delete_if{|i| i.blank?}
     hash = ids.group_by{|i| i}  # slow

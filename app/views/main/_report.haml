@@ -65,8 +65,9 @@
             = link_to "unflag", {:controller => "main", :action => "convert_flag", :id => flag.id}, :confirm => "Are you sure? This will convert your flag to a comment."
           - else
             = link_to_remote "flag", :url => {:controller => "main", :action => "flag", :id => report.id}
-          /&nbsp;|&nbsp;
-          /= link_to "comment", :controller => "main", :action => "add_comment", :id => report.id
+          - if Person.find(session[:person_id]).can_comment
+            &nbsp;|&nbsp;
+            = link_to "comment", :controller => "main", :action => "add_comment", :id => report.id
       %br/
       - for f in report.flags
         .flag_comment

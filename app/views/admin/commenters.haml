@@ -1,0 +1,54 @@
+%h2 Commenters
+
+%h3 Commenters and counts
+
+%table{:cellspacing => 0, :cellpadding => 8, :style => "margin: 0 auto"}
+  %tr
+    %td
+      %strong uid
+    %td
+      %strong public_email
+    %td
+      %strong acct_created
+    %td
+      %strong cmnts
+    %td
+      %strong lst_cmnt
+    %td
+      %strong can_cmnt
+    %td
+  - @comment_counts.reverse.each do |e|
+    %tr{:style => "background-color: #{cycle('#eee', '#fff')}"}
+      %td= e[:person_id]
+      %td= link_to @commenters_and_comments[e[:person_id]][:public_email], :controller => "main", :action => "all_by", :id => e[:person_id]
+      %td= e[:acct_date]
+      %td= e[:comment_count]
+      %td= e[:last_comment_date]
+      %td= e[:can_comment].empty? ? "nil" : e[:can_comment]
+      %td
+        - if e[:can_comment] == "true"
+          = link_to "disable", :controller => "admin", :action => "disable_commenting", :id => e[:person_id]
+        - else
+          = link_to "enable", :controller => "admin", :action => "enable_commenting", :id => e[:person_id]
+
+%h3 All comments by all commenters
+
+- @comment_counts.each do |e|
+  - person_id = e[:person_id]
+  - info = @commenters_and_comments[person_id]
+  - if info[:public_email] == info[:mod_display_name]
+    %strong= info[:public_email]
+  - else
+    %strong= info[:public_email]
+    = "/"
+    %strong= info[:mod_display_name]
+  = " (UID " + person_id.to_s + ", " + info[:comments].count.to_s + " comments)"
+  %br/
+  - info[:comments].each do |c|
+    = c[:comment_id].to_s + " (" + c[:date].to_s + ") : " + c[:body].to_s
+    %br/
+  %br/
+
+
+
+%h3 People empowered as commenters

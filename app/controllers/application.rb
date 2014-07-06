@@ -28,6 +28,13 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def authorize_as_commenter
+    unless Person.find(session[:person_id]).can_comment
+      flash[:notice] = "Sorry, your account doesn't seem to have commenting enabled."
+      redirect_to :controller => "main", :action => "index"
+    end
+  end
+
   # See ActionController::RequestForgeryProtection for details
   # Uncomment the :secret if you're not using the cookie session store
   protect_from_forgery # :secret => 'e7c170de675a44f45aebb8b8108212a5'

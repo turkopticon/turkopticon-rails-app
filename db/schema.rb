@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140610175616) do
+ActiveRecord::Schema.define(:version => 20140705233200) do
 
   create_table "Dolores_A2IR8TEVONNLZO", :id => false, :force => true do |t|
     t.integer  "id",            :default => 0, :null => false
@@ -83,6 +83,7 @@ ActiveRecord::Schema.define(:version => 20140610175616) do
     t.boolean  "is_closed"
     t.datetime "closed_at"
     t.boolean  "most_recent_first_in_my_reviews"
+    t.boolean  "can_comment"
   end
 
   create_table "posts", :force => true do |t|
