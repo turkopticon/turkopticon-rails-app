@@ -41,6 +41,30 @@ class AdminController < ApplicationController
     @ordered_flaggers = top_flaggers.sort_by{|k, v| v}.reverse
   end
 
+  def reviewers
+    reviewers = {}
+    Report.all.each{|r|
+      pid = r.person_id
+      if reviewers[pid].nil?
+        p = Person.find(pid)
+        reviewers[pid] = {:public_email => p.public_email,
+                          :acct_date => p.created_at.strftime("%b %d %Y"),
+                          :can_comment => p.can_comment.to_s,
+                          :review_count => 0}
+      end
+      reviewers[pid][:review_count] += 1
+    }
+    @review_counts = []
+    reviewers.each_pair{|pid, info|
+      @review_counts << {:person_id => pid,
+                         :review_count => info[:review_count],
+                         :public_email => info[:public_email],
+                         :acct_date => info[:acct_date],
+                         :can_comment => info[:can_comment]}
+    }
+    @review_counts = @review_counts.sort_by{|e| e[:review_count]}.reverse
+  end
+
   def commenters
     @commenters_and_comments = {}
     Comment.all.each{|c|

@@ -1,0 +1,27 @@
+%h2 Reviewers
+
+%table{:cellspacing => 0, :cellpadding => 8, :style => "margin: 0 auto"}
+  %tr
+    %td
+      %strong uid
+    %td
+      %strong public_email
+    %td
+      %strong acct_created
+    %td
+      %strong reviews
+    %td
+      %strong can_cmnt
+    %td
+  - @review_counts.each do |reviewer|
+    %tr{:style => "background-color: #{cycle('#eee', '#fff')}"}
+      %td= reviewer[:person_id]
+      %td= link_to reviewer[:public_email], :controller => "main", :action => "reports_by", :id => reviewer[:person_id]
+      %td= reviewer[:acct_date]
+      %td= reviewer[:review_count]
+      %td= reviewer[:can_comment]
+      %td
+        - if reviewer[:can_comment] == "true"
+          = link_to "disable", :controller => "admin", :action => "disable_commenting", :id => reviewer[:person_id]
+        - else
+          = link_to "enable", :controller => "admin", :action => "enable_commenting", :id => reviewer[:person_id]
