@@ -46,6 +46,7 @@
       %br/
       = text_area :report, :description
     = hidden_field :report, :person_id, :value => session[:person_id]
+    = hidden_field :report, :ip, :value => request.remote_ip
     - if params[:url] and params[:url][:url]
       - url = params[:url][:url]
     - elsif params[:url]

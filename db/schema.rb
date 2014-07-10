@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140705233200) do
+ActiveRecord::Schema.define(:version => 20140710064828) do
 
   create_table "Dolores_A2IR8TEVONNLZO", :id => false, :force => true do |t|
     t.integer  "id",            :default => 0, :null => false
@@ -128,6 +128,7 @@ ActiveRecord::Schema.define(:version => 20140705233200) do
     t.string   "amzn_requester_name"
     t.integer  "flag_count"
     t.integer  "comment_count"
+    t.string   "ip"
   end
 
   add_index "reports", ["amzn_requester_name"], :name => "reports_requester_name_index"
