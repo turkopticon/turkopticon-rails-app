@@ -60,6 +60,11 @@ class MainController < ApplicationController
     render :action => "index"
   end
 
+  def reports_by_ip
+    @reports = Report.find_all_by_ip(params[:ip])
+    render :action => "flagged_by"
+  end
+
   def flagged_by
     @person = Person.find(params[:id])
     @display_name = Person.find(session[:person_id]).is_moderator ? @person.mod_display_name : @person.public_email
