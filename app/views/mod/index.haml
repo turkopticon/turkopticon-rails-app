@@ -1,0 +1,13 @@
+%h3= @title
+
+%table{:cellpadding => "5", :cellspacing => "0"}
+  %tr
+    %th Review ID
+    %th Reviewer &amp; Review Time (+ Last Edit)
+    %th Requester, MT ID, TO ID
+    %th#ratings Ratings
+    %th Review Text
+    %th #&nbsp;Comments
+  = render :partial => "report", :collection => @reports
+
+#pagination= will_paginate @reports

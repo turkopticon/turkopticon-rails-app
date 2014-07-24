@@ -1,0 +1,12 @@
+!!!
+%html{html_attrs('en-US')}
+  %head
+    %title Turkopticon Moderation
+    = stylesheet_link_tag 'moderation'
+  %body
+    #header
+      #login_nav= render :partial => 'login_nav'
+      #title Turkopticon Moderation
+    #nav= render :partial => 'nav'
+    #main= yield
+

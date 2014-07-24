@@ -1,0 +1,40 @@
+%tr{:class => cycle('odd', '')}
+  %td{:valign => "top"}= link_to report.id.to_s, :controller => "main", :action => "report", :id => report.id
+  %td{:valign => "top"}
+    = link_to report.person.mod_display_name, :controller => "main", :action => "reports_by", :id => report.person_id
+    %br/
+    - if @person.is_admin
+      = link_to report.ip, :controller => "main", :action => "reports_by_ip", :ip => report.ip
+    - else
+      = "XXX.XXX." + report.ip.split(".").last(2).join(".")
+    %br/
+    = report.created_at.strftime("%H:%M&nbsp;%m/%d/%y")
+    - if report.updated_at > report.created_at
+      %br/
+      = report.updated_at.strftime("%H:%M&nbsp;%m/%d/%y")
+  %td{:valign => "top"}
+    = link_to report.amzn_requester_name, :controller => "main", :action => "reports", :id => report.amzn_requester_id
+    %br/
+    = report.amzn_requester_id
+    %br/
+    = report.requester_id.to_s
+  %td{:valign => "top"}
+    - for attr in ["fair", "fast", "pay", "comm"]
+      .attr_label= attr + ": "
+      - val = eval("report." + attr)
+      - if val == 0
+        .attr_label no&nbsp;data
+      - else
+        .attr_label= val.to_s + "&nbsp;/&nbsp;5"
+        = Requester.attr_vis(val)
+      %br/
+    - if report.tos_viol
+      .tos AMT TOS VIOLATION
+  %td{:valign => "top"}
+    = h(report.description.censor).gsub("\r\n","<br/>")
+  %td.center{:valign => "top"}
+    = report.comments.count.to_s
+  %td.center{:valign => "top"}
+    = link_to "Flag", "foo"
+  %td.center{:valign => "top"}
+    = link_to "Comment", "bar"
