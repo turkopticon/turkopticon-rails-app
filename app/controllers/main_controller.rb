@@ -5,6 +5,12 @@ class MainController < ApplicationController
   before_filter :verify, :only => :add_report
   before_filter :authorize_as_commenter, :only => :add_comment
 
+  def request_commenting
+    Person.find(session[:person_id]).update_attributes(:commenting_requested => true, :commenting_requested_at => Time.now)
+    flash[:notice] = "You've requested commenting."
+    redirect_to :action => "index"
+  end
+
   def check_for_existing_report
     if session[:person_id] and Person.find(session[:person_id]) and params[:requester]
       @requester = Requester.find_by_amzn_requester_id(params[:requester][:amzn_id])

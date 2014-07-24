@@ -1,0 +1,22 @@
+%h2 Commenting Requests
+
+%table{:cellspacing => 0, :cellpadding => 8, :style => "margin: 0 auto"}
+  %tr
+    %th{:align => "left"} uid
+    %th{:align => "left"} public_email
+    %th{:align => "left"} acct_created
+    %th{:align => "left"} reviews
+    %th{:align => "left"} cmnts
+    %th{:align => "left"} req cmnts at
+    %th{:align => "left"} last cmnt
+    %th{:align => "left"} &nbsp;
+  - @people.each do |person|
+    %tr{:style => "background-color: #{cycle('#eee', '#fff')}"}
+      %td= link_to person.id, :controller => "main", :action => "reports_by", :id => person.id
+      %td= person.mod_display_name
+      %td= person.created_at.strftime("%b %d %Y")
+      %td= person.reports.count
+      %td= person.comments.count
+      %td= person.commenting_requested_at.strftime("%b %d %Y %H:%M")
+      %td= person.comments.empty? ? "N/A" : person.comments.last.created_at.strftime("%b %d %Y")
+      %td= link_to "enable", :controller => "admin", :action => "enable_commenting", :id => person.id

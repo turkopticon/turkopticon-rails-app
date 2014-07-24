@@ -94,6 +94,14 @@ class AdminController < ApplicationController
     render :text => "Disabled commenting for user #{params[:id]}."
   end
 
+  def commenting_requests
+    @people = Person.find_all_by_can_comment_and_commenting_requested(nil, true).sort_by{|p| p.commenting_requested_at}
+  end
+
+  def enabled_commenters
+    @commenters = Person.find_all_by_can_comment(true).sort_by{|p| p.comments.count}.reverse
+  end
+
   def duplicated_requesters
     ids = Requester.all.map{|r| r.amzn_requester_id}.delete_if{|i| i.blank?}
     hash = ids.group_by{|i| i}  # slow

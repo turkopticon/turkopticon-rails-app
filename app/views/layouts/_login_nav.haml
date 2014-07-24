@@ -13,5 +13,8 @@
     %strong= link_to "(PLEASE VERIFY YOUR EMAIL ADDRESS)", :controller => "reg", :action => "send_verification_email"
   &nbsp;&nbsp;
   = link_to "settings", :controller => "reg", :action => "settings"
+  - if !person.can_comment and !person.commenting_requested and session[:person_id] == 1
+    &nbsp;&nbsp;
+    = link_to "request commenting ability", :controller => "main", :action => "request_commenting"
   &nbsp;&nbsp;
   = link_to "logout", :controller => "reg", :action => "logout"
