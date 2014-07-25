@@ -40,6 +40,11 @@ body {
   margin-right: 2em;
 }
 
+td#text {
+  max-width: 400px;
+  min-width: 350px;
+}
+
 th {
   text-align: left;
 }
@@ -97,4 +102,38 @@ th {
 
 .center {
   text-align: center;
+}
+
+.meta {
+  color: #666;
+}
+
+.notes {
+  font-size: 0.8em;
+  color: #666;
+}
+
+.fctable, .lightbox {
+  border: 1px solid #666;
+  margin: 10px 0;
+  padding: 8px;
+}
+
+.fieldWithErrors {
+  display: inline-block;
+}
+
+.fctable tr td {
+  padding-top: 12px;
+}
+
+.fctable tr:first-child td {
+  padding-top: 0;
+}
+
+#notice {
+  background-color: #03af00;
+  font-weight: bold;
+  color: #fff;
+  padding: 8px;
 }

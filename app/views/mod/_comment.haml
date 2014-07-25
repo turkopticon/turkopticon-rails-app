@@ -1,0 +1,8 @@
+.lightbox{:id => @report.id}
+  - form_tag("/mod/comment/#{@report.id}") do
+    = hidden_field :comment, :report_id, :value => @report.id
+    = hidden_field :comment, :person_id, :value => session[:person_id]
+    = text_area :comment, :body
+    %br/
+    = submit_tag "Post Comment"
+    = link_to_remote "Cancel", :url => {:action => "cancel_lightbox", :id => @report.id}

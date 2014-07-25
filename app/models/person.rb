@@ -23,6 +23,7 @@ class Person < ActiveRecord::Base
   has_many :reports
   has_many :flags
   has_many :comments
+  has_many :ignores
 
   validates_presence_of :email
   validates_uniqueness_of :email

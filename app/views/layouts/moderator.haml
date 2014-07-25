@@ -3,10 +3,12 @@
   %head
     %title Turkopticon Moderation
     = stylesheet_link_tag 'moderation'
+    = javascript_include_tag :defaults
   %body
     #header
       #login_nav= render :partial => 'login_nav'
       #title Turkopticon Moderation
     #nav= render :partial => 'nav'
+    - if flash[:notice]
+      #notice= flash[:notice]
     #main= yield
-

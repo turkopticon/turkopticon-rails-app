@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140724185824) do
+ActiveRecord::Schema.define(:version => 20140725013807) do
 
   create_table "Dolores_A2IR8TEVONNLZO", :id => false, :force => true do |t|
     t.integer  "id",            :default => 0, :null => false
@@ -66,6 +66,13 @@ ActiveRecord::Schema.define(:version => 20140724185824) do
     t.integer  "report_id"
     t.integer  "person_id"
     t.text     "comment"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "ignores", :force => true do |t|
+    t.integer  "person_id"
+    t.integer  "report_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -131,7 +138,7 @@ ActiveRecord::Schema.define(:version => 20140724185824) do
     t.integer  "flag_count"
     t.integer  "comment_count"
     t.string   "ip"
-    t.integer  "ignores",             :default => 0
+    t.integer  "ignore_count",        :default => 0
   end
 
   add_index "reports", ["amzn_requester_name"], :name => "reports_requester_name_index"

@@ -33,6 +33,7 @@ class Report < ActiveRecord::Base
   belongs_to :requester
   has_many :flags
   has_many :comments
+  has_many :ignores
   acts_as_ferret(:fields => [:description],
                  :ferret => {:use_compound_file => true,
                              :merge_factor => 4})

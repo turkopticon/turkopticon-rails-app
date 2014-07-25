@@ -23,14 +23,14 @@ class ModController < ApplicationController
     @title = "Reviews with no flags"
     @reports = Report.paginate(:page => params[:page],
                                :order => "id DESC",
-                               :conditions => "requester_id is not null and ignores = 0 and is_flagged is null")
+                               :conditions => "requester_id is not null and ignore_count = 0 and is_flagged is null")
   end
 
   def flagged
     @title = "Reviews with new flags"
     @reports = Report.paginate(:page => params[:page],
                                :order => "id DESC",
-                               :conditions => "is_flagged = 1 and ignores = 0")
+                               :conditions => "is_flagged = 1 and ignore_count = 0")
     render :action => "index"
   end
 
@@ -38,7 +38,7 @@ class ModController < ApplicationController
     @title = "Reviews with ignored flags"
     @reports = Report.paginate(:page => params[:page],
                                :order => "id DESC",
-                               :conditions => "is_flagged = 1 and ignores > 0")
+                               :conditions => "is_flagged = 1 and ignore_count > 0")
     render :action => "index"
   end
 
@@ -46,7 +46,7 @@ class ModController < ApplicationController
     @title = "Reviews with ignored flags"
     @reports = Report.paginate(:page => params[:page],
                                :order => "id DESC",
-                               :conditions => "is_flagged = 1 and ignores > 1")
+                               :conditions => "is_flagged = 1 and ignore_count > 1")
     render :action => "index"
   end
 
@@ -56,6 +56,47 @@ class ModController < ApplicationController
                                :order => "id DESC",
                                :conditions => "is_flagged = 1 and is_hidden = 1")
     render :action => "index"
+  end
+
+  def flag
+    @report = Report.find(params[:id])
+    @flag = Flag.new(params[:flag])
+    if request.post? and @flag.save and @report.update_flag_data
+      @report.update_attributes(:flag_count => @report.flags.count)
+      flash[:notice] = "Flagged report #{params[:id]}."
+      redirect_to :action => "index"
+    end
+  end
+
+  def agree_with_flagger
+    Flag.create(:person_id => session[:person_id], :report_id => params[:id], :comment => "agree w/ flagger")
+    report = Report.find(params[:id])
+    report.update_flag_data
+    report.update_attributes(:flag_count => report.flags.count)
+    flash[:notice] = "Added new flag to report #{params[:id]} with text 'agree w/ flagger'."
+    redirect_to :action => "flagged"
+  end
+
+  def ignore
+    Ignore.create(:person_id => session[:person_id], :report_id => params[:id])
+    report = Report.find(params[:id])
+    report.update_attributes(:ignore_count => report.ignores.count)
+    flash[:notice] = "Ignored flags on report #{params[:id]}."
+    redirect_to :action => "flagged"
+  end
+
+  def comment
+    @report = Report.find(params[:id])
+    @comment = Comment.new(params[:comment])
+    if request.post? and @comment.save
+      @report.update_attributes(:comment_count => @report.comments.count)
+      flash[:notice] = "Comment added to report #{params[:id]}."
+      redirect_to :action => "flagged"
+    end
+  end
+
+  def cancel_lightbox
+    @id = params[:id]
   end
 
 end

@@ -3,17 +3,20 @@
   %td{:valign => "top"}
     = link_to report.person.mod_display_name, :controller => "main", :action => "reports_by", :id => report.person_id
     %br/
-    - if @person.is_admin
-      = link_to report.ip, :controller => "main", :action => "reports_by_ip", :ip => report.ip
+    - if report.ip.blank?
+      IP UNKNOWN
     - else
-      = "XXX.XXX." + report.ip.split(".").last(2).join(".")
+      - if @person.is_admin
+        = link_to report.ip, :controller => "main", :action => "reports_by_ip", :ip => report.ip
+      - else
+        = "XXX.XXX." + report.ip.split(".").last(2).join(".")
     %br/
     = report.created_at.strftime("%H:%M&nbsp;%m/%d/%y")
     - if report.updated_at > report.created_at
       %br/
       = report.updated_at.strftime("%H:%M&nbsp;%m/%d/%y")
   %td{:valign => "top"}
-    = link_to report.amzn_requester_name, :controller => "main", :action => "reports", :id => report.amzn_requester_id
+    = link_to report.amzn_requester_name, :controller => "main", :action => "index", :id => report.amzn_requester_id
     %br/
     = report.amzn_requester_id
     %br/
@@ -30,11 +33,45 @@
       %br/
     - if report.tos_viol
       .tos AMT TOS VIOLATION
-  %td{:valign => "top"}
+  %td#text{:valign => "top"}
     = h(report.description.censor).gsub("\r\n","<br/>")
+    - if report.displayed_notes
+      %p.notes= report.displayed_notes
+    - flags = report.flags
+    - comments = report.comments
+    - if flags.count > 0 or comments.count > 0
+      - flags_and_comments = flags + comments
+      - flags_and_comments = flags_and_comments.sort_by{|item| item.created_at}
+      %table.fctable
+        - flags_and_comments.each do |item|
+          %tr
+            %td{:valign => "top"}
+              - if item.class == Flag
+                %img{:src => "/images/warning.gif"}
+              - else
+                %img{:src => "/images/bubble.png"}
+            %td
+              = item.class == Flag ? item.comment.gsub(/\n/,'<br/>') : item.body.gsub(/\n/,'<br/>')
+              .notes= item.displayed_notes
+              .meta
+                = item.created_at.strftime("%b %d %Y %H:%M")
+                &nbsp;|&nbsp;
+                = link_to item.person.mod_display_name, :controller => "main", :action => "reports_by", :id => item.person_id
+    - if report.ignore_count > 0
+      .lightbox
+        - report.ignores.each do |ignore|
+          = "Flags ignored by <strong>" + ignore.person.display_name + "</strong> at " + ignore.created_at.strftime("%b %d %Y %H:%M")
+          %br/
+    .placeholder{:id => report.id}
   %td.center{:valign => "top"}
-    = report.comments.count.to_s
-  %td.center{:valign => "top"}
-    = link_to "Flag", "foo"
-  %td.center{:valign => "top"}
-    = link_to "Comment", "bar"
+    - if Flag.find_by_person_id_and_report_id(@person.id, report.id).nil?
+      = link_to_remote "Flag", :url => {:controller => "mod", :action => "flag", :id => report.id}
+      %br/
+    - if flags.count > 0
+      - if Flag.find_by_person_id_and_report_id(@person.id, report.id).nil?
+        = link_to "Agree&nbsp;w/&nbsp;Flagger", :controller => "mod", :action => "agree", :id => report.id
+        %br/
+      - if Ignore.find_by_person_id_and_report_id(@person.id, report.id).nil?
+        = link_to "Ignore&nbsp;Flags", :controller => "mod", :action => "ignore", :id => report.id
+        %br/
+    = link_to_remote "Comment", :url => {:controller => "mod", :action => "comment", :id => report.id}
