@@ -30,7 +30,7 @@ class ModController < ApplicationController
     @title = "Reviews with new flags"
     @reports = Report.paginate(:page => params[:page],
                                :order => "id DESC",
-                               :conditions => "is_flagged = 1 and ignore_count = 0")
+                               :conditions => "is_flagged = 1 and ignore_count = 0 and is_hidden is null")
     render :action => "index"
   end
 

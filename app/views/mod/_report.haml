@@ -69,7 +69,7 @@
       %br/
     - if flags.count > 0
       - if Flag.find_by_person_id_and_report_id(@person.id, report.id).nil?
-        = link_to "Agree&nbsp;w/&nbsp;Flagger", :controller => "mod", :action => "agree", :id => report.id
+        = link_to "Agree&nbsp;w/&nbsp;Flagger", :controller => "mod", :action => "agree_with_flagger", :id => report.id
         %br/
       - if Ignore.find_by_person_id_and_report_id(@person.id, report.id).nil?
         = link_to "Ignore&nbsp;Flags", :controller => "mod", :action => "ignore", :id => report.id
