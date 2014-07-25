@@ -15,6 +15,6 @@
   = link_to "settings", :controller => "reg", :action => "settings"
   - if !person.can_comment and !person.commenting_requested
     &nbsp;&nbsp;
-    = link_to "request commenting ability", {:controller => "main", :action => "request_commenting"}, :confirm => "Please note that if your account is relatively new, we may not give you commenting yet! Don't take it personally :-) Also, if we enable commenting and you are uncivil in your comments, we may turn it off again! Please be civil :-)"
+    = link_to "request commenting ability", {:controller => "main", :action => "request_commenting"}, :confirm => "Please note that (1) you can post a *review* without having commenting enabled; on Turkopticon, 'comments' are comments posted onto somebody else's review; (2) if your account is relatively new, we may not give you commenting yet; don't take it personally :-) and (3) if we enable commenting and you are uncivil in your comments, we may turn it off again; Please be civil :-)"
   &nbsp;&nbsp;
   = link_to "logout", :controller => "reg", :action => "logout"
