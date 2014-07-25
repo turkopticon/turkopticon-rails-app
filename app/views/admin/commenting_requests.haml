@@ -4,6 +4,7 @@
   %tr
     %th{:align => "left"} uid
     %th{:align => "left"} public_email
+    %th{:align => "left"} email
     %th{:align => "left"} acct_created
     %th{:align => "left"} reviews
     %th{:align => "left"} cmnts
@@ -14,6 +15,7 @@
     %tr{:style => "background-color: #{cycle('#eee', '#fff')}"}
       %td= link_to person.id, :controller => "main", :action => "reports_by", :id => person.id
       %td= person.mod_display_name
+      %td= person.email
       %td= person.created_at.strftime("%b %d %Y")
       %td= person.reports.count
       %td= person.comments.count
