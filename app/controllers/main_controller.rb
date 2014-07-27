@@ -130,7 +130,7 @@ class MainController < ApplicationController
   end
 
   def php_search
-    @result = `php #{RAILS_ROOT}/php_api/search.php '#{params[:query]}'`
+    @result = `php #{RAILS_ROOT}/php_api/search.php "#{params[:query]}"`
     parsed_result = JSON[@result]
     @reports = parsed_result["reviews"]
     @render_time = parsed_result["render_time"] ||= 0.0
