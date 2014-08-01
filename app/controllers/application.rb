@@ -30,7 +30,7 @@ class ApplicationController < ActionController::Base
 
   def authorize_as_commenter
     unless Person.find(session[:person_id]).can_comment
-      flash[:notice] = "Sorry, your account doesn't seem to have commenting enabled."
+      flash[:notice] = "Sorry, your account doesn't seem to have commenting and flagging enabled."
       redirect_to :controller => "main", :action => "index"
     end
   end
