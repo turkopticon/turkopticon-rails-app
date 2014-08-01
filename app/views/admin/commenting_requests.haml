@@ -11,6 +11,7 @@
     %th{:align => "left"} req cmnts at
     %th{:align => "left"} last cmnt
     %th{:align => "left"} &nbsp;
+    %th{:align => "left"} &nbsp;
   - @people.each do |person|
     %tr{:style => "background-color: #{cycle('#eee', '#fff')}"}
       %td= link_to person.id, :controller => "main", :action => "reports_by", :id => person.id
@@ -22,3 +23,4 @@
       %td= person.commenting_requested_at.strftime("%b %d %Y %H:%M")
       %td= person.comments.empty? ? "N/A" : person.comments.last.created_at.strftime("%b %d %Y")
       %td= link_to "enable", :controller => "admin", :action => "enable_commenting", :id => person.id
+      %td= link_to "decline", :controller => "admin", :action => "decline_commenting_request", :id => person.id

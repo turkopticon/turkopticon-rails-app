@@ -89,6 +89,12 @@ class AdminController < ApplicationController
     render :text => "Enabled commenting for user #{params[:id]}."
   end
 
+  def decline_commenting_request
+    person = Person.find(params[:id])
+    person.update_attributes(:commenting_requested => nil, :commenting_requested_at => nil)
+    render :text => "Declined commenting request for user #{params[:id]}."
+  end
+
   def disable_commenting
     Person.find(params[:id]).update_attributes(:can_comment => false)
     render :text => "Disabled commenting for user #{params[:id]}."
