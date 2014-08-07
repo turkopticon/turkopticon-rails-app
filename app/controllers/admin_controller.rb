@@ -104,6 +104,11 @@ class AdminController < ApplicationController
     @people = Person.find_all_by_can_comment_and_commenting_requested(nil, true).sort_by{|p| p.commenting_requested_at}
   end
 
+  def ignore_commenting_request_quietly
+    Person.find(params[:id]).update_attributes(:commenting_request_ignored => true)
+    render :text => "Ignored commenting request from user #{params[:id]}."
+  end
+
   def enabled_commenters
     @commenters = Person.find_all_by_can_comment(true).sort_by{|p| p.comments.count}.reverse
   end

@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140725013807) do
+ActiveRecord::Schema.define(:version => 20140807181412) do
 
   create_table "Dolores_A2IR8TEVONNLZO", :id => false, :force => true do |t|
     t.integer  "id",            :default => 0, :null => false
@@ -93,6 +93,7 @@ ActiveRecord::Schema.define(:version => 20140725013807) do
     t.boolean  "can_comment"
     t.boolean  "commenting_requested"
     t.datetime "commenting_requested_at"
+    t.boolean  "commenting_request_ignored"
   end
 
   create_table "posts", :force => true do |t|
