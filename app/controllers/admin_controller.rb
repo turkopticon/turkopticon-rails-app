@@ -101,7 +101,7 @@ class AdminController < ApplicationController
   end
 
   def commenting_requests
-    @people = Person.find_all_by_can_comment_and_commenting_requested(nil, true).sort_by{|p| p.commenting_requested_at}
+    @people = Person.find_all_by_can_comment_and_commenting_requested_and_commenting_request_ignored(nil, true, nil).sort_by{|p| p.commenting_requested_at}
   end
 
   def ignore_commenting_request_quietly
