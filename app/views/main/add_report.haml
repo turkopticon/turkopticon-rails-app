@@ -11,6 +11,10 @@
       = text_field :report, :hit_id
       (optional)
     %p
+      .label.red HIT Name(s)
+      = text_field :report, :hit_names
+      (separate with semicolons)
+    %p
       .label ToS violator?
       = check_box :report, :tos_viol
       HIT violates Amazon Terms of Service. 

@@ -42,7 +42,13 @@
           &nbsp;&nbsp;&nbsp;&nbsp;
           %a{:href => "/help#tos"} [?]
     %td{:valign => "top"}
-      %div{:class => "report_body"}= h(report.description.to_s.censor).gsub("\r\n","<br/>")
+      %div{:class => "report_body"}
+        - if !report.hit_names.blank?
+          %p
+            %strong HIT(s):
+            %br/
+            = h(report.hit_names.censor).gsub("; ","<br/>")
+        = h(report.description.to_s.censor).gsub("\r\n","<br/>")
       - if report.displayed_notes
         %p.notes= report.displayed_notes
       .posted_by

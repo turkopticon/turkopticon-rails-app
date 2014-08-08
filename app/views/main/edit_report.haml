@@ -3,8 +3,12 @@
 = error_messages_for :requester
 - form_tag(:action => 'edit_report') do
   %p
-    .label.red HIT ID
+    .label HIT ID
     = text_field :report, :hit_id
+  %p
+    .label HIT Name(s)
+    = text_field :report, :hit_names
+    (separate with semicolons)
     %p
       .label ToS violator?
       = check_box :report, :tos_viol
