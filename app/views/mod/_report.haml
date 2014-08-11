@@ -34,6 +34,11 @@
     - if report.tos_viol
       .tos AMT TOS VIOLATION
   %td#text{:valign => "top"}
+    - if !report.hit_names.blank?
+      %p
+        %strong HIT(s):
+        %br/
+        = h(report.hit_names.censor).gsub(";","<br/>")
     = h(report.description.censor).gsub("\r\n","<br/>")
     - if report.displayed_notes
       %p.notes= report.displayed_notes
