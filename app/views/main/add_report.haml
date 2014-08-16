@@ -46,7 +46,7 @@
             %td= radio_button :report, a.to_sym, i
           %td= radio_button :report, a.to_sym, 0
     %p
-      %strong Please briefly explain any issues you've had with this requester:
+      %strong Please briefly describe your experience with this requester:
       %br/
       = text_area :report, :description
     = hidden_field :report, :person_id, :value => session[:person_id]
