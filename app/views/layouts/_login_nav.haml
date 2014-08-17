@@ -7,8 +7,10 @@
   = person.email
   - if person.is_moderator
     (verified - moderator)
-  - elsif person.email_verified
+  - elsif person.email_verified and !person.can_comment
     (verified)
+  - elsif person.email_verified and person.can_comment
+    (verified - commenting enabled)
   - else
     %strong= link_to "(PLEASE VERIFY YOUR EMAIL ADDRESS)", :controller => "reg", :action => "send_verification_email"
   &nbsp;&nbsp;
