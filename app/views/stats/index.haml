@@ -1,0 +1,27 @@
+%h2 Turkopticon statistics
+
+%p= Time.now.strftime("%b %d %Y %I:%M %p %Z")
+
+%p
+  Number of reviews:
+  = @reviews
+
+%p
+  Number of reviews with TOS violation flags:
+  = @tos_flags
+
+%p
+  Number of unique requesters reviewed:
+  = @requesters
+
+%p
+  Number of requesters with at least one TOS violation flag:
+  = @reqs_with_tos_flags
+
+%p
+  Number of registered users (since Nov 9, 2008):
+  = @users
+
+%p
+  Number of users who have posted at least one review:
+  = @posting_users
