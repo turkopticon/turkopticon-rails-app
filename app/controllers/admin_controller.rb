@@ -95,6 +95,12 @@ class AdminController < ApplicationController
     render :text => "Declined commenting request for user #{params[:id]}."
   end
 
+  def decline_commenting_requests
+    ids = params[:ids].split(",")
+    ids.each{|i| Person.find(i).update_attributes(:commenting_requested => nil, :commenting_requested_at => nil)}
+    render :text => "Declined commenting requests for users #{ids.join(", ")}."
+  end
+
   def disable_commenting
     Person.find(params[:id]).update_attributes(:can_comment => false)
     render :text => "Disabled commenting for user #{params[:id]}."
@@ -112,7 +118,7 @@ class AdminController < ApplicationController
   def unlikely_commenting_requests
     @people = Person.find_all_by_can_comment_and_commenting_requested_and_commenting_request_ignored(nil, true, nil).select{|p| p.reports.count < 5}.sort_by{|p| p.commenting_requested_at}
     @all_emails = @people.collect{|p| p.email}
-    render :action => "commenting_requests"
+    @all_ids = @people.collect{|p| p.id}
   end
 
   def ignore_commenting_request_quietly

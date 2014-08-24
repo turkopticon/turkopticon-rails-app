@@ -1,4 +1,4 @@
-%h2 Commenting Requests
+%h2 Commenting Requests from Users with Less Than 5 Reviews
 
 %table{:cellspacing => 0, :cellpadding => 8, :style => "margin: 0 auto"}
   %tr
@@ -26,3 +26,11 @@
       %td= link_to "enable", :controller => "admin", :action => "enable_commenting", :id => person.id
       %td= link_to "decline", :controller => "admin", :action => "decline_commenting_request", :id => person.id
       %td= link_to "ignore", :controller => "admin", :action => "ignore_commenting_request_quietly", :id => person.id
+
+%h3 Email Addresses
+
+%p= @all_emails.join(", ")
+
+%h3 Careful With This
+
+%p= link_to "decline all", :controller => "admin", :action => "decline_commenting_requests", :ids => @all_ids.join(",")
