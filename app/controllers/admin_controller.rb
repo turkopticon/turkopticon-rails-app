@@ -111,6 +111,7 @@ class AdminController < ApplicationController
 
   def unlikely_commenting_requests
     @people = Person.find_all_by_can_comment_and_commenting_requested_and_commenting_request_ignored(nil, true, nil).select{|p| p.reports.count < 5}.sort_by{|p| p.commenting_requested_at}
+    @all_emails = @people.collect{|p| p.email}
     render :action => "commenting_requests"
   end
 

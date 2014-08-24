@@ -26,3 +26,6 @@
       %td= link_to "enable", :controller => "admin", :action => "enable_commenting", :id => person.id
       %td= link_to "decline", :controller => "admin", :action => "decline_commenting_request", :id => person.id
       %td= link_to "ignore", :controller => "admin", :action => "ignore_commenting_request_quietly", :id => person.id
+
+- if @all_emails
+  %p= @all_emails.join(",")
