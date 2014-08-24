@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140808032240) do
+ActiveRecord::Schema.define(:version => 20140821190125) do
 
   create_table "Dolores_A2IR8TEVONNLZO", :id => false, :force => true do |t|
     t.integer  "id",            :default => 0, :null => false
@@ -104,6 +104,7 @@ ActiveRecord::Schema.define(:version => 20140808032240) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "slug"
+    t.boolean  "is_sticky"
   end
 
   create_table "report_outliers", :id => false, :force => true do |t|
