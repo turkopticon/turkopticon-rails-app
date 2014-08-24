@@ -104,6 +104,16 @@ class AdminController < ApplicationController
     @people = Person.find_all_by_can_comment_and_commenting_requested_and_commenting_request_ignored(nil, true, nil).sort_by{|p| p.commenting_requested_at}
   end
 
+  def likely_commenting_requests
+    @people = Person.find_all_by_can_comment_and_commenting_requested_and_commenting_request_ignored(nil, true, nil).select{|p| p.reports.count >= 5}.sort_by{|p| p.commenting_requested_at}
+    render :action => "commenting_requests"
+  end
+
+  def unlikely_commenting_requests
+    @people = Person.find_all_by_can_comment_and_commenting_requested_and_commenting_request_ignored(nil, true, nil).select{|p| p.reports.count < 5}.sort_by{|p| p.commenting_requested_at}
+    render :action => "commenting_requests"
+  end
+
   def ignore_commenting_request_quietly
     Person.find(params[:id]).update_attributes(:commenting_request_ignored => true)
     render :text => "Ignored commenting request from user #{params[:id]}."
