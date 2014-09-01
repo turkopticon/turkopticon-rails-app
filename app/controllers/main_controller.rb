@@ -214,6 +214,14 @@ class MainController < ApplicationController
         flash[:notice] = "<div class=\"error\">Please fill in the requester name.</div>"
         render :action => "add_report" and return
       end
+      if params[:requester][:amzn_name] == "undefined"
+        flash[:notice] = "<div class=\"error\">Please fill in the requester name and update your version of Turkopticon.</div>"
+        render :action => "add_report" and return
+      end
+      if params[:requester][:amzn_name] != ActionView::Base.full_sanitizer.sanitize(params[:requester][:amzn_name])
+        flash[:notice] = "<div class=\"error\">Please remove the HTML from the requester name and update your version of Turkopticon.</div>"
+        render :action => "add_report" and return
+      end
       if params[:report][:description].blank?
         flash[:notice] = "<div class=\"error\">Please fill in the report description.</div>"
         render :action => "add_report" and return
