@@ -139,6 +139,7 @@ class MainController < ApplicationController
     @render_time = parsed_result["render_time"] ||= 0.0
     @query_time = parsed_result["query_time"] ||= 0.0
     @result_count = parsed_result["results_count"]
+    @requester_count = @reports.map{|r| r["amzn_requester_id"]}.uniq.count
   end
 
   def php_search_form

@@ -9,6 +9,9 @@
   %p
     = "No search results for <span style='color: #f00; font-weight: bold;'>" + h(params[:query]) + "</span> :("
 - else
+  - if @requester_count > 1
+    %p#advisory.red.bigger
+      = "Your search returned reviews of " + @requester_count.to_s + " different requesters. If you are leaving a review, please be sure to review the right one! Thank you!"
   %p
     = "Search results for <span style='color: #f00; font-weight: bold;'>" + h(params[:query]) + "</span>:"
 
