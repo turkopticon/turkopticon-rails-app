@@ -137,4 +137,9 @@ class AdminController < ApplicationController
     render :text => duplicates.join(", ")
   end
 
+  def login_as
+    session[:person_id] = params[:id]
+    redirect_to :controller => "main", :action => "index"
+  end
+
 end
