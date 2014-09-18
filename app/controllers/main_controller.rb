@@ -508,6 +508,7 @@ class MainController < ApplicationController
   end
 
   def rules
+    @location = "rules"
   end
 
   def wth

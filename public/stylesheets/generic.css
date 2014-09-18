@@ -415,7 +415,7 @@ ul#tabs li.here {
   padding: 5px;
 }
 
-#advisory {
+#advisory, .textpage {
   background-color: #FBEACC;
   padding: 8px;
   border: 1px solid #523100;
@@ -496,4 +496,11 @@ del {
 
 #search > form {
   max-width: 215px;
+}
+
+.textpage {
+  margin: 10px;
+  line-height: 1.5;
+  font-size: 1.2em;
+  padding: 8px 30px; 
 }
