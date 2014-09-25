@@ -31,7 +31,7 @@ class MainController < ApplicationController
     @pagetitle = "reports"
     @location = "reports" if params[:id].nil?
     if params[:id].nil?
-      cond = "requester_id is not null"
+      cond = "requester_id is not null and is_hidden is not true"
     elsif !Requester.find_by_amzn_requester_id(params[:id]).nil?
       cond = {:amzn_requester_id => params[:id]}
       if params[:hidden]
