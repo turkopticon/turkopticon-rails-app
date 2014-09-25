@@ -57,6 +57,7 @@ class Report < ActiveRecord::Base
       self.is_flagged = nil
     end
     self.save
+    self.requester.cache_columns
   end
 
   def print_h
