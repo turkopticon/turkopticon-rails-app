@@ -13,7 +13,7 @@ class ApplicationController < ActionController::Base
   end
 
   def authorize
-    unless !session[:person_id].nil? and Person.find(session[:person_id])
+    unless !session[:person_id].nil? and Person.find(session[:person_id]) and !Person.find(session[:person_id]).is_closed
       session[:original_uri] = request.request_uri
       flash[:notice] = "Please log in."
       redirect_to :controller => "reg", :action => "login"
