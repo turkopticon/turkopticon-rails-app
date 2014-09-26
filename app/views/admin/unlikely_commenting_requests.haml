@@ -31,6 +31,10 @@
 
 %p= @all_emails.join(", ")
 
+%h3 IDs
+
+%p= @all_ids.join(", ")
+
 %h3 Careful With This
 
 %p= link_to "decline all", :controller => "admin", :action => "decline_commenting_requests", :ids => @all_ids.join(",")
