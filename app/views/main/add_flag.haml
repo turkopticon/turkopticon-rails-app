@@ -1,24 +1,2 @@
-%h1 Flag Report
-
-.report
-  %p
-    %strong.label AMT Requester Name &amp; ID
-    = @report.requester_amzn_name + " (" + @report.requester_amzn_id + ")"
-  %p
-    %strong.label Description
-    = @report.description
-  %p
-    %strong.label Posted On
-    = @report.created_at.strftime("%b %d %Y")
-
-= error_messages_for :flag
-- form_tag(:action => 'add_flag') do
-  = hidden_field :flag, :report_id, :value => @report.id
-  = hidden_field :flag, :person_id, :value => session[:person_id]
-  %p
-    Please only flag this report if you have reason to believe that it is somehow dishonest. Please elaborate in the comment box below.
-    %br/
-    %br/
-    = text_area :flag, :comment
-  %p
-    %div{:style => "text-align: right; width: 26em;"}= submit_tag 'Flag Report'
+%h1{:style => "line-height: 1.5"}
+  Sorry, that form has been disabled. Please visit <a href="/get_report/#{params[:id]}">the review</a> and leave the flag using the radio-button interface.
