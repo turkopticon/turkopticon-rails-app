@@ -42,7 +42,7 @@ class MainController < ApplicationController
     elsif !Requester.find(params[:id]).nil?
       cond = {:requester_id => params[:id]}
     end
-    @reports = Report.paginate :page => params[:page], :order => "id DESC", :conditions => cond
+    @reports = Report.paginate :page => params[:page], :order => "updated_at DESC", :conditions => cond
   end
 
   def averages
@@ -64,7 +64,7 @@ class MainController < ApplicationController
     @person = Person.find(params[:id])
     @display_name = Person.find(session[:person_id]).is_moderator ? @person.mod_display_name : @person.public_email
     @pagetitle = "reports by " + @display_name
-    @reports = Report.paginate :page => params[:page], :order => params[:order] ||= "id DESC", :conditions => {:person_id => params[:id]}
+    @reports = Report.paginate :page => params[:page], :order => params[:order] ||= "updated_at DESC", :conditions => {:person_id => params[:id]}
     @location = "reports by"
     render :action => "index"
   end
@@ -108,7 +108,7 @@ class MainController < ApplicationController
   def flagged
     @pagetitle = "flagged reviews"
     @location = "flagged"
-    @reports = Report.paginate(:page => params[:page], :conditions => {:is_flagged => true, :is_hidden => nil}, :order => "id DESC")
+    @reports = Report.paginate(:page => params[:page], :conditions => {:is_flagged => true, :is_hidden => nil}, :order => "updated_at DESC")
     @no_flags = true if @reports.empty?
     render :action => "index"
   end
@@ -116,7 +116,7 @@ class MainController < ApplicationController
   def hidden
     @pagetitle = "hidden reviews"
     @location = "hidden"
-    @reports = Report.paginate(:page => params[:page], :conditions => {:is_hidden => true}, :order => "id DESC")
+    @reports = Report.paginate(:page => params[:page], :conditions => {:is_hidden => true}, :order => "updated_at DESC")
     render :action => "index"
   end
 
@@ -124,7 +124,7 @@ class MainController < ApplicationController
     @pagetitle = "your reviews"
     @location = "my_reviews"
     if Person.find(session[:person_id]).most_recent_first_in_my_reviews
-      @reports = Report.paginate :page => params[:page], :conditions => {:person_id => session[:person_id]}, :order => "created_at DESC"
+      @reports = Report.paginate :page => params[:page], :conditions => {:person_id => session[:person_id]}, :order => "updated_at DESC"
     else
       @reports = Report.paginate :page => params[:page], :conditions => {:person_id => session[:person_id]}
     end
