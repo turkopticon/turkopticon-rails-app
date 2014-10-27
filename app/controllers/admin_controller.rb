@@ -25,6 +25,7 @@ class AdminController < ApplicationController
     @recent_reports = Report.all(:conditions => ["created_at > ?", Time.now - 1.month])
     @recent_report_count = @recent_reports.count
     authors = @recent_reports.map{|r| {"id" => r.person_id, "name" => r.person.display_name.nil? ? r.person.email : r.person.display_name}}
+    @author_count = authors.uniq.count
     @authors_with_counts = authors.group_by{|a| [a["id"], a["name"]]}.map{|k, v| [k, v.length]}.sort_by{|a| a[1]}.reverse
     @recent_flags = Flag.all(:conditions => ["created_at > ?", Time.now - 1.month])
     # @recent_flags = Flag.all.select{|f| f.created_at > Time.now - 1.month}  # slow
