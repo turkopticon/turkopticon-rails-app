@@ -33,6 +33,15 @@ class Person < ActiveRecord::Base
   #validates_presence_of :password
   validates_confirmation_of :password
 
+  def toggle_order_by_flag
+    if self.order_reviews_by_edit_date
+      self.order_reviews_by_edit_date = false
+    else
+      self.order_reviews_by_edit_date = true
+    end
+    self.save
+  end
+
   def toggle_my_reviews_order_flag
     if self.most_recent_first_in_my_reviews
       self.most_recent_first_in_my_reviews = false

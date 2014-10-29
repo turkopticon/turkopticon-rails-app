@@ -166,6 +166,11 @@ class RegController < ApplicationController
     redirect_to :controller => "main", :action => "my_reviews"
   end
 
+  def toggle_order_by_flag
+    Person.find(session[:person_id]).toggle_order_by_flag
+    redirect_to :controller => "main", :action => "index"
+  end
+
   private
   def confirmation_hash(string)
     Digest::SHA1.hexdigest(string + "sauron_is_watching_you")

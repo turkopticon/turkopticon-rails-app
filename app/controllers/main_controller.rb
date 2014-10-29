@@ -29,7 +29,7 @@ class MainController < ApplicationController
 
   def index
     @pagetitle = "reports"
-    @location = "reports" if params[:id].nil?
+    @location = "reports" #if params[:id].nil? # commented this out to get the order option link (see ll. 45-46 below and ./_tabs.haml)
     if params[:id].nil?
       cond = "requester_id is not null and is_hidden is not true"
     elsif !Requester.find_by_amzn_requester_id(params[:id]).nil?
@@ -42,7 +42,8 @@ class MainController < ApplicationController
     elsif !Requester.find(params[:id]).nil?
       cond = {:requester_id => params[:id]}
     end
-    @reports = Report.paginate :page => params[:page], :order => "updated_at DESC", :conditions => cond
+    default_order = Person.find(session[:person_id]).order_reviews_by_edit_date ? "updated_at DESC" : "id DESC"
+    @reports = Report.paginate :page => params[:page], :order => default_order, :conditions => cond
   end
 
   def averages
@@ -64,7 +65,8 @@ class MainController < ApplicationController
     @person = Person.find(params[:id])
     @display_name = Person.find(session[:person_id]).is_moderator ? @person.mod_display_name : @person.public_email
     @pagetitle = "reports by " + @display_name
-    @reports = Report.paginate :page => params[:page], :order => params[:order] ||= "updated_at DESC", :conditions => {:person_id => params[:id]}
+    default_order = Person.find(session[:person_id]).order_reviews_by_edit_date ? "updated_at DESC" : "id DESC"
+    @reports = Report.paginate :page => params[:page], :order => params[:order] ||= default_order, :conditions => {:person_id => params[:id]}
     @location = "reports by"
     render :action => "index"
   end
@@ -108,7 +110,7 @@ class MainController < ApplicationController
   def flagged
     @pagetitle = "flagged reviews"
     @location = "flagged"
-    @reports = Report.paginate(:page => params[:page], :conditions => {:is_flagged => true, :is_hidden => nil}, :order => "updated_at DESC")
+    @reports = Report.paginate(:page => params[:page], :conditions => {:is_flagged => true, :is_hidden => nil}, :order => "id DESC")
     @no_flags = true if @reports.empty?
     render :action => "index"
   end
@@ -116,7 +118,7 @@ class MainController < ApplicationController
   def hidden
     @pagetitle = "hidden reviews"
     @location = "hidden"
-    @reports = Report.paginate(:page => params[:page], :conditions => {:is_hidden => true}, :order => "updated_at DESC")
+    @reports = Report.paginate(:page => params[:page], :conditions => {:is_hidden => true}, :order => "id DESC")
     render :action => "index"
   end
 
@@ -124,7 +126,7 @@ class MainController < ApplicationController
     @pagetitle = "your reviews"
     @location = "my_reviews"
     if Person.find(session[:person_id]).most_recent_first_in_my_reviews
-      @reports = Report.paginate :page => params[:page], :conditions => {:person_id => session[:person_id]}, :order => "updated_at DESC"
+      @reports = Report.paginate :page => params[:page], :conditions => {:person_id => session[:person_id]}, :order => "id DESC"
     else
       @reports = Report.paginate :page => params[:page], :conditions => {:person_id => session[:person_id]}
     end

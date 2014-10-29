@@ -28,3 +28,9 @@
       = link_to "Show oldest first", :controller => "reg", :action => "toggle_my_reviews_order_flag"
     - else
       = link_to "Show newest first", :controller => "reg", :action => "toggle_my_reviews_order_flag"
+
+  - if @location == "reports" or @location == "reports by"
+    - if Person.find(session[:person_id]).order_reviews_by_edit_date
+      = link_to "Order by creation date", :controller => "reg", :action => "toggle_order_by_flag"
+    - else
+      = link_to "Order by edit date", :controller => "reg", :action => "toggle_order_by_flag"
