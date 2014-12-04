@@ -58,6 +58,7 @@ if ( $argv[1] ) {
     $query .= " LIKE ?";
     $query .= " AND reports.amzn_requester_id IS NOT NULL";
     $query .= " AND reports.amzn_requester_name IS NOT NULL";
+    $query .= " AND reports.is_hidden IS NULL";
     $query .= " AND people.id = reports.person_id";
     $query .= " ORDER BY reports.amzn_requester_name, to_report_id DESC";
 
