@@ -33,6 +33,14 @@ class Person < ActiveRecord::Base
   #validates_presence_of :password
   validates_confirmation_of :password
 
+  def verify
+    self.update_attributes(:email_verified => true)
+  end
+
+  def close
+    self.update_attributes(:is_closed => true, :closed_at => Time.now)
+  end
+
   def toggle_order_by_flag
     if self.order_reviews_by_edit_date
       self.order_reviews_by_edit_date = false
