@@ -6,8 +6,11 @@
     %th{:align => "left"} public_email
     %th{:align => "left"} email
     %th{:align => "left"} acct_created
-    %th{:align => "left"} reviews
+    %th{:align => "left"} revs
+    %th{:align => "left"} flagd
+    %th{:align => "left"} hidn
     %th{:align => "left"} cmnts
+    %th{:align => "left"} flags
     %th{:align => "left"} req cmnts at
     %th{:align => "left"} last cmnt
     %th{:align => "left"} &nbsp;
@@ -20,9 +23,26 @@
       %td= person.email
       %td= person.created_at.strftime("%b %d %Y")
       %td= person.reports.count
+      %td= person.reports.collect{|r| r.flags.count}.sum
+      %td= person.reports.select{|r| r.is_hidden}.count
       %td= person.comments.count
+      %td= person.flags.count
       %td= person.commenting_requested_at.strftime("%b %d %Y %H:%M")
       %td= person.comments.empty? ? "N/A" : person.comments.last.created_at.strftime("%b %d %Y")
       %td= link_to "enable", :controller => "admin", :action => "enable_commenting", :id => person.id
       %td= link_to "decline", :controller => "admin", :action => "decline_commenting_request", :id => person.id
       %td= link_to "ignore", :controller => "admin", :action => "ignore_commenting_request_quietly", :id => person.id
+
+%h3 Email Addresses
+
+%p= @all_emails.join(", ")
+
+%h3 IDs
+
+%p= @all_ids.join(", ")
+
+%h3 Careful With These
+
+%p= link_to "decline all", :controller => "admin", :action => "decline_commenting_requests", :ids => @all_ids.join(",")
+
+%p= link_to "approve all", :controller => "admin", :action => "approve_commenting_requests", :ids => @all_ids.join(",")

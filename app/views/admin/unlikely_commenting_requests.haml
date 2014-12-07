@@ -35,6 +35,8 @@
 
 %p= @all_ids.join(", ")
 
-%h3 Careful With This
+%h3 Careful With These
 
 %p= link_to "decline all", :controller => "admin", :action => "decline_commenting_requests", :ids => @all_ids.join(",")
+
+%p= link_to "approve all", :controller => "admin", :action => "approve_commenting_requests", :ids => @all_ids.join(",")

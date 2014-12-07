@@ -96,6 +96,12 @@ class AdminController < ApplicationController
     render :text => "Declined commenting request for user #{params[:id]}."
   end
 
+  def approve_commenting_requests
+    ids = params[:ids].split(",")
+    ids.each{|i| Person.find(i).update_attributes(:can_comment => true)}
+    render :text => "Approved commenting requests for users #{ids.join(", ")}."
+  end
+
   def decline_commenting_requests
     ids = params[:ids].split(",")
     ids.each{|i| Person.find(i).update_attributes(:commenting_requested => nil, :commenting_requested_at => nil)}
@@ -109,15 +115,25 @@ class AdminController < ApplicationController
 
   def commenting_requests
     @people = Person.find_all_by_can_comment_and_commenting_requested_and_commenting_request_ignored(nil, true, nil).sort_by{|p| p.commenting_requested_at}
+    @all_emails = @people.collect{|p| p.email}
+    @all_ids = @people.collect{|p| p.id}
   end
 
   def likely_commenting_requests
     @people = Person.find_all_by_can_comment_and_commenting_requested_and_commenting_request_ignored(nil, true, nil).select{|p| p.reports.count >= 5}.sort_by{|p| p.commenting_requested_at}
+    @all_emails = @people.collect{|p| p.email}
+    @all_ids = @people.collect{|p| p.id}
     render :action => "commenting_requests"
   end
 
   def unlikely_commenting_requests
     @people = Person.find_all_by_can_comment_and_commenting_requested_and_commenting_request_ignored(nil, true, nil).select{|p| p.reports.count < 5}.sort_by{|p| p.commenting_requested_at}
+    @all_emails = @people.collect{|p| p.email}
+    @all_ids = @people.collect{|p| p.id}
+  end
+
+  def zero_rev_commenting_requests
+    @people = Person.find_all_by_can_comment_and_commenting_requested_and_commenting_request_ignored(nil, true, nil).select{|p| p.reports.count < 1}.sort_by{|p| p.commenting_requested_at}
     @all_emails = @people.collect{|p| p.email}
     @all_ids = @people.collect{|p| p.id}
   end
