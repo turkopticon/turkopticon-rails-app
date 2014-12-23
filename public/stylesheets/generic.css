@@ -505,3 +505,10 @@ del {
   font-size: 1.2em;
   padding: 8px 30px; 
 }
+
+#installinfo {
+  font-size: 1.4em;
+  border: 5px solid #523100;
+  padding: 10px;
+  margin-bottom: 40px;
+}

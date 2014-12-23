@@ -22,25 +22,33 @@
 %p#advisory.big{:style => "padding: 15px;"}
   %strong Dec 22 2014
   &nbsp;&nbsp;&nbsp;&nbsp;
-  Thanks to our excellent <a href="http://sscf.ucsd.edu/">hosts at UCSD</a>, we have successfully moved to a new server. Turkopticon now has its own server; we are not sharing with other websites any more. The site should not be very slow or down because of too much traffic any more.<br/><br/>
-  <strong>We are in the process of setting up HTTPS</strong> on the new server, which will remove the need to "click the shield" to get the extension to work. With some luck, this will happen today. For more information, see the most recent post in <a href="https://groups.google.com/forum/#!topic/turkopticon-discuss/LaRl4HlWc_I">this thread on turkopticon-discuss</a>.
+  <strong>HTTPS is up!</strong> To avoid having to "click the shield", please install <a href="https://greasyfork.org/en/scripts/4391-turkopticon">the new version of the user script</a>. (If you are using Chrome, you will want to use the <a href="https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo?hl=en">Tampermonkey</a> extension to manage user scripts. If you are using Firefox, you'll want <a href="https://addons.mozilla.org/en-US/firefox/addon/greasemonkey/">Greasemonkey</a>.) <strong>Please be sure to delete old versions or you may get JavaScript Errors</strong>. Please also be sure to make sure Turkopticon executes before other MTurk scripts such as Block Requesters.
 
-%p#advisory{:style => "padding: 15px;"}
-  %strong Dec 17 2014
-  &nbsp;&nbsp;&nbsp;&nbsp;
-  %strong Turkopticon will be down for up to 30 minutes starting 11 AM Pacific Time Monday December 22.
-  (That's 2 PM Eastern Time and 12:30 AM Tuesday December 23 Indian Standard Time.) We are moving the site to a new server. After the move, the site should be faster and more reliable. We will also release a new version of the script that makes it so you don't have to "click the shield" any more. For more information, please see <a href="https://groups.google.com/forum/#!topic/turkopticon-discuss/LaRl4HlWc_I">turkopticon-discuss</a>.
+/
+  %p#advisory{:style => "padding: 15px;"}
+    %strong Dec 22 2014
+    &nbsp;&nbsp;&nbsp;&nbsp;
+    Thanks to our excellent <a href="http://sscf.ucsd.edu/">hosts at UCSD</a>, we have successfully moved to a new server. Turkopticon now has its own server; we are not sharing with other websites any more. The site should not be very slow or down because of too much traffic any more.<br/><br/>
+    <strong>We are in the process of setting up HTTPS</strong> on the new server, which will remove the need to "click the shield" to get the extension to work. With some luck, this will happen today. For more information, see the most recent post in <a href="https://groups.google.com/forum/#!topic/turkopticon-discuss/LaRl4HlWc_I">this thread on turkopticon-discuss</a>.
 
-%p#advisory{:style => "padding: 15px;"}
-  %strong Aug 20 2014
-  &nbsp;&nbsp;&nbsp;&nbsp;
-  %strong At some point in the last few days, Amazon changed the HIT listing on AMT very slightly. This broke Turkopticon. <a href="turkopticon-2014.08.20.1512.user.js">Here is a new version of the user script that should fix it</a>.
-  %br/
-  %br/
-  If you use Chrome, you can install the script manually or use the <a href="https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo">Tampermonkey extension</a>.
-  %br/
-  %br/
-  If you use Firefox, you can use <a href="https://addons.mozilla.org/en-us/firefox/addon/greasemonkey">Greasemonkey</a> to install the script and the <a href="https://addons.mozilla.org/en-us/firefox/addon/toggle-mixed-active-content/">Toggle Mixed Active Content extension</a> to disable Firefox's mixed content blocking.
+/
+  %p#advisory{:style => "padding: 15px;"}
+    %strong Dec 17 2014
+    &nbsp;&nbsp;&nbsp;&nbsp;
+    %strong Turkopticon will be down for up to 30 minutes starting 11 AM Pacific Time Monday December 22.
+    (That's 2 PM Eastern Time and 12:30 AM Tuesday December 23 Indian Standard Time.) We are moving the site to a new server. After the move, the site should be faster and more reliable. We will also release a new version of the script that makes it so you don't have to "click the shield" any more. For more information, please see <a href="https://groups.google.com/forum/#!topic/turkopticon-discuss/LaRl4HlWc_I">turkopticon-discuss</a>.
+
+/
+  %p#advisory{:style => "padding: 15px;"}
+    %strong Aug 20 2014
+    &nbsp;&nbsp;&nbsp;&nbsp;
+    %strong At some point in the last few days, Amazon changed the HIT listing on AMT very slightly. This broke Turkopticon. <a href="turkopticon-2014.08.20.1512.user.js">Here is a new version of the user script that should fix it</a>.
+    %br/
+    %br/
+    If you use Chrome, you can install the script manually or use the <a href="https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo">Tampermonkey extension</a>.
+    %br/
+    %br/
+    If you use Firefox, you can use <a href="https://addons.mozilla.org/en-us/firefox/addon/greasemonkey">Greasemonkey</a> to install the script and the <a href="https://addons.mozilla.org/en-us/firefox/addon/toggle-mixed-active-content/">Toggle Mixed Active Content extension</a> to disable Firefox's mixed content blocking.
 
 /
   %p#advisory.big{:style => "padding: 15px;"}
@@ -72,6 +80,17 @@
     <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
    
   #side-b
+    .box{:id => "installinfo"}
+      %strong.big Installing Turkopticon for Chrome
+      %br/
+      %br/
+      1. Install the <a href="https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo?hl=en">Tampermonkey extension</a>.<br/>
+      2. Go to <a href="https://greasyfork.org/en/scripts/4391-turkopticon">this page</a> and click the green "Install this script" button.<br/>
+      3. Click "Install".<br/><br/><br/>
+      %strong.big Installing Turkopticon for Firefox<br/><br/>
+      1. Install the <a href="https://addons.mozilla.org/en-US/firefox/addon/greasemonkey/">Greasemonkey extension</a>.<br/>
+      2. Go to <a href="https://greasyfork.org/en/scripts/4391-turkopticon">this page</a> and click the green "Install this script" button.<br/>
+      3. Click "Install".
     .box
       %p.big Turkopticon helps the people in the 'crowd' of crowdsourcing watch out for each other&mdash;because nobody else seems to be.
       %p.big
@@ -79,14 +98,15 @@
         %strong Turkopticon lets you REPORT and AVOID shady employers.
       %p.big
         snoogiebug from <a href="http://turkernation.com">turkernation</a> says, "if you do not have this please get it!!!! it does work and is worth it !!" 
-    .bigtextbutton
-      %a{:href => "https://addons.mozilla.org/en-US/firefox/addon/turkopticon/", :iconURL => "/images/bg_tile.png"}
-        Turkopticon Firefox
-    .bigtextbutton
-      %a{:href => "https://chrome.google.com/webstore/detail/dgefbojfgdddnignhmfmnencgiloojpe", :iconURL => "/images/bg_tile.png"}
-        Turkopticon Chrome
-    .downloadtext
-      &nbsp;
+    /
+      .bigtextbutton
+        %a{:href => "https://addons.mozilla.org/en-US/firefox/addon/turkopticon/", :iconURL => "/images/bg_tile.png"}
+          Turkopticon Firefox
+      .bigtextbutton
+        %a{:href => "https://chrome.google.com/webstore/detail/dgefbojfgdddnignhmfmnencgiloojpe", :iconURL => "/images/bg_tile.png"}
+          Turkopticon Chrome
+      .downloadtext
+        &nbsp;
     .box{:style => "padding-top: 1px; margin-top: 45px;"}
       %p.big
         %strong How Turkopticon works:
