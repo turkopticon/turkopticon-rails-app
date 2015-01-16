@@ -48,7 +48,10 @@
             %strong HIT(s):
             %br/
             = h(report.hit_names.censor)
-        = h(report.description.to_s.censor).gsub("\r\n","<br/>")
+        - if report.dont_censor
+          = h(report.description.to_s).gsub("\r\n","<br/>")
+        - else
+          = h(report.description.to_s.censor).gsub("\r\n","<br/>")
       - if report.displayed_notes
         %p.notes= report.displayed_notes
       .posted_by
