@@ -213,6 +213,10 @@ class MainController < ApplicationController
         flash[:notice] = "<div class=\"error\">Please fill in the requester ID.</div>"
         render :action => "add_report" and return
       end
+      unless params[:requester][:amzn_id] =~ /\AA[0-9A-Z]{9,}\z/
+        flash[:notice] = "<div class=\"error\">Please enter a Mechanical Turk requester ID in the requester ID field.</div>"
+        render :action => "add_report" and return
+      end
       if params[:requester][:amzn_name].blank? or params[:requester][:amzn_name] == "null"
         flash[:notice] = "<div class=\"error\">Please fill in the requester name.</div>"
         render :action => "add_report" and return
