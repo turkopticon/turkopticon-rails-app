@@ -1,0 +1,17 @@
+%h2 Review statistics
+
+- ii = [1, 2, 3, 4, 5]
+- attrs = %w{comm pay fair fast}
+
+%p= Time.now.strftime("%b %d %Y %I:%M %p %Z")
+
+%table
+  %tr
+    %th Attribute
+    - for i in ii
+      %th= i.to_s
+  - for attr in attrs
+    %tr
+      %td= attr
+      - for i in ii
+        %td= @scores[attr][i]
