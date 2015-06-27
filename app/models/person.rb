@@ -90,7 +90,11 @@ class Person < ActiveRecord::Base
         dn = email
       end
     else
-      dn = display_name.gsub(/[()]/,"")
+      if display_name.empty?
+        dn = id.to_s
+      else
+        dn = display_name.gsub(/[()]/,"")
+      end
     end
     dn += " (moderator)" if self.is_moderator
     dn
@@ -98,6 +102,7 @@ class Person < ActiveRecord::Base
 
   def mod_display_name
     dn = display_name.nil? ? email : display_name.gsub(/[()]/,"")
+    dn = id.to_s if dn.empty?
     if self.is_admin
       dn += " (admin)"
     else

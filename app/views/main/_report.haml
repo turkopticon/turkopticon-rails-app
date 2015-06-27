@@ -117,7 +117,7 @@
               %p.notes= c.displayed_notes
             .posted_by
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              = c.created_at.strftime("%b %d %Y") + "&nbsp;"
+              = c.created_at.strftime("%b %d %Y") + "&nbsp;&nbsp;|&nbsp;"
               - if Person.find(session[:person_id]).is_moderator
                 = link_to c.person.mod_display_name, :controller => "main", :action => "reports_by", :id => c.person_id
               - else
