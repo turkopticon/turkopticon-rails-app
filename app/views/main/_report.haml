@@ -64,6 +64,10 @@
           = link_to report.person.mod_display_name, :controller => "main", :action => "reports_by", :id => report.person_id
         - else
           = link_to report.person.public_email, :controller => "main", :action => "reports_by", :id => report.person_id
+        - if Person.find(session[:person_id]).show_fancy_links
+          &nbsp;
+          = link_to "<img src='/images/bubble.png' title='Show all comments by this person' border='0' width='10' height='10' />", :controller => "main", :action => "comments_by", :id => report.person_id
+          = link_to "<img src='/images/warning.gif' title='Show all reviews flagged by this person' border='0' width='10' height='10' />", :controller => "main", :action => "flagged_by", :id => report.person_id
         - if report.ip
           - if Person.find(session[:person_id]).is_admin
             &nbsp;|&nbsp;
@@ -101,6 +105,10 @@
             = link_to f.person.mod_display_name, :controller => "main", :action => "reports_by", :id => f.person_id
           - else
             = link_to f.person.public_email, :controller => "main", :action => "reports_by", :id => f.person_id
+          - if Person.find(session[:person_id]).show_fancy_links
+            &nbsp;
+            = link_to "<img src='/images/bubble.png' title='Show all comments by this person' border='0' width='10' height='10' />", :controller => "main", :action => "comments_by", :id => f.person_id
+            = link_to "<img src='/images/warning.gif' title='Show all reviews flagged by this person' border='0' width='10' height='10' />", :controller => "main", :action => "flagged_by", :id => f.person_id
           /- if f.person_id == session[:person_id] or Person.find(session[:person_id]).is_admin
           /  &nbsp;|&nbsp;
           /  = link_to "edit", :controller => "main", :action => "edit_flag", :id => f.id.to_s
@@ -122,6 +130,10 @@
                 = link_to c.person.mod_display_name, :controller => "main", :action => "reports_by", :id => c.person_id
               - else
                 = link_to c.person.public_email, :controller => "main", :action => "reports_by", :id => c.person_id
+              - if Person.find(session[:person_id]).show_fancy_links
+                &nbsp;
+                = link_to "<img src='/images/bubble.png' title='Show all comments by this person' border='0' width='10' height='10' />", :controller => "main", :action => "comments_by", :id => c.person_id
+                = link_to "<img src='/images/warning.gif' title='Show all reviews flagged by this person' border='0' width='10' height='10' />", :controller => "main", :action => "flagged_by", :id => c.person_id
               - if c.person_id == session[:person_id] or Person.find(session[:person_id]).is_admin
                 &nbsp;|&nbsp;
                 = link_to "edit", :controller => "main", :action => "edit_comment", :id => c.id.to_s

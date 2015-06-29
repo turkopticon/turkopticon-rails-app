@@ -171,6 +171,18 @@ class RegController < ApplicationController
     redirect_to :controller => "main", :action => "index"
   end
 
+  def fancy_links_off
+    Person.find(session[:person_id]).update_attributes(:show_fancy_links => nil)
+    flash[:notice] = "Extra links turned off."
+    redirect_to :action => "settings"
+  end
+
+  def fancy_links_on
+    Person.find(session[:person_id]).update_attributes(:show_fancy_links => true)
+    flash[:notice] = "Extra links turned on."
+    redirect_to :action => "settings"
+  end
+
   private
   def confirmation_hash(string)
     Digest::SHA1.hexdigest(string + "sauron_is_watching_you")
