@@ -110,6 +110,6 @@ end
 
 class String
   def censor
-    self.gsub(/[^A-Za-z]ass[^A-Za-z]|asshole|jackass|retard/i,"[rearward-facing primate orifice]").gsub(/fck|fuck|[^A-Za-z]cunt[^A-Za-z]|shit|douche|bitch|nigger|dick/i,"[delightful bamboo-eating panda]").gsub(/faggot|[^A-Za-z]fag[^A-Za-z]|phaggot|idiot|mofo/i,"[the person I love the most]").gsub(/dumb|asinine|stupid/i,"[inspiring]")
+    self.gsub(/[^A-Za-z]ass[^A-Za-z]|asshole|jackass|retard/i,"[rearward-facing primate orifice]").gsub(/fck|fuck|[^A-Za-z]cunt[^A-Za-z]|shit|douche|bitch|nigger|dick|prick/i,"[delightful bamboo-eating panda]").gsub(/faggot|[^A-Za-z]fag[^A-Za-z]|phaggot|idiot|mofo/i,"[the person I love the most]").gsub(/dumb|asinine|stupid/i,"[inspiring]")
   end
 end
