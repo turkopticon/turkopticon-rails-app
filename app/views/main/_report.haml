@@ -61,9 +61,9 @@
           = report.created_at.strftime("%b %d %Y")
         &nbsp;|&nbsp;
         - if Person.find(session[:person_id]).is_moderator
-          = link_to report.person.mod_display_name, :controller => "main", :action => "reports_by", :id => report.person_id
+          = link_to report.person.mod_display_name.censor, :controller => "main", :action => "reports_by", :id => report.person_id
         - else
-          = link_to report.person.public_email, :controller => "main", :action => "reports_by", :id => report.person_id
+          = link_to report.person.public_email.censor, :controller => "main", :action => "reports_by", :id => report.person_id
         - if Person.find(session[:person_id]).show_fancy_links
           &nbsp;
           = link_to "<img src='/images/bubble.png' title='Show all comments by this person' border='0' width='10' height='10' />", :controller => "main", :action => "comments_by", :id => report.person_id
@@ -102,9 +102,9 @@
           = f.created_at.strftime("%b %d %Y")
           &nbsp;
           - if Person.find(session[:person_id]).is_moderator
-            = link_to f.person.mod_display_name, :controller => "main", :action => "reports_by", :id => f.person_id
+            = link_to f.person.mod_display_name.censor, :controller => "main", :action => "reports_by", :id => f.person_id
           - else
-            = link_to f.person.public_email, :controller => "main", :action => "reports_by", :id => f.person_id
+            = link_to f.person.public_email.censor, :controller => "main", :action => "reports_by", :id => f.person_id
           - if Person.find(session[:person_id]).show_fancy_links
             &nbsp;
             = link_to "<img src='/images/bubble.png' title='Show all comments by this person' border='0' width='10' height='10' />", :controller => "main", :action => "comments_by", :id => f.person_id
@@ -127,9 +127,9 @@
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
               = c.created_at.strftime("%b %d %Y") + "&nbsp;&nbsp;|&nbsp;"
               - if Person.find(session[:person_id]).is_moderator
-                = link_to c.person.mod_display_name, :controller => "main", :action => "reports_by", :id => c.person_id
+                = link_to c.person.mod_display_name.censor, :controller => "main", :action => "reports_by", :id => c.person_id
               - else
-                = link_to c.person.public_email, :controller => "main", :action => "reports_by", :id => c.person_id
+                = link_to c.person.public_email.censor, :controller => "main", :action => "reports_by", :id => c.person_id
               - if Person.find(session[:person_id]).show_fancy_links
                 &nbsp;
                 = link_to "<img src='/images/bubble.png' title='Show all comments by this person' border='0' width='10' height='10' />", :controller => "main", :action => "comments_by", :id => c.person_id
