@@ -1,6 +1,6 @@
 class AdminController < ApplicationController
 
-  before_filter :authorize, :authorize_as_admin
+  before_filter :authorize, :authorize_as_admin, :except => [:review_commenting_requests]
   layout nil
 
   def authorize_as_admin
@@ -90,10 +90,24 @@ class AdminController < ApplicationController
     render :text => "Enabled commenting for user #{params[:id]}."
   end
 
+  def enable_commenting_and_send_email
+    person = Person.find(params[:id])
+    person.update_attributes(:can_comment => true)
+    AdminMailer::deliver_enabled(person)
+    render :text => "Enabled commenting for user #{params[:id]}."
+  end
+
   def decline_commenting_request
     person = Person.find(params[:id])
     person.update_attributes(:commenting_requested => nil, :commenting_requested_at => nil)
     render :text => "Declined commenting request for user #{params[:id]}."
+  end
+
+  def decline_commenting_request_and_send_email
+    person = Person.find(params[:id])
+    person.update_attributes(:commenting_requested => nil, :commenting_requested_at => nil)
+    AdminMailer::deliver_declined(person)
+    render :text => "Declined commenting request for user #{params[:id]}. Email sent."
   end
 
   def approve_commenting_requests
@@ -145,6 +159,24 @@ class AdminController < ApplicationController
 
   def enabled_commenters
     @commenters = Person.find_all_by_can_comment(true).sort_by{|p| p.comments.count}.reverse
+  end
+
+  def review_commenting_requests
+    likely = Person.find_all_by_can_comment_and_commenting_requested_and_commenting_request_ignored(nil, true, nil).select{|p| p.reports.count >= 5}
+    out = "Enabled commenting for:\n"
+    likely.each{|person|
+      person.update_attributes(:can_comment => true)
+      AdminMailer::deliver_enabled(person)
+        out += "#{person.id.to_s}    #{person.public_email}\n"
+    }
+    out += "\n\n"
+    unlikely = Person.find_all_by_can_comment_and_commenting_requested_and_commenting_request_ignored(nil, true, nil).select{|p| p.reports.count < 5}
+    unlikely.each{|person|
+      person.update_attributes(:commenting_requested => nil, :commenting_requested_at => nil)
+      AdminMailer::deliver_declined(person)
+    }
+    out += "Declined commenting for " + unlikely.join(", ")
+    AdminMailer::deliver_report(out)
   end
 
   def duplicated_requesters
