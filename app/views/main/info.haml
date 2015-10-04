@@ -14,10 +14,11 @@
 
 = stylesheet_link_tag 'tinybox'
 = javascript_include_tag 'tinybox'
-:javascript
-  window.onload = function() {
-    TINY.box.show('box.html', 1, 0, 0, 1);
-  };
+/
+  :javascript
+    window.onload = function() {
+      TINY.box.show('box.html', 1, 0, 0, 1);
+    };
 
 /
   %p#advisory.big{:style => "padding: 15px;"}
