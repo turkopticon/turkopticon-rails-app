@@ -175,7 +175,7 @@ class AdminController < ApplicationController
       person.update_attributes(:commenting_requested => nil, :commenting_requested_at => nil)
       AdminMailer::deliver_declined(person)
     }
-    out += "Declined commenting for " + unlikely.join(", ")
+    out += "Declined commenting for " + unlikely.map{|p| p.id}.join(", ")
     AdminMailer::deliver_report(out)
   end
 
