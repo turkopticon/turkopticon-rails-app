@@ -1,0 +1,12 @@
+- form_tag(:action => 'new_post') do
+  %p
+    %strong Title
+    %br/
+    = text_field :forum_post_version, :title
+  %p
+    %strong Body
+    %br/
+    = text_area :forum_post_version, :body
+  = hidden_field :forum_post, :person_id, :value => @person.id.to_s
+  = hidden_field :forum_post_version, :ip, :value => request.remote_ip
+  %p= submit_tag "Post"

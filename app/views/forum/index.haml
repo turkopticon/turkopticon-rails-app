@@ -1,0 +1,12 @@
+%p= link_to "New thread", :action => "new_post"
+
+%table{:cellpadding => "8", :cellspacing => "0"}
+  %tr
+    %th Title
+    %th Posted by
+    %th At
+    %th Replies
+    %th Views
+    %th Last reply from
+    %th At
+  = render :partial => "post", :collection => @posts

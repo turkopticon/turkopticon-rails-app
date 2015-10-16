@@ -1,0 +1,12 @@
+!!!
+%html{html_attrs('en-US')}
+  %head
+    %title turkopticon-discuss
+    = stylesheet_link_tag 'discuss'
+  %body
+    #header
+      #login_nav= render :partial => 'login_nav'
+      #title turkopticon-discuss
+    - if flash[:notice]
+      #notice= flash[:notice]
+    #main= yield
