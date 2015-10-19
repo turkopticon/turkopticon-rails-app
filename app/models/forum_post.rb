@@ -32,6 +32,8 @@ class ForumPost < ActiveRecord::Base
     last_reply = reply_posts.last
     self.last_reply_person_id = last_reply.person_id
     self.last_reply_display_name = last_reply.author_name
+    self.last_reply_at = Time.now
+    self.last_reply_id = last_reply.id
     self.save
   end
 
@@ -45,6 +47,25 @@ class ForumPost < ActiveRecord::Base
 
   def reply_posts
     ForumPost.find_all_by_thread_head(self.id)
+  end
+
+  def undelete
+    self.deleted = nil
+    self.save
+    self.current_version.destroy
+    self.current_version.update_attributes(:next => nil)
+  end
+
+  def thanks
+    ReputationStatement.find_all_by_post_id_and_statement(self.id, "thanks")
+  end
+
+  def inappropriate
+    ReputationStatement.find_all_by_post_id_and_statement(self.id, "inappropriate")
+  end
+
+  def update_score
+    score = initial_score + thanks.map{|t| t.effect}.sum + inappropriate.map{|i| i.effect}.sum
   end
 
 end

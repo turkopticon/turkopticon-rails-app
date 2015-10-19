@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20151019090844) do
+ActiveRecord::Schema.define(:version => 20151019120829) do
 
   create_table "Dolores_A2IR8TEVONNLZO", :id => false, :force => true do |t|
     t.integer  "id",            :default => 0, :null => false
@@ -80,7 +80,7 @@ ActiveRecord::Schema.define(:version => 20151019090844) do
 
   create_table "forum_person_info", :force => true do |t|
     t.integer  "person_id"
-    t.decimal  "karma",                    :precision => 3, :scale => 2
+    t.decimal  "karma",                    :precision => 5, :scale => 2
     t.string   "mail_forum_notifications"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -102,7 +102,7 @@ ActiveRecord::Schema.define(:version => 20151019090844) do
     t.integer  "parent_id"
     t.string   "slug"
     t.boolean  "sticky"
-    t.decimal  "score",                   :precision => 3, :scale => 2
+    t.decimal  "score",                   :precision => 5, :scale => 2
     t.integer  "replies"
     t.integer  "views"
     t.string   "last_reply_display_name"
@@ -112,6 +112,8 @@ ActiveRecord::Schema.define(:version => 20151019090844) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "thread_head"
+    t.boolean  "deleted"
+    t.decimal  "initial_score",           :precision => 5, :scale => 2
   end
 
   create_table "ignores", :force => true do |t|

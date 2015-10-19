@@ -1,6 +1,7 @@
 %p= link_to "&laquo; Back to thread list", :action => "index"
 
 - for post in @posts
+  %a{:name => "post-#{post.id.to_s}"}
   #post{:class => cycle('odd', '')}
     - if post.parent_id.nil?
       .post_title= post.title
@@ -25,8 +26,11 @@
           - if post.person_id == @person.id
             = link_to "Edit", :action => "edit_post", :id => post.id
             &nbsp;|&nbsp;
+            = link_to "Delete", { :action => "delete_post", :id => post.id }, :confirm => "Are you sure?"
+            &nbsp;|&nbsp;
           = link_to "Reply", :action => "new_post", :forum_post => {:parent_id => post.id, :thread_head => post.thread_head}
           &nbsp;|&nbsp;
-          = link_to "Thank", :action => "thank", :id => post.id
-          &nbsp;|&nbsp;
-          = link_to "Inappropriate", :action => "downvote", :id => post.id
+          - unless post.person_id == @person.id
+            = link_to "Thank", :action => "thank", :id => post.id
+            &nbsp;|&nbsp;
+          = link_to "Inappropriate", :action => "inappropriate", :id => post.id

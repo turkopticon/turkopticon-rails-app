@@ -16,7 +16,7 @@ a:hover {
 }
 
 body {
-  max-width: 800px;
+  max-width: 1000px;
   margin: 10px auto;
 }
 
@@ -31,6 +31,10 @@ body {
   font-weight: bold;
 }
 
+#title a {
+  color: #333;
+}
+
 #login_nav {
   float: right;
 }
@@ -40,10 +44,6 @@ body {
   font-weight: bold;
   color: #fff;
   padding: 8px;
-}
-
-#notice >  .error {
-  background-color: #f00;
 }
 
 .odd {

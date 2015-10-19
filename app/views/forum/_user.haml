@@ -1,0 +1,21 @@
+- reports = user.reports
+- reports_count = reports.count
+- comments_count = user.comments.count
+- flags_count = user.flags.count
+- flagged_count = 0
+- hidden_count = 0
+- reports.each{|r| flagged_count += 1 if r.is_flagged; hidden_count +=1 if r.is_hidden}
+%tr{:class => cycle('odd', '')}
+  %td= user.id.to_s
+  %td= user.mod_display_name
+  %td= user.created_at.strftime("%b %d %Y")
+  %td= reports.count
+  %td= user.comments.count
+  %td= user.flags.count
+  %td= flagged_count
+  %td= hidden_count
+  %td= reports.last.created_at.strftime("%b %d %Y")
+  %td
+    - fpi = ForumPersonInfo.find_by_person_id(user.id)
+    - if fpi
+      = fpi.karma

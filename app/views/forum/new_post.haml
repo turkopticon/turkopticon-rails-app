@@ -1,5 +1,5 @@
 - form_tag(:action => 'new_post') do
-  - if params[:forum_post][:parent_id].nil?
+  - if params[:forum_post].nil? or params[:forum_post][:parent_id].nil?
     %p
       %strong Title
       %br/
@@ -23,8 +23,8 @@
   = hidden_field :forum_post, :person_id, :value => @person.id.to_s
   = hidden_field :forum_post_version, :person_id, :value => @person.id.to_s
   = hidden_field :forum_post_version, :ip, :value => request.remote_ip
-  - if params[:forum_post][:parent_id]
+  - if params[:forum_post] and params[:forum_post][:parent_id]
     = hidden_field :forum_post, :parent_id, :value => params[:forum_post][:parent_id]
-  - if params[:forum_post][:thread_head]
+  - if params[:forum_post] and params[:forum_post][:thread_head]
     = hidden_field :forum_post, :thread_head, :value => params[:forum_post][:thread_head]
   %p= submit_tag "Post"

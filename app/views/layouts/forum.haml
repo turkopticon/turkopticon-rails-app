@@ -6,7 +6,7 @@
   %body
     #header
       #login_nav= render :partial => 'login_nav'
-      #title turkopticon-discuss
+      #title= link_to "turkopticon-discuss", :controller => "forum", :action => "index"
     - if flash[:notice]
       #notice= flash[:notice]
     #main= yield

@@ -9,4 +9,4 @@
       = link_to post.last_reply_display_name, :action => "posts_by", :id => post.last_reply_person_id
   %td
     - if post.last_reply_at
-      = link_to post.last_reply_at.strftime("%b %d %Y %H:%M %p"), :action => "show_post", :post => post.last_reply_id
+      = link_to post.last_reply_at.strftime("%b %d %Y %H:%M %p"), :action => "show_post", :id => post.last_reply_id

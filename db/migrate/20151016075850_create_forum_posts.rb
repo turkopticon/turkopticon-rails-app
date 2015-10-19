@@ -5,7 +5,7 @@ class CreateForumPosts < ActiveRecord::Migration
       t.integer :parent_id
       t.string :slug
       t.boolean :sticky
-      t.decimal :score, :precision => 3, :scale => 2
+      t.decimal :score, :precision => 5, :scale => 2
       t.integer :replies
       t.integer :views
       t.string :last_reply_display_name
