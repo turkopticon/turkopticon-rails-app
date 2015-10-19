@@ -42,8 +42,16 @@ body {
   padding: 8px;
 }
 
+#notice >  .error {
+  background-color: #f00;
+}
+
 .odd {
   background-color: #eee;
+}
+
+#post {
+  margin-bottom: 1em;
 }
 
 #post > table {
@@ -74,6 +82,7 @@ th {
 
 .post_body {
   padding: 8px;
+  vertical-align: top;
 }
 
 .post_meta {
@@ -81,4 +90,18 @@ th {
   width: 160px;
   background-color: #ccd;
   padding: 8px;
+}
+
+.post_notes {
+  font-size: 0.8em;
+  margin-top: 3em;
+}
+
+.reply {
+  background-color: #eee;
+  padding: 4px;
+}
+
+.reply_meta {
+  font-size: 0.8em;
 }

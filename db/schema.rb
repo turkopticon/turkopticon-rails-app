@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20151016075941) do
+ActiveRecord::Schema.define(:version => 20151019090844) do
 
   create_table "Dolores_A2IR8TEVONNLZO", :id => false, :force => true do |t|
     t.integer  "id",            :default => 0, :null => false
@@ -94,6 +94,7 @@ ActiveRecord::Schema.define(:version => 20151016075941) do
     t.integer  "next"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "person_id"
   end
 
   create_table "forum_posts", :force => true do |t|
@@ -110,6 +111,7 @@ ActiveRecord::Schema.define(:version => 20151016075941) do
     t.datetime "last_reply_at"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "thread_head"
   end
 
   create_table "ignores", :force => true do |t|

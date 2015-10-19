@@ -28,15 +28,27 @@ class ForumController < ApplicationController
         render :action => "new_post" and return
       end
       if @post.save and @post_version.save and @post_version.update_attributes(:post_id => @post.id)
+        if @post.parent_id
+          ForumPost.find(@post.thread_head).update_replies
+        else
+          @post.update_attributes(:thread_head => @post.id)
+        end
         flash[:notice] = "Post saved."
-        redirect_to :action => "show_post", :id => @post.id
+        rid = @post.parent_id.nil? ? @post.id : @post.thread_head
+        redirect_to :action => "show_post", :id => rid
       end
     end
   end
 
   def show_post
+    post = ForumPost.find(params[:id])
+    post.increment_views
+    @posts = post.reply_posts
+  end
+
+  def post_versions
     @post = ForumPost.find(params[:id])
-    @post.increment_views
+    @versions = @post.versions.reverse
   end
 
   def edit_post
@@ -48,11 +60,11 @@ class ForumController < ApplicationController
         flash[:notice] = "<div class='error'>Please put something in the post body.</div>"
         render :action => "edit_post" and return
       end
-      if params[:forum_post][:parent_id].nil? and params[:forum_post_version][:title].blank?
+      if @post.nil? and params[:forum_post_version][:title].blank?
         flash[:notice] = "<div class='error'>Please give the post a title.</div>"
         render :action => "edit_post" and return
       end
-      if @forum_post.save and @forum_post_version.save
+      if @post.save and @post_version.save and @post_version.update_attributes(:post_id => @post.id) and @current_version.update_attributes(:next => @post_version.id)
         flash[:notice] = "Post saved."
         redirect_to :action => "show_post", :id => @post.id
       end

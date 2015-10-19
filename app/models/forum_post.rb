@@ -24,4 +24,27 @@ class ForumPost < ActiveRecord::Base
     self.save
   end
 
+  def update_replies
+    if self.replies.nil?
+      self.replies = 0
+    end
+    self.replies += 1
+    last_reply = reply_posts.last
+    self.last_reply_person_id = last_reply.person_id
+    self.last_reply_display_name = last_reply.author_name
+    self.save
+  end
+
+  def versions
+    ForumPostVersion.find_all_by_post_id(self.id)
+  end
+
+  def version_count
+    versions.count
+  end
+
+  def reply_posts
+    ForumPost.find_all_by_thread_head(self.id)
+  end
+
 end

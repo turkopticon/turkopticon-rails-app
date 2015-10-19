@@ -1,0 +1,16 @@
+%p= link_to "&laquo; Back to thread", :action => "show_post", :id => @post.id
+
+- for version in @versions
+  #post{:class => cycle('odd', '')}
+    .post_title= version.title
+    %table{:cellspacing => "0", :cellpadding => "0"}
+      %tr
+        %td.post_meta
+          = link_to version.author_name, :action => "posts_by", :id => version.person_id
+          %br/
+          = version.created_at.strftime("%b %d %Y<br/>%H:%M %p")
+          - if version.next.nil?
+            %p
+              %strong Current version
+        %td.post_body
+          = version.body.gsub(/\n/,"<br/>")

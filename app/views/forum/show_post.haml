@@ -1,21 +1,32 @@
 %p= link_to "&laquo; Back to thread list", :action => "index"
 
-#post{:class => cycle('odd', '')}
-  .post_title= @post.title
-  %table{:cellspacing => "0", :cellpadding => "0"}
-    %tr
-      %td.post_meta
-        = link_to @post.author_name, :action => "posts_by", :id => @post.person_id
-        %br/
-        = @post.created_at.strftime("%b %d %Y<br/>%H:%M %p")
-      %td.post_body= @post.body.gsub(/\n/,"<br/>")
-    %tr
-      %td{:class => "post_actions", :colspan => "2"}
-        - if @post.person_id == @person.id
-          = link_to "Edit", :action => "edit_post", :id => @post.id
+- for post in @posts
+  #post{:class => cycle('odd', '')}
+    - if post.parent_id.nil?
+      .post_title= post.title
+    %table{:cellspacing => "0", :cellpadding => "0"}
+      %tr
+        %td.post_meta
+          = link_to post.author_name, :action => "posts_by", :id => post.person_id
+          %br/
+          = post.created_at.strftime("%b %d %Y<br/>%H:%M %p")
+        %td.post_body
+          = post.body.gsub(/\n/,"<br/>")
+          %p.post_notes
+            - if post.version_count > 1
+              - version = post.current_version
+              - editor = version.person
+              = "This post last edited: " + version.created_at.strftime("%b %d %Y %H:%M %p") + " by"
+              = link_to editor.public_email, :action => "posts_by", :id => editor.id
+              %br/
+              = link_to "Past versions &raquo;", :action => "post_versions", :id => post.id
+      %tr
+        %td{:class => "post_actions", :colspan => "2"}
+          - if post.person_id == @person.id
+            = link_to "Edit", :action => "edit_post", :id => post.id
+            &nbsp;|&nbsp;
+          = link_to "Reply", :action => "new_post", :forum_post => {:parent_id => post.id, :thread_head => post.thread_head}
           &nbsp;|&nbsp;
-        = link_to "Reply", :action => "new_post", :forum_post => {:parent_id => @post.id}
-        &nbsp;|&nbsp;
-        = link_to "Thank", :action => "thank", :id => @post.id
-        &nbsp;|&nbsp;
-        = link_to "Inappropriate", :action => "downvote", :id => @post.id
+          = link_to "Thank", :action => "thank", :id => post.id
+          &nbsp;|&nbsp;
+          = link_to "Inappropriate", :action => "downvote", :id => post.id
