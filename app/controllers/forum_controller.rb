@@ -1,7 +1,7 @@
 class ForumController < ApplicationController
 
   before_filter :authorize, :load_person
-  before_filter :authorize_as_admin, :only => [:admin]
+  before_filter :authorize_as_admin, :only => [:karma]
 
   layout "forum"
 
@@ -136,9 +136,8 @@ class ForumController < ApplicationController
     end
   end
 
-  def admin
-    reports = Report.all(:conditions => ["created_at > ?", Time.now - 1.month])
-    @users = reports.map{|r| r.person}.uniq.sort_by{|p| p.reports.count}.reverse
+  def karma
+
   end
 
 end
