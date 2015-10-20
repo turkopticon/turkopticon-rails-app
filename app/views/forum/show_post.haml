@@ -1,4 +1,7 @@
-%p= link_to "&laquo; Back to thread list", :action => "index"
+%p
+  = link_to "&laquo; Back to thread list", :action => "index"
+  &nbsp;&nbsp;&nbsp;&nbsp;
+  = link_to "About this	forum (rules, etc.)", :action => "about"
 
 - for post in @posts
   %a{:name => "post-#{post.id.to_s}"}
@@ -48,7 +51,7 @@
               1 'Inappropriate' Flag
             - else
               = inappro.count.to_s + " 'Inappropriate' Flags"
-      - if @person.is_admin and post.score and post.score != 0.0 or (!thanks.empty? and post.score == 0.0)
+      - if @person.is_admin and post.score
         %tr
           %td{:class => "post_actions", :colspan => "2"}
             = "Post score: " + post.score.to_digits

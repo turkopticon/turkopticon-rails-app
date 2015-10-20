@@ -3,12 +3,12 @@ class ForumPersonInfo < ActiveRecord::Base
 
   def up_effect
     self.initialize_karma
-    self.karma
+    self.karma < 0.0 ? 0.0 : self.karma
   end
 
   def down_effect
     self.initialize_karma
-    -1 * self.karma
+    self.karma < 0.0 ? 0.0 : -1.0 * self.karma
   end
 
   def initialize_karma

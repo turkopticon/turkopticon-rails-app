@@ -11,7 +11,7 @@ class ForumController < ApplicationController
 
   def index
     # get all posts with null parent ID
-    @posts = ForumPost.find_all_by_parent_id_and_deleted(nil, nil).sort_by{|p| p.updated_at}.reverse
+    @posts = ForumPost.find_all_by_parent_id_and_deleted(nil, nil).delete_if{|p| p.score <= -5.0 and p.has_inappro}.sort_by{|p| p.updated_at}.reverse
   end
 
   def new_post
@@ -222,8 +222,10 @@ class ForumController < ApplicationController
     end
   end
 
-  def karma
+  def about
+  end
 
+  def karma
   end
 
 end
