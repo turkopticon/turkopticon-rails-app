@@ -20,6 +20,10 @@ class ForumController < ApplicationController
     @post = ForumPost.new(params[:forum_post])
     @post_version = ForumPostVersion.new(params[:forum_post_version])
     if request.post?
+      unless @person.email_verified
+        flash[:notice] = "<style type='text/css'>#notice { background-color: #f00; }</style>Sorry, you must verify your email address before you can post. You may <a href='/reg/send_verification_email'>send the verification email again</a>."
+        render :action => "new_post" and return
+      end
       if params[:forum_post_version][:body].blank?
         flash[:notice] = "<style type='text/css'>#notice { background-color: #f00; }</style>Please put something in the post body."
         render :action => "new_post" and return
