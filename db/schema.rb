@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150629184231) do
+ActiveRecord::Schema.define(:version => 20151019120829) do
 
   create_table "Dolores_A2IR8TEVONNLZO", :id => false, :force => true do |t|
     t.integer  "id",            :default => 0, :null => false
@@ -70,9 +70,65 @@ ActiveRecord::Schema.define(:version => 20150629184231) do
     t.datetime "updated_at"
   end
 
+  create_table "follows", :force => true do |t|
+    t.integer  "person_id"
+    t.string   "follow_type"
+    t.integer  "follow_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "forum_person_info", :force => true do |t|
+    t.integer  "person_id"
+    t.decimal  "karma",                    :precision => 5, :scale => 2
+    t.string   "mail_forum_notifications"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "forum_post_versions", :force => true do |t|
+    t.integer  "post_id"
+    t.string   "ip"
+    t.text     "title"
+    t.text     "body"
+    t.integer  "next"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "person_id"
+  end
+
+  create_table "forum_posts", :force => true do |t|
+    t.integer  "person_id"
+    t.integer  "parent_id"
+    t.string   "slug"
+    t.boolean  "sticky"
+    t.decimal  "score",                   :precision => 5, :scale => 2
+    t.integer  "replies"
+    t.integer  "views"
+    t.string   "last_reply_display_name"
+    t.string   "last_reply_person_id"
+    t.integer  "last_reply_id"
+    t.datetime "last_reply_at"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "thread_head"
+    t.boolean  "deleted"
+    t.decimal  "initial_score",           :precision => 5, :scale => 2
+  end
+
   create_table "ignores", :force => true do |t|
     t.integer  "person_id"
     t.integer  "report_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "notifications", :force => true do |t|
+    t.integer  "person_id"
+    t.text     "title"
+    t.text     "body"
+    t.boolean  "read"
+    t.datetime "read_at"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -162,6 +218,15 @@ ActiveRecord::Schema.define(:version => 20150629184231) do
     t.integer  "fast"
     t.integer  "pay"
     t.integer  "comm"
+  end
+
+  create_table "reputation_statements", :force => true do |t|
+    t.integer  "person_id"
+    t.integer  "post_id"
+    t.string   "statement"
+    t.decimal  "effect",     :precision => 3, :scale => 2
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "requester_outliers", :id => false, :force => true do |t|

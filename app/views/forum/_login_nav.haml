@@ -1,0 +1,7 @@
+- dn = @person.display_name
+- dn = @person.email if dn.nil?
+
+Logged in as
+%strong= dn
+&nbsp;|&nbsp;
+= link_to "Logout", "http://turkopticon.ucsd.edu/logout"

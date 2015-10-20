@@ -1,0 +1,15 @@
+%tr{:class => cycle('odd', '')}
+  %td{:style => "width: 40%;"}
+    = link_to post.title, :action => "show_post", :id => post.id
+  / %td= link_to post.author_name, :action => "posts_by", :id => post.person_id
+  %td= post.author_name
+  %td= post.created_at.strftime("%b %d %Y %H:%M %p")
+  %td.center= post.replies.nil? ? "0" : post.replies.to_s
+  %td.center= post.views.nil? ? "0" : post.views.to_s
+  %td
+    - if post.last_reply_display_name
+      / = link_to post.last_reply_display_name, :action => "posts_by", :id => post.last_reply_person_id
+      = post.last_reply_display_name
+  %td
+    - if post.last_reply_at
+      = link_to post.last_reply_at.strftime("%b %d %Y %H:%M %p"), :action => "show_post", :id => post.last_reply_id

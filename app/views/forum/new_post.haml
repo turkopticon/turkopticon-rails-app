@@ -1,0 +1,30 @@
+- form_tag(:action => 'new_post') do
+  - if params[:forum_post].nil? or params[:forum_post][:parent_id].nil?
+    %p
+      %strong Title
+      %br/
+      = text_field :forum_post_version, :title
+  - else
+    %p
+      %strong Replying to
+      = link_to ForumPost.find(params[:forum_post][:thread_head]).title, :action => "show_post", :id => params[:forum_post][:thread_head]
+    %p.reply
+      - parent = ForumPost.find(params[:forum_post][:parent_id])
+      = parent.body.gsub(/\n/,"<br/>")
+      %div.reply_meta
+        From
+        = link_to parent.author_name, :action => "posts_by", :id => parent.person_id
+        at
+        = parent.created_at.strftime("%b %d %Y %H:%M %p")
+  %p
+    %strong Body
+    %br/
+    = text_area :forum_post_version, :body
+  = hidden_field :forum_post, :person_id, :value => @person.id.to_s
+  = hidden_field :forum_post_version, :person_id, :value => @person.id.to_s
+  = hidden_field :forum_post_version, :ip, :value => request.remote_ip
+  - if params[:forum_post] and params[:forum_post][:parent_id]
+    = hidden_field :forum_post, :parent_id, :value => params[:forum_post][:parent_id]
+  - if params[:forum_post] and params[:forum_post][:thread_head]
+    = hidden_field :forum_post, :thread_head, :value => params[:forum_post][:thread_head]
+  %p= submit_tag "Post"

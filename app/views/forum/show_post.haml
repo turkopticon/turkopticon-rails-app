@@ -1,0 +1,79 @@
+%p
+  = link_to "&laquo; Back to thread list", :action => "index"
+  &nbsp;&nbsp;&nbsp;&nbsp;
+  = link_to "About this	forum (rules, etc.)", :action => "about"
+
+- for post in @posts
+  %a{:name => "post-#{post.id.to_s}"}
+  #post{:class => cycle('odd', '')}
+    - if post.parent_id.nil?
+      .post_title= post.title
+    %table{:cellspacing => "0", :cellpadding => "0"}
+      %tr
+        %td.post_meta
+          / = link_to post.author_name, :action => "posts_by", :id => post.person_id
+          %strong= post.author_name
+          - if @person.is_admin
+            %br/
+            = "Karma: " + ForumPersonInfo.find_by_person_id(post.person_id).karma.to_digits
+          %br/
+          = post.created_at.strftime("%b %d %Y<br/>%H:%M %p")
+        %td.post_body
+          - if post.score <= -5.0 and post.has_inappro
+            This post is currently hidden. You may 
+            = link_to "look at it anyway", :action => "post_versions", :id => post.id
+            if you really want to.
+          - else
+            = post.body.gsub(/\n/,"<br/>")
+          %p.post_notes
+            - if post.version_count > 1
+              - version = post.current_version
+              - editor = version.person
+              = "This post last edited: " + version.created_at.strftime("%b %d %Y %H:%M %p") + " by"
+              / = link_to editor.public_email, :action => "posts_by", :id => editor.id
+              %strong= editor.public_email
+              %br/
+              = link_to "Past versions &raquo;", :action => "post_versions", :id => post.id
+      - thanks = post.thanks
+      - inappro = post.inappropriate
+      - unless thanks.empty?
+        %tr
+          %td{:class => "post_actions", :colspan => "2"}
+            Thanks for this post sent by: 
+            - thanks.each do |t|
+              / = link_to Person.find(t.person_id).public_email, :action => "posts_by", :id => t.person_id
+              = Person.find(t.person_id).public_email
+              &nbsp;
+      - unless inappro.empty?
+        %tr
+          %td{:class => "post_actions", :colspan => "2"}
+            - if inappro.count == 1
+              1 'Inappropriate' Flag
+            - else
+              = inappro.count.to_s + " 'Inappropriate' Flags"
+      - if @person.is_admin and post.score
+        %tr
+          %td{:class => "post_actions", :colspan => "2"}
+            = "Post score: " + post.score.to_digits
+      %tr
+        %td{:class => "post_actions", :colspan => "2"}
+          - if post.person_id == @person.id
+            = link_to "Edit", :action => "edit_post", :id => post.id
+            &nbsp;|&nbsp;
+            = link_to "Delete", { :action => "delete_post", :id => post.id }, :confirm => "Are you sure?"
+            &nbsp;|&nbsp;
+          = link_to "Reply", :action => "new_post", :forum_post => {:parent_id => post.id, :thread_head => post.thread_head}
+          - unless post.person_id == @person.id
+            - rs = ReputationStatement.find_by_post_id_and_person_id(post.id, @person.id)
+            - if rs
+              - if rs.statement == "thanks"
+                &nbsp;|&nbsp;
+                = link_to "Unthank", :action => "unthank", :id => post.id
+              - else
+                &nbsp;|&nbsp;
+                = link_to "Remove 'Inappropriate' Flag", :action => "uninappropriate", :id => post
+            - else
+              &nbsp;|&nbsp;
+              = link_to "Thank", :action => "thank", :id => post.id
+              &nbsp;|&nbsp;
+              = link_to "Inappropriate", :action => "inappropriate", :id => post.id

@@ -1,0 +1,107 @@
+html {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 0.9em;
+  margin: 0;
+  padding: 0;
+  color: #333;
+}
+
+a {
+  color: #00c;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+body {
+  max-width: 1000px;
+  margin: 10px auto;
+}
+
+#header {
+  margin-bottom: 10px;
+  padding-bottom: 5px;
+  border-bottom: 1px dotted #333;
+}
+
+#title {
+  font-size: 1em;
+  font-weight: bold;
+}
+
+#title a {
+  color: #333;
+}
+
+#login_nav {
+  float: right;
+}
+
+#notice {
+  background-color: #03af00;
+  font-weight: bold;
+  color: #fff;
+  padding: 8px;
+}
+
+.odd {
+  background-color: #eee;
+}
+
+#post {
+  margin-bottom: 1em;
+}
+
+#post > table {
+  width: 100%;
+}
+
+.post_title {
+  background-color: #444;
+  color: #fff;
+  font-weight: bold;
+  padding: 4px 8px;
+  font-size: 1.4em;
+}
+
+th {
+  text-align: left;
+}
+
+.center {
+  text-align: center;
+}
+
+.post_actions {
+  text-align: right;
+  border-top: 1px solid #999;
+  padding: 4px;
+}
+
+.post_body {
+  padding: 8px;
+  vertical-align: top;
+}
+
+.post_meta {
+  vertical-align: top;
+  width: 160px;
+  background-color: #ccd;
+  padding: 8px;
+}
+
+.post_notes {
+  font-size: 0.8em;
+  margin-top: 3em;
+}
+
+.reply {
+  background-color: #eee;
+  padding: 4px;
+}
+
+.reply_meta {
+  font-size: 0.8em;
+}
