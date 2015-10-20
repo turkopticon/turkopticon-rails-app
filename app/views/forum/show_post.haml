@@ -9,7 +9,7 @@
       %tr
         %td.post_meta
           / = link_to post.author_name, :action => "posts_by", :id => post.person_id
-          = post.author_name
+          %strong= post.author_name
           - if @person.is_admin
             %br/
             = "Karma: " + ForumPersonInfo.find_by_person_id(post.person_id).karma.to_digits
@@ -28,7 +28,7 @@
               - editor = version.person
               = "This post last edited: " + version.created_at.strftime("%b %d %Y %H:%M %p") + " by"
               / = link_to editor.public_email, :action => "posts_by", :id => editor.id
-              = editor.public_email
+              %strong= editor.public_email
               %br/
               = link_to "Past versions &raquo;", :action => "post_versions", :id => post.id
       - thanks = post.thanks
