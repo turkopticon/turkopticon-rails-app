@@ -64,6 +64,10 @@ class ForumPost < ActiveRecord::Base
     ReputationStatement.find_all_by_post_id_and_statement(self.id, "inappropriate")
   end
 
+  def has_inappro
+    !self.inappropriate.empty?
+  end
+
   def update_score
     score = initial_score + thanks.map{|t| t.effect}.sum + inappropriate.map{|i| i.effect}.sum
   end

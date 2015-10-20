@@ -8,28 +8,47 @@
     %table{:cellspacing => "0", :cellpadding => "0"}
       %tr
         %td.post_meta
-          = link_to post.author_name, :action => "posts_by", :id => post.person_id
+          / = link_to post.author_name, :action => "posts_by", :id => post.person_id
+          = post.author_name
+          - if @person.is_admin
+            %br/
+            = "Karma: " + ForumPersonInfo.find_by_person_id(post.person_id).karma.to_digits
           %br/
           = post.created_at.strftime("%b %d %Y<br/>%H:%M %p")
         %td.post_body
-          = post.body.gsub(/\n/,"<br/>")
+          - if post.score <= -5.0 and post.has_inappro
+            This post is currently hidden. You may 
+            = link_to "look at it anyway", :action => "post_versions", :id => post.id
+            if you really want to.
+          - else
+            = post.body.gsub(/\n/,"<br/>")
           %p.post_notes
             - if post.version_count > 1
               - version = post.current_version
               - editor = version.person
               = "This post last edited: " + version.created_at.strftime("%b %d %Y %H:%M %p") + " by"
-              = link_to editor.public_email, :action => "posts_by", :id => editor.id
+              / = link_to editor.public_email, :action => "posts_by", :id => editor.id
+              = editor.public_email
               %br/
               = link_to "Past versions &raquo;", :action => "post_versions", :id => post.id
       - thanks = post.thanks
-      - if thanks
+      - inappro = post.inappropriate
+      - unless thanks.empty?
         %tr
           %td{:class => "post_actions", :colspan => "2"}
             Thanks for this post sent by: 
             - thanks.each do |t|
-              = link_to Person.find(t.person_id).public_email, :action => "posts_by", :id => t.person_id
+              / = link_to Person.find(t.person_id).public_email, :action => "posts_by", :id => t.person_id
+              = Person.find(t.person_id).public_email
               &nbsp;
-      - if thanks and post.score != 0
+      - unless inappro.empty?
+        %tr
+          %td{:class => "post_actions", :colspan => "2"}
+            - if inappro.count == 1
+              1 'Inappropriate' Flag
+            - else
+              = inappro.count.to_s + " 'Inappropriate' Flags"
+      - if @person.is_admin and post.score and post.score != 0.0 or (!thanks.empty? and post.score == 0.0)
         %tr
           %td{:class => "post_actions", :colspan => "2"}
             = "Post score: " + post.score.to_digits

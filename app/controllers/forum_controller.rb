@@ -38,6 +38,18 @@ class ForumController < ApplicationController
         else
           @post.update_attributes(:thread_head => @post.id)
         end
+
+        # set initial post score to user's karma
+        # create FPI object if it doesn't exist yet (and set karma to 1)
+        fpi = ForumPersonInfo.find_by_person_id(session[:person_id])
+        if fpi.nil?
+          fpi = ForumPersonInfo.create(:person_id => session[:person_id])
+        end
+        if fpi.karma.nil?
+          fpi.update_attributes(:karma => 1)
+        end
+        @post.update_attributes(:score => fpi.karma)
+
         flash[:notice] = "Post saved."
         rid = @post.parent_id.nil? ? @post.id : @post.thread_head
         redirect_to "/forum/show_post/#{rid}\#post-#{@post.id}"
@@ -102,6 +114,14 @@ class ForumController < ApplicationController
 
   def thank
     person_id = session[:person_id]
+
+    # if this person has already thanked three times in the last 24 hours,
+    # tell them they have to wait and send them back
+    if ReputationStatement.all(:conditions => ["person_id = ? and statement = 'thanks' and created_at > ?", person_id, Time.now - 1.day]).count >= 3
+      flash[:notice] = "<style type='text/css'>#notice { background-color: #f00; }</style>Sorry, you can only leave 3 \"thanks\" per day, and you have already left 3 in the last 24 hours. You can delete one or wait."
+      redirect_to :action => "show_post", :id => params[:id] and return
+    end
+
     person_info = ForumPersonInfo.find_by_person_id(person_id)
     if person_info.nil?
       person_info = ForumPersonInfo.create(:person_id => person_id)
@@ -113,13 +133,12 @@ class ForumController < ApplicationController
                             :post_id => params[:id],
                             :statement => "thanks",
                             :effect => effect).save
-    begin
-      fpi = ForumPersonInfo.find(pid)
-    rescue
+    fpi = ForumPersonInfo.find_by_person_id(pid)
+    if fpi.nil?
       fpi = ForumPersonInfo.create(:person_id => pid, :karma => 1)
     end
     current_karma = fpi.karma
-    fpi.update_attributes(:karma => current_karma += 0.1 * effect)
+    fpi.update_attributes(:karma => current_karma + 0.1 * effect)
     fp = ForumPost.find(params[:id])
     if fp.score.nil?
       new_score = effect
@@ -132,9 +151,17 @@ class ForumController < ApplicationController
 
   def inappropriate
     person_id = session[:person_id]
+
+    # if this person has already left 1 'inappropriate' flag in the last 24 hours
+    # tell them they have to wait and send them back
+    if ReputationStatement.all(:conditions => ["person_id = ? and statement = 'inappropriate' and created_at > ?", person_id, Time.now - 1.day]).count >= 1
+      flash[:notice] = "<style type='text/css'>#notice { background-color: #f00; }</style>Sorry, you can only leave 1 \"inappropriate\" flag per day, and you have already left one in the last 24 hours. You can delete it or wait."
+      redirect_to :action => "show_post", :id => params[:id] and return
+    end
+
     person_info = ForumPersonInfo.find_by_person_id(person_id)
     if person_info.nil?
-      person_info = ForumPersonInfo.create(:person_id=> person_id)
+      person_info = ForumPersonInfo.create(:person_id => person_id)
     end
     effect = person_info.down_effect
     pid = ForumPost.find(params[:id]).person_id  # person who posted the post
@@ -143,13 +170,12 @@ class ForumController < ApplicationController
                             :post_id => params[:id],
                             :statement => "inappropriate",
                             :effect => effect).save
-    begin
-      fpi = ForumPersonInfo.find(pid)
-    rescue
+    fpi = ForumPersonInfo.find_by_person_id(pid)
+    if fpi.nil?
       fpi = ForumPersonInfo.create(:person_id => pid, :karma => 1)
     end
     current_karma = fpi.karma
-    fpi.update_attributes(:karma => current_karma += 0.1 * effect)
+    fpi.update_attributes(:karma => current_karma + 0.1 * effect)
     fp = ForumPost.find(params[:id])
     if fp.score.nil?
       new_score = effect
@@ -161,15 +187,27 @@ class ForumController < ApplicationController
   end
 
   def unthank
+    rs = ReputationStatement.find_by_person_id_and_post_id(session[:person_id],
+                                                           params[:id])
+    # update post score
+    fp = ForumPost.find(params[:id])
+    fp.update_attributes(:score => fp.score - rs.effect)
+    # update posting user karma
+    fpi = ForumPersonInfo.find_by_person_id(fp.person_id)
+    fpi.update_attributes(:karma => fpi.karma - 0.1 * rs.effect)
+    rs.destroy
+    redirect_to :action => "show_post", :id => params[:id]
   end
 
   def uninappropriate
+    # assume each user only has a "thank" OR an "inappropriate" on any post;
+    # as a result we can use the same method for both
+    redirect_to :action => "unthank", :id => params[:id]
   end
 
   def posts_by
-    @live_posts = []
-    posts = ForumPost.find_all_by_person_id(params[:id])
-    posts.each{|p| @live_posts << [p, p.current_version]}
+    @posts = ForumPost.find_all_by_person_id(params[:id])
+    render :action => "show_post"  # this is currently a confusing view; should be improved before making public
   end
 
   def settings
