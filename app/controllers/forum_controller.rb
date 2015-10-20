@@ -11,7 +11,7 @@ class ForumController < ApplicationController
 
   def index
     # get all posts with null parent ID
-    @posts = ForumPost.find_all_by_parent_id_and_deleted(nil, nil)
+    @posts = ForumPost.find_all_by_parent_id_and_deleted(nil, nil).sort_by{|p| p.updated_at}.reverse
   end
 
   def new_post
@@ -103,28 +103,72 @@ class ForumController < ApplicationController
   def thank
     person_id = session[:person_id]
     person_info = ForumPersonInfo.find_by_person_id(person_id)
+    if person_info.nil?
+      person_info = ForumPersonInfo.create(:person_id => person_id)
+    end
     effect = person_info.up_effect
+    pid = ForumPost.find(params[:id]).person_id  # person who posted the post
+                                                 # being rated
     ReputationStatement.new(:person_id => person_id,
                             :post_id => params[:id],
                             :statement => "thanks",
                             :effect => effect).save
+    begin
+      fpi = ForumPersonInfo.find(pid)
+    rescue
+      fpi = ForumPersonInfo.create(:person_id => pid, :karma => 1)
+    end
+    current_karma = fpi.karma
+    fpi.update_attributes(:karma => current_karma += 0.1 * effect)
+    fp = ForumPost.find(params[:id])
+    if fp.score.nil?
+      new_score = effect
+    else
+      new_score = fp.score + effect
+    end
+    fp.update_attributes(:score => new_score)
     redirect_to :action => "show_post", :id => params[:id]
   end
 
   def inappropriate
     person_id = session[:person_id]
     person_info = ForumPersonInfo.find_by_person_id(person_id)
+    if person_info.nil?
+      person_info = ForumPersonInfo.create(:person_id=> person_id)
+    end
     effect = person_info.down_effect
+    pid = ForumPost.find(params[:id]).person_id  # person who posted the post
+                                                 # being rated
     ReputationStatement.new(:person_id => person_id,
                             :post_id => params[:id],
                             :statement => "inappropriate",
                             :effect => effect).save
+    begin
+      fpi = ForumPersonInfo.find(pid)
+    rescue
+      fpi = ForumPersonInfo.create(:person_id => pid, :karma => 1)
+    end
+    current_karma = fpi.karma
+    fpi.update_attributes(:karma => current_karma += 0.1 * effect)
+    fp = ForumPost.find(params[:id])
+    if fp.score.nil?
+      new_score = effect
+    else
+      new_score = fp.score + effect
+    end
+    fp.update_attributes(:score => new_score)
     redirect_to :action => "show_post", :id => params[:id]
+  end
+
+  def unthank
+  end
+
+  def uninappropriate
   end
 
   def posts_by
     @live_posts = []
-    posts = Forum.find_all_by_person_id(params[:id])
+    posts = ForumPost.find_all_by_person_id(params[:id])
     posts.each{|p| @live_posts << [p, p.current_version]}
   end
 

@@ -21,6 +21,18 @@
               = link_to editor.public_email, :action => "posts_by", :id => editor.id
               %br/
               = link_to "Past versions &raquo;", :action => "post_versions", :id => post.id
+      - thanks = post.thanks
+      - if thanks
+        %tr
+          %td{:class => "post_actions", :colspan => "2"}
+            Thanks for this post sent by: 
+            - thanks.each do |t|
+              = link_to Person.find(t.person_id).public_email, :action => "posts_by", :id => t.person_id
+              &nbsp;
+      - if thanks and post.score != 0
+        %tr
+          %td{:class => "post_actions", :colspan => "2"}
+            = "Post score: " + post.score.to_digits
       %tr
         %td{:class => "post_actions", :colspan => "2"}
           - if post.person_id == @person.id
@@ -29,8 +41,17 @@
             = link_to "Delete", { :action => "delete_post", :id => post.id }, :confirm => "Are you sure?"
             &nbsp;|&nbsp;
           = link_to "Reply", :action => "new_post", :forum_post => {:parent_id => post.id, :thread_head => post.thread_head}
-          &nbsp;|&nbsp;
           - unless post.person_id == @person.id
-            = link_to "Thank", :action => "thank", :id => post.id
-            &nbsp;|&nbsp;
-          = link_to "Inappropriate", :action => "inappropriate", :id => post.id
+            - rs = ReputationStatement.find_by_post_id_and_person_id(post.id, @person.id)
+            - if rs
+              - if rs.statement == "thanks"
+                &nbsp;|&nbsp;
+                = link_to "Unthank", :action => "unthank", :id => post.id
+              - else
+                &nbsp;|&nbsp;
+                = link_to "Remove 'Inappropriate' Flag", :action => "uninappropriate", :id => post
+            - else
+              &nbsp;|&nbsp;
+              = link_to "Thank", :action => "thank", :id => post.id
+              &nbsp;|&nbsp;
+              = link_to "Inappropriate", :action => "inappropriate", :id => post.id
