@@ -1,0 +1,102 @@
+html {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 0.9em;
+  margin: 0;
+  padding: 0;
+  color: #333;
+  line-height: 1.2;
+}
+
+a {
+  color: #00c;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+body {
+  max-width: 1000px;
+  margin: 10px auto;
+}
+
+#header {
+  margin-bottom: 10px;
+  padding-bottom: 5px;
+  border-bottom: 1px dotted #333;
+}
+
+#title {
+  font-size: 1em;
+  font-weight: bold;
+}
+
+#title a {
+  color: #333;
+}
+
+#login_nav {
+  float: right;
+}
+
+#notice {
+  background-color: #03af00;
+  font-weight: bold;
+  color: #fff;
+  padding: 8px;
+}
+
+.label {
+  font-weight: bold;
+}
+
+.short {
+  width: 10em;
+  display: inline-block;
+}
+
+.req {
+  color: #f00;
+}
+
+.rfield {
+  display: inline-block;
+}
+
+#tabs {
+  margin: 2em 0 0 0;
+  padding-left: 8px;
+}
+
+#tabs > span {
+  padding: 10px;
+  border: 1px solid #ccc;
+}
+
+#tabs > span.active {
+  background-color: #666;
+  color: #fff;
+}
+
+#box {
+  border: 1px solid #ccc;
+  margin-top: 10px;
+  padding: 20px;
+  max-width: 60%;
+}
+
+.par {
+  display: block;
+  margin-bottom: 1em;
+}
+
+.info {
+  color: #666;
+  font-size: 0.9em; 
+  background-color: #fff;
+}
+
+#batch_form {
+  display: none;
+}
