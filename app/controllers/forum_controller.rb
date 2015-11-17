@@ -2,6 +2,7 @@ class ForumController < ApplicationController
 
   before_filter :authorize, :load_person
   before_filter :authorize_as_admin, :only => [:karma]
+  before_filter :authorize_as_commenter, :only => [:new_post, :edit_post, :delete_post, :thank, :inappropriate, :unthank, :uninappropriate]
 
   layout "forum"
 
@@ -11,7 +12,7 @@ class ForumController < ApplicationController
 
   def index
     # get all posts with null parent ID
-    @posts = ForumPost.find_all_by_parent_id_and_deleted(nil, nil).delete_if{|p| p.score <= -5.0 and p.has_inappro}.sort_by{|p| p.updated_at}.reverse
+    @posts = ForumPost.find_all_by_parent_id_and_deleted(nil, nil).delete_if{|p| p.score <= -5.0 and p.has_inappro}.sort_by{|p| p.last_reply_at || p.updated_at}.reverse
   end
 
   def new_post
@@ -219,6 +220,14 @@ class ForumController < ApplicationController
       session[:original_uri] = request.request_uri
       flash[:notice] = "Please log in as an administrator."
       redirect_to :controller => "reg", :action => "login"
+    end
+  end
+
+  def authorize_as_commenter
+    pid = session[:person_id]
+    unless !pid.nil? and Person.find(pid) and Person.find(pid).can_comment
+      flash[:notice] = "<style type='text/css'>#notice { background-color: #f00; }</style>Sorry, only people with commenting ability can do that.</style>"
+      redirect_to :action => "index"
     end
   end
 
