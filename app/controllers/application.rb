@@ -7,10 +7,19 @@ class ApplicationController < ActionController::Base
 
   helper :all # include all helpers, all the time
 
-  before_filter :title
+  before_filter :title, :check_ip
 
   def title
   end
+
+  def check_ip
+    render :text => "Sorry, something went wrong." if ["74.96.142.81"].include? current_ip_address
+  end
+
+  def current_ip_address
+    request.env['HTTP_X_REAL_IP'] || request.env['REMOTE_ADDR']
+  end
+
 
   def authorize
     unless !session[:person_id].nil? and Person.find(session[:person_id]) and !Person.find(session[:person_id]).is_closed
