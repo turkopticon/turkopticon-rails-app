@@ -61,9 +61,11 @@
 .box{:style => "max-width: 500px"}
   %p
     %strong Extra links
-    %p "Extra links" adds comment and flag icons next to everyone's names. If you click on them, you will go to a page where you can see all the comments or flags ever posted by that person. Extra links are off by default.
+    %p "Extra links" adds comment and flag icons next to everyone's names. If you click on them, you will go to a page where you can see all the comments or flags ever posted by that person. Extra links are on by default.
     %p
-      - if Person.find(session[:person_id]).show_fancy_links
+      - if Person.find(session[:person_id]).show_fancy_links or Person.find(session[:person_id]).show_fancy_links.nil?
+        Extra links are <strong>on</strong>.&nbsp;
         = link_to "Turn extra links off", :controller => "reg", :action => "fancy_links_off"
       - else
+        Extra links are <strong>off</strong>.&nbsp;
         = link_to "Turn extra links on", :controller => "reg", :action => "fancy_links_on"

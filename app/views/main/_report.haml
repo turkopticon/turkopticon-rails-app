@@ -64,7 +64,7 @@
           = link_to report.person.mod_display_name.censor, :controller => "main", :action => "reports_by", :id => report.person_id
         - else
           = link_to report.person.public_email.censor, :controller => "main", :action => "reports_by", :id => report.person_id
-        - if Person.find(session[:person_id]).show_fancy_links
+        - unless Person.find(session[:person_id]).show_fancy_links == false
           &nbsp;
           = link_to "<img src='/images/bubble.png' title='Show all comments by this person' border='0' width='10' height='10' />", :controller => "main", :action => "comments_by", :id => report.person_id
           = link_to "<img src='/images/warning.gif' title='Show all reviews flagged by this person' border='0' width='10' height='10' />", :controller => "main", :action => "flagged_by", :id => report.person_id

@@ -23,7 +23,7 @@ class RegController < ApplicationController
     @pagetitle = "register"
     @person = Person.new(params[:person])
     if request.post? and @person.save
-      @person.update_attributes(:display_name => @person.public_email)
+      @person.update_attributes(:display_name => @person.public_email, :show_fancy_links => true)
       RegMailer::deliver_confirm(@person, confirmation_hash(@person.email))
       session[:person_id] = @person.id
       flash[:notice] = "Thanks for signing up. We've sent an email to #{@person.email}. Please click the link in the email to verify your address."
