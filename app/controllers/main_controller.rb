@@ -276,7 +276,7 @@ class MainController < ApplicationController
         if pfce == default_pfce or (!l.nil? and (l < 20 or l > 140))
           render :text => "Sorry, you must enter an explanation for your flag not shorter than 20 characters and not longer than 140 characters. Please use your browser's 'back' button to go back." and return
         else
-          params[:flag][:comment] = pfc + ": " + pfce
+          @flag.comment = pfc + ": " + pfce
         end
       end
       if @flag.save and @report.update_flag_data
