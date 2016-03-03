@@ -268,6 +268,17 @@ class MainController < ApplicationController
         flash[:notice] = "<div class=\"error\">Please add a comment.</div>"
         render :action => "add_flag", :id => @report.id and return
       end
+      pfc = params[:flag][:comment]
+      pfce = params[:other_explanation]
+      l = pfce.length if pfce
+      default_pfce = "explanation for 'other', min. 20 chars, max. 140"
+      if pfc == "other"
+        if pfce == default_pfce or (!l.nil? and (l < 20 or l > 140))
+          render :text => "Sorry, you must enter an explanation for your flag not shorter than 20 characters and not longer than 140 characters. Please use your browser's 'back' button to go back." and return
+        else
+          params[:flag][:comment] = pfc + ": " + pfce
+        end
+      end
       if @flag.save and @report.update_flag_data
         @report.update_attributes(:flag_count => @report.flags.count)
         flash[:notice] = "<div class=\"success\">Report was flagged.</div>"

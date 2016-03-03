@@ -1,0 +1,4 @@
+
+- form_tag(:action => 'php_search') do
+  = text_field_tag :query, params[:query] ||= "Search", :onfocus => "if(this.value == 'Search') { this.value = ''; }"
+  = submit_tag 'Search'

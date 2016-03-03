@@ -36,7 +36,12 @@
       = radio_button :flag, :comment, "not a review for this requester/irrelevant"
       not a review for this requester/irrelevant
       %br/
+      = radio_button :flag, :comment, "discloses screener"
+      discloses screener
+      %br/
       = radio_button :flag, :comment, "other"
       other
+      &nbsp;
+      = text_field_tag :other_explanation, "explanation for 'other', min. 20 chars, max. 140", {:size => 40, :onfocus => "if(this.value == \"explanation for 'other', min. 20 chars, max. 140\") { this.value = ''; }"}
     = submit_tag "Flag Report"
     = link_to_remote "Cancel", :url => {:action => "cancel_flag", :id => @report.id}
