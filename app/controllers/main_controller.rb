@@ -76,6 +76,14 @@ class MainController < ApplicationController
     render :action => "flagged_by"
   end
 
+  def reports_by_one_page
+    @person = Person.find(params[:id])
+    @display_name = Person.find(session[:person_id]).is_moderator ? @person.mod_display_name : @person.public_email
+    @pagetitle = "reports by " + @display_name + " (one page)"
+    @reports = @person.reports.reverse
+    render :action => "flagged_by"
+  end
+
   def flagged_by
     @person = Person.find(params[:id])
     @display_name = Person.find(session[:person_id]).is_moderator ? @person.mod_display_name : @person.public_email

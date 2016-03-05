@@ -35,6 +35,7 @@ ActionController::Routing::Routes.draw do |map|
   map.connect 'flagged_by/:id', :controller => "main", :action => "flagged_by"
   map.connect 'comments_by/:id', :controller => "main", :action => "comments_by"
   map.connect 'all_by/:id', :controller => "main", :action => "all_by"
+  map.connect 'reviews_by_one_page/:id', :controller => "main", :action => "reports_by_one_page"
   map.connect 'admin', :controller => "admin", :action => "index"
   map.connect 'wth', :controller => "main", :action => "wth"
   map.connect ':id', :controller => "main", :action => "index"
