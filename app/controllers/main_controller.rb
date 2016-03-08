@@ -279,10 +279,10 @@ class MainController < ApplicationController
       pfc = params[:flag][:comment]
       pfce = params[:other_explanation]
       l = pfce.length if pfce
-      default_pfce = "explanation for 'other', min. 20 chars, max. 140"
+      default_pfce = "explanation for 'other', min. 20 chars, max. 500"
       if pfc == "other"
-        if pfce == default_pfce or (!l.nil? and (l < 20 or l > 140))
-          render :text => "Sorry, you must enter an explanation for your flag not shorter than 20 characters and not longer than 140 characters. Please use your browser's 'back' button to go back." and return
+        if pfce == default_pfce or (!l.nil? and (l < 20 or l > 500))
+          render :text => "Sorry, you must enter an explanation for your flag not shorter than 20 characters and not longer than 500 characters. Please use your browser's 'back' button to go back." and return
         else
           @flag.comment = pfc + ": " + pfce
         end
