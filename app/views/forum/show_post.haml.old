@@ -47,10 +47,10 @@
       - unless inappro.empty?
         %tr
           %td{:class => "post_actions", :colspan => "2"}
-            This post flagged as inappropriate by:
-            - inappro.each do |i|
-              = Person.find(i.person_id).public_email
-              &nbsp;
+            - if inappro.count == 1
+              1 'Inappropriate' Flag
+            - else
+              = inappro.count.to_s + " 'Inappropriate' Flags"
       - if @person.is_admin and post.score
         %tr
           %td{:class => "post_actions", :colspan => "2"}
