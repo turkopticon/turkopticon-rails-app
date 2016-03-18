@@ -375,6 +375,24 @@ td {
   font-size: 0.8em;
 }
 
+.rejected, .approved {
+  margin-top: 0.5em;
+  width: 14em;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 0.8em;
+  padding: 2px;
+  color: #fff;
+}
+
+.rejected {
+  background-color: #f00;
+}
+
+.approved {
+  background-color: #060;
+}
+
 #notice {
   color: #f00;
   font-weight: bold;

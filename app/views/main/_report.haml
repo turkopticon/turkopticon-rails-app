@@ -36,6 +36,12 @@
           .smlabel= eval("report." + a + ".to_s") + "&nbsp;/&nbsp;5"
           = Requester.attr_vis(eval("report." + a))
         %br/
+      - if report.rejected == "yes"
+        .rejected hit rejected
+      - if report.rejected == "some"
+        .rejected some work rejected
+      - if report.rejected == "no"
+        .approved hit approved
       - if report.tos_viol
         .tosviol
           violates mturk terms of service
@@ -66,6 +72,7 @@
           = link_to report.person.public_email.censor, :controller => "main", :action => "reports_by", :id => report.person_id
         - unless Person.find(session[:person_id]).show_fancy_links == false
           &nbsp;
+          = link_to "<img src='/images/page.png' title='Show all reviews from this person on one page (slow)' border='0' width='8' height='10' />", :controller => "main", :action => "reports_by_one_page", :id => report.person_id
           = link_to "<img src='/images/bubble.png' title='Show all comments by this person' border='0' width='10' height='10' />", :controller => "main", :action => "comments_by", :id => report.person_id
           = link_to "<img src='/images/warning.gif' title='Show all reviews flagged by this person' border='0' width='10' height='10' />", :controller => "main", :action => "flagged_by", :id => report.person_id
         - if report.ip
