@@ -130,6 +130,13 @@ class ForumController < ApplicationController
     effect = person_info.up_effect
     pid = ForumPost.find(params[:id]).person_id  # person who posted the post
                                                  # being rated
+
+    # block self-thanking
+    if pid == person_id
+      flash[:notice] = "<style type='text/css'>#notice { background-color: #f00; }</style>Please don't try to thank yourself :-/"
+      redirect_to :action => "show_post", :id => params[:id] and return
+    end
+
     ReputationStatement.new(:person_id => person_id,
                             :post_id => params[:id],
                             :statement => "thanks",
