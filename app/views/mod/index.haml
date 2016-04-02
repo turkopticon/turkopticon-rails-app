@@ -10,4 +10,7 @@
     %th &nbsp;
   = render :partial => "report", :collection => @reports
 
-#pagination= will_paginate @reports
+- if @reports.empty?
+  No reviews to display here!
+- else
+  #pagination= will_paginate @reports

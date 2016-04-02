@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20160318012759) do
+ActiveRecord::Schema.define(:version => 20160402221950) do
 
   create_table "Dolores_A2IR8TEVONNLZO", :id => false, :force => true do |t|
     t.integer  "id",            :default => 0, :null => false
@@ -228,6 +228,7 @@ ActiveRecord::Schema.define(:version => 20160318012759) do
     t.decimal  "effect",     :precision => 3, :scale => 2
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "ip"
   end
 
   create_table "requester_outliers", :id => false, :force => true do |t|

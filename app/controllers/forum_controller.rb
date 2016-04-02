@@ -116,6 +116,12 @@ class ForumController < ApplicationController
   def thank
     person_id = session[:person_id]
 
+    # if this person has already thanked this post, tell them and send them back
+    if ReputationStatement.find_by_person_id_and_post_id_and_statement(person_id, params[:id], "thanks")
+      flash[:notice] = "<style type='text/css'>#notice { background-color: #f00; }</style>Sorry, you have already given thanks for this post!"
+      redirect_to :action => "show_post", :id => params[:id] and return
+    end
+
     # if this person has already thanked three times in the last 24 hours,
     # tell them they have to wait and send them back
     if ReputationStatement.all(:conditions => ["person_id = ? and statement = 'thanks' and created_at > ?", person_id, Time.now - 1.day]).count >= 3
@@ -140,7 +146,8 @@ class ForumController < ApplicationController
     ReputationStatement.new(:person_id => person_id,
                             :post_id => params[:id],
                             :statement => "thanks",
-                            :effect => effect).save
+                            :effect => effect,
+                            :ip => request.remote_ip).save
     fpi = ForumPersonInfo.find_by_person_id(pid)
     if fpi.nil?
       fpi = ForumPersonInfo.create(:person_id => pid, :karma => 1)
@@ -160,6 +167,12 @@ class ForumController < ApplicationController
   def inappropriate
     person_id = session[:person_id]
 
+    # if the user flagging has already flagged this post, say so and send them back
+    if ReputationStatement.find_by_person_id_and_post_id_and_statement(person_id, params[:id], "inappropriate")
+      flash[:notice] = "<style type='text/css'>#notice { background-color: #f00; }</style>You've already flagged this post as inappropriate."
+      redirect_to :action => "show_post", :id => params[:id] and return
+    end
+
     # if this person has already left 1 'inappropriate' flag in the last 24 hours
     # tell them they have to wait and send them back
     if ReputationStatement.all(:conditions => ["person_id = ? and statement = 'inappropriate' and created_at > ?", person_id, Time.now - 1.day]).count >= 1
@@ -177,7 +190,8 @@ class ForumController < ApplicationController
     ReputationStatement.new(:person_id => person_id,
                             :post_id => params[:id],
                             :statement => "inappropriate",
-                            :effect => effect).save
+                            :effect => effect,
+                            :ip => request.remote_ip).save
     fpi = ForumPersonInfo.find_by_person_id(pid)
     if fpi.nil?
       fpi = ForumPersonInfo.create(:person_id => pid, :karma => 1)

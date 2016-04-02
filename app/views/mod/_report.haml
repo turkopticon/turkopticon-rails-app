@@ -6,10 +6,7 @@
     - if report.ip.blank?
       IP UNKNOWN
     - else
-      - if @person.is_admin
-        = link_to report.ip, :controller => "main", :action => "reports_by_ip", :ip => report.ip
-      - else
-        = "XXX.XXX." + report.ip.split(".").last(2).join(".")
+      = link_to report.ip, :controller => "main", :action => "reports_by_ip", :ip => report.ip
     %br/
     = report.created_at.strftime("%H:%M&nbsp;%m/%d/%y")
     - if report.updated_at > report.created_at
@@ -38,9 +35,11 @@
       %p
         %strong HIT(s):
         %br/
-        = h(report.hit_names.censor).gsub(";","<br/>")
-    = h(report.description.censor).gsub("\r\n","<br/>")
-    - if report.displayed_notes
+        - unless report.hit_names.nil?
+          = h(report.hit_names.censor).gsub(";","<br/>")
+    - unless report.description.nil?
+      = h(report.description.censor).gsub("\r\n","<br/>")
+    - unless report.displayed_notes.nil?
       %p.notes= report.displayed_notes
     - flags = report.flags
     - comments = report.comments
