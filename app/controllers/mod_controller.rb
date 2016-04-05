@@ -15,6 +15,19 @@ class ModController < ApplicationController
     end
   end
 
+  def edit_rules
+    @rv = RulesVersion.new(params[:rules_version])
+    if request.post?
+      @rv.edited_by_person_id = session[:person_id]
+      @rv.save
+      old = RulesVersion.current
+      old.update_attributes(:is_current => nil)
+      new_body = @rv.body.gsub("\n", "<br/>")
+      @rv.update_attributes(:parent_id => old.id, :body => new_body, :is_current => true)
+      render :text => "Instructions updated."
+    end
+  end
+
   def load_person
     @person = Person.find(session[:person_id])
   end

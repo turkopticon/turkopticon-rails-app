@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20160402221950) do
+ActiveRecord::Schema.define(:version => 20160405223656) do
 
   create_table "Dolores_A2IR8TEVONNLZO", :id => false, :force => true do |t|
     t.integer  "id",            :default => 0, :null => false
@@ -256,6 +256,15 @@ ActiveRecord::Schema.define(:version => 20160402221950) do
     t.decimal  "av_fast",             :precision => 3, :scale => 2
     t.integer  "tos_flags"
     t.string   "old_name"
+  end
+
+  create_table "rules_versions", :force => true do |t|
+    t.integer  "parent_id"
+    t.boolean  "is_current"
+    t.integer  "edited_by_person_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.text     "body"
   end
 
 end
