@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20160405223656) do
+ActiveRecord::Schema.define(:version => 20160423213025) do
 
   create_table "Dolores_A2IR8TEVONNLZO", :id => false, :force => true do |t|
     t.integer  "id",            :default => 0, :null => false
@@ -248,14 +248,18 @@ ActiveRecord::Schema.define(:version => 20160405223656) do
     t.string   "amzn_requester_name"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.decimal  "ava",                 :precision => 3, :scale => 2
+    t.decimal  "ava",                          :precision => 3, :scale => 2
     t.integer  "nrs"
-    t.decimal  "av_comm",             :precision => 3, :scale => 2
-    t.decimal  "av_pay",              :precision => 3, :scale => 2
-    t.decimal  "av_fair",             :precision => 3, :scale => 2
-    t.decimal  "av_fast",             :precision => 3, :scale => 2
+    t.decimal  "av_comm",                      :precision => 3, :scale => 2
+    t.decimal  "av_pay",                       :precision => 3, :scale => 2
+    t.decimal  "av_fair",                      :precision => 3, :scale => 2
+    t.decimal  "av_fast",                      :precision => 3, :scale => 2
     t.integer  "tos_flags"
     t.string   "old_name"
+    t.integer  "all_rejected"
+    t.integer  "some_rejected"
+    t.integer  "all_approved_or_pending"
+    t.integer  "all_pending_or_didnt_do_hits"
   end
 
   create_table "rules_versions", :force => true do |t|

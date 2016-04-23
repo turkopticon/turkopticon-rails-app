@@ -155,6 +155,12 @@ class Requester < ActiveRecord::Base
     self.tos_flags = reports.select{|r| r.tos_viol}.length
     self.ava = avg_attrs_avg
     self.nrs = report_count
+
+    self.all_rejected = reports.select{|rep| rep.rejected == "yes"}.length
+    self.some_rejected = reports.select{|rep| rep.rejected == "some"}.length
+    self.all_approved_or_pending = reports.select{|rep| rep.rejected == "no"}.length
+    self.all_pending_or_didnt_do_hits = reports.select{|rep| rep.rejected == "n/a"}.length
+
     self.save
   end
 
