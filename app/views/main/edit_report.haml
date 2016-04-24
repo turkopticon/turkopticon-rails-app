@@ -54,6 +54,14 @@
           - for i in [*1..5]
             %td= radio_button :report, a.to_sym, i
           %td= radio_button :report, a.to_sym, 0
+  - if @report.person_id != session[:person_id]
+    %p
+      .label ToS violator?
+      = check_box :report, :tos_viol
+      HIT violates Amazon Terms of Service.
+      %br
+      .label &nbsp;
+      (A HIT violates ToS under <a href="https://www.mturk.com/mturk/help?helpPage=policies#violation_examples" style="text-decoration:underline">specific conditions</a>, not just because you're mad.)
   %p
     %strong Please briefly describe your experience with this requester:
     %br/

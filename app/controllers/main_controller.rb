@@ -373,13 +373,13 @@ class MainController < ApplicationController
   def edit_comment
     @pagetitle = "edit comment"
     @comment = Comment.find(params[:id])
-    if session[:person_id] == @comment.person_id or Person.find(session[:person_id]).is_admin
+    if session[:person_id] == @comment.person_id or Person.find(session[:person_id]).is_admin or Person.find(session[:person_id]).is_moderator
       @report = @comment.report
       if request.post? and @comment.update_attributes(params[:comment])
         if session[:person_id] == @comment.person_id
           editor = "the author "
         else
-          editor = "<strong>" + Person.find(session[:person_id]).display_name + " (admin)</strong> "
+          editor = "<strong>" + Person.find(session[:person_id]).public_email + " </strong> "
         end
         note = "This comment was edited by " + editor + Time.now.strftime("%a %b %d %H:%M %Z") + ".<br/>"
         @comment.update_attributes(:displayed_notes => note + @comment.displayed_notes.to_s)
