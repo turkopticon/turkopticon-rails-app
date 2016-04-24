@@ -349,14 +349,14 @@ class MainController < ApplicationController
   def edit_report
     @pagetitle = "edit report"
     @report = Report.find(params[:id])
-    if session[:person_id] == @report.person_id or Person.find(session[:person_id]).is_admin
+    if session[:person_id] == @report.person_id or Person.find(session[:person_id]).is_admin or Person.find(session[:person_id]).is_moderator
       @requester = Requester.find(@report.requester_id)
       if request.post? and @report.update_attributes(params[:report])
         editor = ""
         if session[:person_id] == @report.person_id
           editor = "the author "
-        else  # assume admin
-          editor = "<strong>" + Person.find(session[:person_id]).display_name + "(admin) </strong> "
+        else
+          editor = "<strong>" + Person.find(session[:person_id]).public_email + "</strong> "
         end
         note = "This review was edited by " + editor + Time.now.strftime("%a %b %d %H:%M %Z") + ".<br/>"
         @report.update_attributes(:displayed_notes => note + @report.displayed_notes.to_s)

@@ -79,7 +79,7 @@
           - if Person.find(session[:person_id]).is_moderator
             &nbsp;|&nbsp;
             = link_to report.ip, :controller => "main", :action => "reports_by_ip", :ip => report.ip
-        - if report.person_id == session[:person_id] or Person.find(session[:person_id]).is_admin
+        - if report.person_id == session[:person_id] or Person.find(session[:person_id]).is_admin or Person.find(session[:person_id]).is_moderator
           &nbsp;|&nbsp;
           = link_to "edit", :controller => "main", :action => "edit_report", :id => report.id
         - unless session[:person_id].nil?

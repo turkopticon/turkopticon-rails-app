@@ -96,7 +96,11 @@ class Person < ActiveRecord::Base
         dn = display_name.gsub(/[()]/,"")
       end
     end
-    dn += " (moderator)" if self.is_moderator
+    if self.is_admin
+      dn += " (admin)"
+    elsif self.is_moderator
+      dn += " (moderator)"
+    end
     dn
   end
 
