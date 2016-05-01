@@ -5,7 +5,11 @@ class ModController < ApplicationController
 
   def authorize_as_moderator
     pid = session[:person_id]
-    unless !pid.nil?
+    if pid.nil?
+      session[:original_uri] = request.request_uri
+      flash[:notice] = "Please log in as a moderator."
+      redirect_to :controller => "reg", :action => "login"
+    else
       @person = Person.find(pid)
       unless !@person.nil? and @person.is_moderator
         session[:original_uri] = request.request_uri
@@ -110,6 +114,20 @@ class ModController < ApplicationController
 
   def cancel_lightbox
     @id = params[:id]
+  end
+
+  def disable_commenting
+    # remember @person is the logged in person
+    p = Person.find(params[:id])
+    p.update_attributes(:can_comment => false, :commenting_request_ignored => true, :commenting_disabled_by => @person.id, :commenting_disabled_at => Time.now)
+    render :text => "Disabled commenting for user #{params[:id]} / #{p.public_email}."
+  end
+
+  def enable_commenting
+    # remember @person is the logged in person
+    p = Person.find(params[:id])
+    p.update_attributes(:can_comment => true, :commenting_enabled_by => @person.id, :commenting_enabled_at => Time.now)
+    render :text => "Enabled commenting for user #{params[:id]} / #{p.public_email}."
   end
 
 end

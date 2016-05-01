@@ -44,6 +44,8 @@ ActionController::Routing::Routes.draw do |map|
   map.connect 'attrs/:id', :controller => "main", :action => "requester_attrs"
   map.connect 'attrsv2/:id', :controller => "main", :action => "requester_attrs_v2"
   map.connect 'confirm/:hash', :controller => "reg", :action => "confirm"
+  map.connect 'enable_commenting/:id', :controller => "mod", :action => "enable_commenting"
+  map.connect 'disable_commenting/:id', :controller => "mod", :action => "disable_commenting"
   map.connect ':controller/:action/:id'
   map.connect ':controller/:action/:id.:format'
 end
