@@ -8,6 +8,10 @@ class MainController < ApplicationController
   def pri
   end
 
+  def survey2016
+    redirect_to "https://turkopticon.ucsd.edu/2016survey/"
+  end
+
   def request_commenting
     Person.find(session[:person_id]).update_attributes(:commenting_requested => true, :commenting_requested_at => Time.now)
     flash[:notice] = "You've requested commenting."

@@ -1,5 +1,6 @@
 ActionController::Routing::Routes.draw do |map|
   map.root :controller => "main", :action => "info"
+  map.connect '2016survey', :controller => "main", :action => "survey2016"
   map.connect 'forum', :controller => "forum", :action => "index"
   map.connect 'rules', :controller => "main", :action => "rules"
   map.connect 'stats', :controller => "stats"
