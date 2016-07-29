@@ -25,8 +25,6 @@
 #  comment_count       :integer(4)
 #
 
-require 'acts_as_ferret'
-
 class Report < ActiveRecord::Base
 
   belongs_to :person
@@ -34,13 +32,6 @@ class Report < ActiveRecord::Base
   has_many :flags
   has_many :comments
   has_many :ignores
-  acts_as_ferret(:fields => [:description],
-                 :ferret => {:use_compound_file => true,
-                             :merge_factor => 4})
-
-  def before_save
-    self.disable_ferret(:always)
-  end
 
   def update_flag_data
     nflags = flags.length

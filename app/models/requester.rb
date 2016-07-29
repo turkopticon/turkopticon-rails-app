@@ -27,20 +27,6 @@ class Requester < ActiveRecord::Base
   has_many :reports
   has_many :flags, :through => :reports
 
-#  acts_as_reportable
-  acts_as_ferret(:fields => [:amzn_requester_name, :amzn_requester_id],
-                 :ferret => {:use_compound_file => true,
-                             :merge_factor => 4})
-
-  # for thinking_sphinx
-  # define_index do
-  #   indexes amzn_requester_name
-  # end
-
-  def before_save
-    self.disable_ferret(:always)
-  end
-
   def has_hidden_reports?
     hidden_report_count > 0
   end
