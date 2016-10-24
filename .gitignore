@@ -11,7 +11,6 @@ config/initializers/cookie_verification_secret.rb
 config/initializers/log.rb
 config/initializers/session_store.rb
 index/
-log/
 php_api/dbconn.php
 php_api/mysqli-dbconn.php
 public/*
@@ -20,5 +19,19 @@ public/*
 !public/stylesheets/
 !public/turkopticon_installpage/
 !public/turkopticon-2014.01.28.1207.user.js
-test/
+
+# bundler config
+.bundle
+
+# log and temp files
+log/
+!tmp/.keep
 tmp/
+!tmp/.keep
+
+# byebug command history
+.byebug_history
+
+# IDE and vagrant
+.idea/
+.vagrant/
