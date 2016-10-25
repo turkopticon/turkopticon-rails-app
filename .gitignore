@@ -3,11 +3,16 @@ INSTALL_LOG
 LAST_BACKUP
 
 backups/
-config/environment.rb
-config/initializers/app_url.rb
-config/initializers/cookie_verification_secret.rb
-config/initializers/log.rb
-config/initializers/session_store.rb
+
+# don't think these need to be ignored anymore since
+#  secret stuff should be abstracted away internally
+#  we'll see... allow them for now
+#config/environment.rb
+#config/initializers/app_url.rb
+#config/initializers/cookie_verification_secret.rb
+#config/initializers/log.rb
+#config/initializers/session_store.rb
+
 index/
 php_api/dbconn.php
 php_api/mysqli-dbconn.php
