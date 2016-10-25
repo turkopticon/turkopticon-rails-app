@@ -3,7 +3,6 @@ INSTALL_LOG
 LAST_BACKUP
 
 backups/
-config/database.yml
 config/environment.rb
 config/initializers/app_url.rb
 config/initializers/cookie_verification_secret.rb
