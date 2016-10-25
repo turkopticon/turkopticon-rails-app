@@ -1,7 +1,6 @@
 API_INSTALL_LOG
 INSTALL_LOG
 LAST_BACKUP
-Rakefile
 
 backups/
 config/database.yml
