@@ -1,3 +1,14 @@
+Rails.application.routes.draw do
+
+  get 'splash/index' # only used for initial testing
+
+  root 'main#info'
+
+  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
+end
+
+
+=begin
 ActionController::Routing::Routes.draw do |map|
   map.root :controller => "main", :action => "info"
   map.connect '2016survey', :controller => "main", :action => "survey2016"
@@ -50,3 +61,4 @@ ActionController::Routing::Routes.draw do |map|
   map.connect ':controller/:action/:id'
   map.connect ':controller/:action/:id.:format'
 end
+=end
