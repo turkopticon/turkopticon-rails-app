@@ -1,5 +1,4 @@
-class ReviewsController < ActionController::Base
-  layout 'application'
+class ReviewsController < ApplicationController
 
   def index
     query = params.extract!(:user, :comments, :flags)
