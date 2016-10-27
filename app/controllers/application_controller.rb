@@ -1,9 +1,12 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
-  layout "generic", :except => [:blogfeed]
+  # for some reason application wide layout directive
+  # is ignored in reviews controller
+  # TODO: find out why...
+  layout 'application' #, :except => [:blogfeed]
 
-  before_filter :title, :check_ip
+  # before_filter :title, :check_ip
 
   #def title
   #end
