@@ -2,12 +2,13 @@
 %html{ lang: 'en' }
   %head
     %title='turkopticon'
+    = csrf_meta_tags
     = stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload'
     = javascript_include_tag 'application', 'data-turbolinks-track': 'reload'
     %link{ href: '/feed', rel: 'alternate', title: 'RSS', type: 'application/rss+xml' }
     %meta{:name => 'google-site-verification', :content => 'UWLKIWNd0faYwT10vzkBZI5wvuQpuRtiEcZh9ZiMsBM'}
 
-  %body
+  %body{ class: "#{controller_name}-#{action_name}" }
     %header
       %a{ href: "#{root_path}" }
         %img{ alt: 'logo', src: "#{asset_path ''}" }

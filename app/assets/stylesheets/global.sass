@@ -3,8 +3,10 @@ $brownish: rgb(151, 60, 15)
 $h-brownish: rgb(155, 58, 0)
 $h-tannish: rgb(253, 240, 209)
 $blue: rgb(78, 105, 123)
-$fs-small: 12px
+$fs-smaller: 12px
+$fs-small: 14px
 $fs-big: 18px
+$fs-bigger: 20px
 
 *
   position: relative
@@ -15,6 +17,9 @@ body
   color: $brownish
   font-family: 'Helvetica Neue', 'Open Sans', sans-serif
 
+input:not([type=image])
+  box-sizing: border-box
+
 .left
   float: left
 
@@ -24,3 +29,18 @@ body
 .content-wrapper
   max-width: 720px
   padding-left: 15px
+
+.title
+  margin-bottom: 15px
+  font-weight: 700
+  font-size: $fs-bigger
+  display: block
+
+.flex
+  display: flex
+
+.block
+  display: block
+
+.inline
+  display: inline-block

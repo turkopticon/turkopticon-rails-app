@@ -1,0 +1,84 @@
+.reviews-new
+  div.validation-error
+    border: 1px solid crimson
+  span.validation-error
+    position: absolute
+    color: crimson
+    font-size: $fs-smaller
+    font-weight: 700
+    z-index: 5
+    white-space: nowrap
+  a.submit
+    background-color: $blue
+    margin-top: 20px
+    padding: 10px 20px
+    border: 3px solid $blue
+    border-radius: 6px
+    width: 38.22%
+    color: $h-tannish
+    font-size: $fs-bigger
+    text-decoration: none
+    text-align: center
+  #reward:before
+    content: '$'
+    position: absolute
+    top: 4px
+    left: 5px
+    z-index: 2
+    color: $brownish
+    font-weight: 700
+
+  .flex-unit
+    margin-right: 15px
+
+    &.c1
+      flex: 1
+      font-size: $fs-small
+      span.validation-error
+        top: 0
+        right: 3px
+      section
+        padding: 5px
+        margin-bottom: 10px
+        &.invert
+          background-color: $h-brownish
+          color: $h-tannish
+      input
+        display: block
+        width: 100%
+        height: 30px
+        color: $brownish
+        font-size: $fs-big
+        margin-bottom: 5px
+        padding-left: 3px
+        padding-top: 10px
+        &[type=number]
+          padding-left: 15px
+      a
+        color: darkred
+        font-style: $fs-smaller
+        &:after
+          content: ' >>'
+
+    &.c2
+      flex: 2
+      input[type=number]
+        width: 45px
+        margin-right: 3px
+      > div
+        margin-bottom: 15px
+      textarea
+        width: 100%
+        height: 100px
+        resize: vertical
+      label
+        margin-right: 5px
+        &:not(.question)
+          color: dimgrey
+      div:not(.inline) > span.validation-error
+        top: -14px
+        left: 5px
+      .inline > span.validation-error
+        bottom: -14px
+        right: 3px
+

@@ -11,6 +11,6 @@
  * It is generally better to create a new file per style scope.
  *
  * require_tree .
- *= require header
+ *= require manifest
  *= require_self
  */
