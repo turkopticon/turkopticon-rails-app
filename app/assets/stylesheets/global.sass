@@ -12,6 +12,10 @@ $fs-bigger: 20px
 %fg-red
   color: #ff0000
 
+%pipe-spacer
+  content: '|'
+  margin-left: 3px
+
 *
   position: relative
 
@@ -53,6 +57,7 @@ ul.inline
   list-style-type: none
   li
     display: inline
+//margin: 0
 
 // general purpose
 
@@ -125,7 +130,6 @@ hr.divider
   li
     margin: 0
     &:not(:last-child):after
-      content: '|'
-      margin-left: 3px
+      @extend %pipe-spacer
   .timestamp
     color: rgba(0, 0, 0, 0.7)

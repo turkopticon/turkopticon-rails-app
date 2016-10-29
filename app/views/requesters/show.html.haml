@@ -1,0 +1,35 @@
+%span.title Requester Name: HIT Reviews
+.summary
+  .th.flex
+    .col-1
+      .heading-bar Summary for Requester Name
+    .col-2.flex
+      .heading-bar 90 day averages
+      .heading-bar All time averages
+  .tr.flex
+    .col-1.requester-summary
+      .aliases Aliases: blah blah blah
+      .rid ID: A188IIJEZLNG3
+      %div
+        =link_to 'Add a review for this requester', '', class: 'arrow-link'
+        =link_to 'Find requester on AMT', '', class: 'arrow-link'
+    .col-2.aggregates.flex= render 'aggregates'
+
+
+.heading-bar
+  Reviews of HITs (1-20 of 540)
+
+.row.th.flex
+  .col-1.col-stats.flex
+    .col-ttc Time to Complete
+    .col-pay
+      HIT
+      %span.block Pay
+    .col-tta Time to Approve
+  .col-2.col-review Review
+%hr.divider
+
+.row.tr.flex
+  .col-1.col-stats.flex= render 'reviews/stats'
+  .col-2.col-review= render 'reviews/review'
+%hr.divider

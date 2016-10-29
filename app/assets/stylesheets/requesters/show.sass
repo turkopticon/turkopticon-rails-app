@@ -1,0 +1,16 @@
+.requesters-show
+  .summary
+    margin-bottom: 10px
+    .heading-bar
+      text-overflow: ellipsis
+
+  .col-2
+    flex: 2
+  .col-1
+    margin-right: 15px
+
+  .aggregates li:not(:last-child):after
+    @extend %pipe-spacer
+
+  .requester-summary div
+    margin-bottom: 5px

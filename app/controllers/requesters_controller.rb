@@ -1,0 +1,2 @@
+class RequestersController < ApplicationController
+end
