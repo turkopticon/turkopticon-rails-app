@@ -2,10 +2,10 @@
   div.validation-error
     border: 1px solid crimson
   span.validation-error
+    @extend .bold
     position: absolute
     color: crimson
     font-size: $fs-smaller
-    font-weight: 700
     z-index: 5
     white-space: nowrap
   a.submit
@@ -20,13 +20,13 @@
     text-decoration: none
     text-align: center
   #reward:before
+    @extend .bold
     content: '$'
     position: absolute
     top: 4px
     left: 5px
     z-index: 2
     color: $brownish
-    font-weight: 700
 
   .flex-unit
     margin-right: 15px

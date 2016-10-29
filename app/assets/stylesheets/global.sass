@@ -77,11 +77,14 @@ hr.divider
 .inline
   display: inline-block
 
+.bold
+  font-weight: 700
+
 // page title
 
 .title
+  @extend .bold
   margin-bottom: 15px
-  font-weight: 700
   font-size: $fs-bigger
   display: block
 
@@ -99,9 +102,6 @@ hr.divider
 
 .tr
   font-size: $fs-small
-
-.col-review .hit-title
-  font-weight: 700
 
 .tagbox
   margin-top: 3px
