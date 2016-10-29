@@ -1,0 +1,17 @@
+%span.title= @page[:title]
+
+.heading-bar 3 of 3 results
+
+.row.th.flex
+  .col-1 Requester
+  .col-2.flex
+    .col-recent 90 day averages
+    .col-all-time All time averages
+
+%hr.divider
+
+- 3.times do
+  .row.tr.flex
+    .col-1.requester= render 'requester'
+    .col-2.aggregates.flex= render 'aggregates'
+  %hr.divider
