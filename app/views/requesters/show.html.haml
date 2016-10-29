@@ -7,12 +7,7 @@
       .heading-bar 90 day averages
       .heading-bar All time averages
   .tr.flex
-    .col-1.requester-summary
-      .aliases Aliases: blah blah blah
-      .rid ID: A188IIJEZLNG3
-      %div
-        =link_to 'Add a review for this requester', '', class: 'arrow-link'
-        =link_to 'Find requester on AMT', '', class: 'arrow-link'
+    .col-1.requester-summary= render 'requester'
     .col-2.aggregates.flex= render 'aggregates'
 
 
