@@ -3,10 +3,14 @@ $brownish: rgb(151, 60, 15)
 $h-brownish: rgb(155, 58, 0)
 $h-tannish: rgb(253, 240, 209)
 $blue: rgb(78, 105, 123)
+$fs-smallest: 11px
 $fs-smaller: 12px
 $fs-small: 14px
 $fs-big: 18px
 $fs-bigger: 20px
+
+%fg-red
+  color: #ff0000
 
 *
   position: relative
@@ -15,7 +19,29 @@ body
   margin: 0
   background-color: $tannish
   color: $brownish
+  font-size: 16px
   font-family: 'Helvetica Neue', 'Open Sans', sans-serif
+
+.constrainer
+  max-width: 720px
+  margin: 0 auto
+
+.heading-bar
+  background-color: $h-brownish
+  color: $h-tannish
+  width: 100%
+  padding: 3px 3px
+  margin-bottom: 3px
+
+.content-wrapper
+  padding-left: 15px
+  a
+    text-decoration: none
+    border: none
+  a.arrow-link
+    @extend %fg-red
+    &:after
+      content: ' >>'
 
 input:not([type=image])
   box-sizing: border-box
@@ -25,10 +51,6 @@ input:not([type=image])
 
 .right
   float: right
-
-.content-wrapper
-  max-width: 720px
-  padding-left: 15px
 
 .title
   margin-bottom: 15px

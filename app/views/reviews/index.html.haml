@@ -1,5 +1,24 @@
-.container
-  %span.location
-    = @page[:location]
-    = @page[:rname]
-  %span= semantic_params @page[:params]
+%span.title
+  = @page[:location]
+  = @page[:rname]
+  %span.sub-title= semantic_params @page[:params]
+.heading-bar
+  1 of 1 results
+.row.th.flex
+  .col-req Requester
+  .col-stats.flex
+    .col-ttc Time to Complete
+    .col-pay
+      HIT
+      %span.block Pay
+    .col-tta Time to Approve
+  .col-review Review
+.divider
+
+.row.tr.flex
+  .col-req= render 'requester'
+  .col-stats.flex= render 'stats'
+  .col-review= render 'review'
+.divider
+
+

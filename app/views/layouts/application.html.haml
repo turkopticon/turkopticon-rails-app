@@ -10,27 +10,28 @@
 
   %body{ class: "#{controller_name}-#{action_name}" }
     %header
-      %a{ href: "#{root_path}" }
-        %img{ alt: 'logo', src: "#{asset_path ''}" }
-      .usernav.right
-        user
-        %ul.inline
-          %li= link_to 'my reviews', '#'
-          %li= link_to 'settings', '#'
-          %li= link_to 'logout', '#'
-      %nav
-        .left
-          -# TODO: convert to form
-          %input{ title: 'search', type: 'text' }
-          %button{ type: 'submit' } Search
+      .constrainer
+        %a{ href: "#{root_path}" }
+          %img{ alt: 'logo', src: "#{asset_path ''}" }
+        .usernav.right
+          user
           %ul.inline
-            %li= link_to 'Recent Reviews', reviews_path
-        .right
-          %ul.inline
-            %li= link_to 'Install', install_path
-            %li= link_to 'Community Rules', rules_path
+            %li= link_to 'my reviews', '#'
+            %li= link_to 'settings', '#'
+            %li= link_to 'logout', '#'
+        %nav
+          .left
+            -# TODO: convert to form
+            %input{ title: 'search', type: 'text' }
+            %button{ type: 'submit' } Search
+            %ul.inline
+              %li= link_to 'Recent Reviews', reviews_path
+          .right
+            %ul.inline
+              %li= link_to 'Install', install_path
+              %li= link_to 'Community Rules', rules_path
 
-    .content-wrapper
+    .content-wrapper.constrainer
       - if flash[:notice]
         #notice
           = flash[:notice]
