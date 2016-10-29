@@ -1,52 +1,14 @@
 .reviews-index
   .rid
     color: rgba(0, 0, 0, 0.8)
-  .row
-    justify-content: space-around
-    font-size: $fs-smaller
-    > .col-stats
-      margin: 0 5px
   .col-stats
-    text-align: center
+    margin: 0 5px
   [class^='col-']
-    flex: 1
     .rname
       @extend %fg-red
       font-weight: 700
-    a
-      @extend %fg-red
   .col-review
     flex: 2.5
-  div
-    box-sizing: border-box
-  .tr
-    font-size: $fs-small
-  .divider
-    background-color: $h-brownish
-    height: 1px
-    width: 100%
-    margin: 5px 0
-  .hit-title
-    font-weight: 700
-  .tagbox
-    margin-top: 3px
-    .tag
-      color: white
-      background-color: rgba(0, 0, 0, 0.7)
-      border-radius: 5px
-      padding: 3px
-      margin-right: 3px
-      font-size: $fs-smaller
-      cursor: default
-      &:hover
-        background-color: rgba(0, 0, 0, 1)
-  .review-header
-    margin-bottom: 5px
-  .review-footer
-    font-size: $fs-smallest
-    margin-top: 5px
-    .timestamp
-      color: rgba(0, 0, 0, 0.7)
     li
       margin: 0
       &:not(:last-child):after

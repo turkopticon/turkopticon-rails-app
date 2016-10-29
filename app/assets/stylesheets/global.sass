@@ -22,6 +22,9 @@ body
   font-size: 16px
   font-family: 'Helvetica Neue', 'Open Sans', sans-serif
 
+div, input:not([type=image])
+  box-sizing: border-box
+
 .constrainer
   max-width: 720px
   margin: 0 auto
@@ -32,31 +35,31 @@ body
   width: 100%
   padding: 3px 3px
   margin-bottom: 3px
+  font-size: $fs-small
 
 .content-wrapper
   padding-left: 15px
   a
     text-decoration: none
     border: none
-  a.arrow-link
     @extend %fg-red
+  a.arrow-link
     &:after
       content: ' >>'
 
-input:not([type=image])
-  box-sizing: border-box
+// general purpose
+
+hr.divider
+  border-bottom: 1px solid $h-brownish
+  height: 0
+  width: 100%
+  margin: 5px 0
 
 .left
   float: left
 
 .right
   float: right
-
-.title
-  margin-bottom: 15px
-  font-weight: 700
-  font-size: $fs-bigger
-  display: block
 
 .flex
   display: flex
@@ -66,3 +69,51 @@ input:not([type=image])
 
 .inline
   display: inline-block
+
+// page title
+
+.title
+  margin-bottom: 15px
+  font-weight: 700
+  font-size: $fs-bigger
+  display: block
+
+// review styles
+
+.row
+  justify-content: space-between
+  font-size: $fs-smaller
+
+[class^='col-']
+  flex: 1
+
+.col-stats
+  text-align: center
+
+.tr
+  font-size: $fs-small
+
+.col-review .hit-title
+  font-weight: 700
+
+.tagbox
+  margin-top: 3px
+  .tag
+    color: white
+    background-color: rgba(0, 0, 0, 0.7)
+    border-radius: 5px
+    padding: 3px
+    margin-right: 3px
+    font-size: $fs-smaller
+    cursor: default
+    &:hover
+      background-color: rgba(0, 0, 0, 1)
+
+.review-header
+  margin-bottom: 5px
+
+.review-footer
+  font-size: $fs-smallest
+  margin-top: 5px
+  .timestamp
+    color: rgba(0, 0, 0, 0.7)
