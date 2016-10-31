@@ -7,6 +7,7 @@ class CreateReviews < ActiveRecord::Migration[5.0]
       t.text :broken_context
       t.boolean :deceptive
       t.text :deceptive_context
+      t.decimal :reward, precision: 6, scale: 2
       t.string :completed
       t.integer :time
       t.string :comm
@@ -17,6 +18,7 @@ class CreateReviews < ActiveRecord::Migration[5.0]
       t.text :recommend_context
       t.text :context
       t.references :hit, foreign_key: true, index: true
+      t.references :person, foreign_key: true, index: true
 
       t.timestamps
     end

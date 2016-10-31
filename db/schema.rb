@@ -230,6 +230,7 @@ ActiveRecord::Schema.define(version: 20161030083039) do
     t.text "broken_context", limit: 65535
     t.boolean "deceptive"
     t.text "deceptive_context", limit: 65535
+    t.decimal "reward", precision: 6, scale: 2
     t.string "completed"
     t.integer "time"
     t.string "comm"
@@ -240,9 +241,11 @@ ActiveRecord::Schema.define(version: 20161030083039) do
     t.text "recommend_context", limit: 65535
     t.text "context", limit: 65535
     t.integer "hit_id"
+    t.integer "person_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["hit_id"], name: "index_reviews_on_hit_id", using: :btree
+    t.index ["person_id"], name: "index_reviews_on_person_id", using: :btree
   end
 
   create_table "rules_versions", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -258,4 +261,5 @@ ActiveRecord::Schema.define(version: 20161030083039) do
   add_foreign_key "comments", "reviews"
   add_foreign_key "hits", "requesters"
   add_foreign_key "reviews", "hits"
+  add_foreign_key "reviews", "people"
 end
