@@ -103,8 +103,8 @@ class ModController < ApplicationController
   end
 
   def comment
-    @report = Report.find(params[:id])
-    @comment = Comment.new(params[:comment])
+    @report  = Report.find(params[:id])
+    @comment = LegacyComment.new(params[:comment])
     if request.post? and @comment.save
       @report.update_attributes(:comment_count => @report.comments.count)
       flash[:notice] = "Comment added to report #{params[:id]}."

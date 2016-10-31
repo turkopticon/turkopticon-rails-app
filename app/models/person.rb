@@ -20,9 +20,10 @@
 
 class Person < ActiveRecord::Base
 
-  has_many :reports
+  has_many :reports #legacy reviews
+  has_many :reviews
   has_many :flags
-  has_many :comments
+  has_many :legacy_comments
   has_many :ignores
 
   validates_presence_of :email

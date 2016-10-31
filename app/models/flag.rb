@@ -24,10 +24,10 @@ class Flag < ActiveRecord::Base
     note += "It was converted by the author at "
     note += Time.now.strftime("%l:%M %p %b %d %Y %Z") + ".</span>"
     rid = self.report_id
-    Comment.new(:report_id => self.report_id,
-                :person_id => self.person_id,
-                :body => self.comment + note,
-                :created_at => self.created_at).save
+    LegacyComment.new(:report_id  => self.report_id,
+                      :person_id  => self.person_id,
+                      :body       => self.comment + note,
+                      :created_at => self.created_at).save
     self.destroy
     Report.find(rid).update_flag_data
   end

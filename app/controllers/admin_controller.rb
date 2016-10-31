@@ -68,7 +68,7 @@ class AdminController < ApplicationController
 
   def commenters
     @commenters_and_comments = {}
-    Comment.all.each{|c|
+    LegacyComment.all.each { |c|
       if c.person_id
         if @commenters_and_comments[c.person_id].nil?
           p = Person.find(c.person_id)
