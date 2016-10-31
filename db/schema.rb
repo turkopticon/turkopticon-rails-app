@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160501145056) do
+ActiveRecord::Schema.define(version: 20161030083039) do
 
   create_table "aliases", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "requester_id"
@@ -20,13 +20,13 @@ ActiveRecord::Schema.define(version: 20160501145056) do
   end
 
   create_table "comments", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.integer  "report_id"
-    t.integer  "person_id"
     t.text "body", limit: 65535
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.text "notes", limit: 65535
-    t.text "displayed_notes", limit: 65535
+    t.integer "review_id"
+    t.integer  "person_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["person_id"], name: "index_comments_on_person_id", using: :btree
+    t.index ["review_id"], name: "index_comments_on_review_id", using: :btree
   end
 
   create_table "flags", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -84,11 +84,50 @@ ActiveRecord::Schema.define(version: 20160501145056) do
     t.decimal "initial_score", precision: 5, scale: 2
   end
 
+  create_table "hits", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string "title"
+    t.decimal "reward", precision: 6, scale: 2
+    t.integer "requester_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["requester_id"], name: "index_hits_on_requester_id", using: :btree
+    t.index ["title"], name: "index_hits_on_title", using: :btree
+  end
+
   create_table "ignores", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "person_id"
     t.integer  "report_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "legacy_comments", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer "report_id"
+    t.integer "person_id"
+    t.text "body", limit: 65535
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.text "notes", limit: 65535
+    t.text "displayed_notes", limit: 65535
+  end
+
+  create_table "legacy_requesters", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string "amzn_requester_id"
+    t.string "amzn_requester_name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.decimal "ava", precision: 3, scale: 2
+    t.integer "nrs"
+    t.decimal "av_comm", precision: 3, scale: 2
+    t.decimal "av_pay", precision: 3, scale: 2
+    t.decimal "av_fair", precision: 3, scale: 2
+    t.decimal "av_fast", precision: 3, scale: 2
+    t.integer "tos_flags"
+    t.string "old_name"
+    t.integer "all_rejected"
+    t.integer "some_rejected"
+    t.integer "all_approved_or_pending"
+    t.integer "all_pending_or_didnt_do_hits"
   end
 
   create_table "notifications", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -175,22 +214,35 @@ ActiveRecord::Schema.define(version: 20160501145056) do
   end
 
   create_table "requesters", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.string   "amzn_requester_id"
-    t.string   "amzn_requester_name"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.decimal "ava", precision: 3, scale: 2
-    t.integer  "nrs"
-    t.decimal "av_comm", precision: 3, scale: 2
-    t.decimal "av_pay", precision: 3, scale: 2
-    t.decimal "av_fair", precision: 3, scale: 2
-    t.decimal "av_fast", precision: 3, scale: 2
-    t.integer  "tos_flags"
-    t.string   "old_name"
-    t.integer  "all_rejected"
-    t.integer  "some_rejected"
-    t.integer  "all_approved_or_pending"
-    t.integer  "all_pending_or_didnt_do_hits"
+    t.string "rname"
+    t.string "rid"
+    t.text "aliases", limit: 65535
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["rid"], name: "index_requesters_on_rid", using: :btree
+    t.index ["rname"], name: "index_requesters_on_rname", using: :btree
+  end
+
+  create_table "reviews", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.boolean "tos"
+    t.text "tos_context", limit: 65535
+    t.boolean "broken"
+    t.text "broken_context", limit: 65535
+    t.boolean "deceptive"
+    t.text "deceptive_context", limit: 65535
+    t.string "completed"
+    t.integer "time"
+    t.string "comm"
+    t.string "pending"
+    t.integer "time_pending"
+    t.string "rejected"
+    t.boolean "recommend"
+    t.text "recommend_context", limit: 65535
+    t.text "context", limit: 65535
+    t.integer "hit_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["hit_id"], name: "index_reviews_on_hit_id", using: :btree
   end
 
   create_table "rules_versions", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -202,4 +254,8 @@ ActiveRecord::Schema.define(version: 20160501145056) do
     t.text "body", limit: 65535
   end
 
+  add_foreign_key "comments", "people"
+  add_foreign_key "comments", "reviews"
+  add_foreign_key "hits", "requesters"
+  add_foreign_key "reviews", "hits"
 end
