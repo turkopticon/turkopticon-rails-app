@@ -28,7 +28,7 @@ class Person < ActiveRecord::Base
 
   validates_presence_of :email
   validates_uniqueness_of :email
-  validates_format_of :email, :with => /^([a-z0-9])([a-z0-9_\-\.\+])*(?!\.{2,})([a-z0-9])\@(?!mailinator|.*mial\.|spamcatch|spambob|spamavert|spamherelots)([a-z0-9])([a-z0-9\-\.])*\.([a-z]{2,4})$/i, :message => "is not a recognized email address"
+  validates_format_of :email, :with => /\A([a-z0-9])([a-z0-9_\-\.\+])*(?!\.{2,})([a-z0-9])\@(?!mailinator|.*mial\.|spamcatch|spambob|spamavert|spamherelots)([a-z0-9])([a-z0-9\-\.])*\.([a-z]{2,4})\z/i, :message => "is not a recognized email address"
 
   attr_accessor :password_confirmation
   #validates_presence_of :password
@@ -139,7 +139,7 @@ class Person < ActiveRecord::Base
 
   def self.active_count
     rv = 0
-    Person.find(:all).each{|p| rv += 1 if p.active?}
+    Person.all.each { |p| rv += 1 if p.active? }
     rv
   end
 
