@@ -17,6 +17,7 @@ class CreateReviews < ActiveRecord::Migration[5.0]
       t.boolean :recommend
       t.text :recommend_context
       t.text :context
+      t.boolean :valid_review, default: true, null: false
       t.references :hit, foreign_key: true, index: true
       t.references :person, foreign_key: true, index: true
 

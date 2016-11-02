@@ -240,6 +240,7 @@ ActiveRecord::Schema.define(version: 20161030083039) do
     t.boolean "recommend"
     t.text "recommend_context", limit: 65535
     t.text "context", limit: 65535
+    t.boolean "valid_review", default: true, null: false
     t.integer "hit_id"
     t.integer "person_id"
     t.datetime "created_at", null: false
