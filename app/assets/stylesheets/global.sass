@@ -112,14 +112,43 @@ hr.divider
   margin-top: 3px
   .tag
     color: white
-    background-color: rgba(0, 0, 0, 0.7)
+    background-color: rgba(0, 0, 0, 0.66)
     border-radius: 5px
     padding: 3px
     margin-right: 3px
     font-size: $fs-smaller
     cursor: default
+    min-width: 20px
+    text-align: center
+    &:before, &:after
+      content: ''
+      display: block
+      position: absolute
+      transition: opacity 160ms ease-in-out
+      opacity: 0
+      pointer-events: none
+    &:before
+      bottom: 80%
+      left: 50%
+      margin-left: -5px
+      border: 5px solid transparent
+      border-top-color: black
+      height: 0
+      width: 0
+    &:after
+      bottom: 130%
+      left: 50%
+      margin-left: -63px
+      width: 125px
+      content: attr(data-context)
+      background-color: black
+      border-radius: 5px
+      padding: 5px 2px
     &:hover
       background-color: rgba(0, 0, 0, 1)
+      &:before, &:after
+        display: block
+        opacity: 1
 
 .review-header
   margin-bottom: 5px
