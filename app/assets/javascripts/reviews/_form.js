@@ -79,21 +79,21 @@
     const el = e.target;
     switch (el.type) {
       case 'checkbox':
-        model[el.name].value = el.checked.toString();
+        model[el.name].value = el.checked;
         break;
       case 'radio':
         if (el.checked) model[el.name].value = el.value;
         break;
       case 'number':
         if (el.name === 'reward')
-          model[el.name].value = (+el.value).toString();
+          model[el.name].value = (+el.value);
         else { // reduce everything down to seconds
           const group = getAll('[type=number]', el.parentNode.parentNode),
                 lcv   = [24, 60, 60, 1].slice(el.name === 'time' ? -2 : 0);
 
           model[el.name].value = group.map(v => +v.value).reduce((a, b, i) => lcv[i] * (a + b), 0);
           model[el.name].value *= el.name === 'time' ? 1 : 60;
-          model[el.name].value = Math.ceil(model[el.name].value).toString();
+          model[el.name].value = Math.ceil(model[el.name].value);
         }
         break;
       default:
@@ -130,7 +130,7 @@
 
     'tos broken deceptive completed'.split(' ').forEach(v => !(v in model) && _add(v));
 
-    get('a.submit').addEventListener('click', e => e.preventDefault())
+    get('.submit').onclick = e => {if (!rf.form.isValid) e.preventDefault()};
   }
 
   function _serialize(n = 0) {

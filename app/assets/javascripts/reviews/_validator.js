@@ -8,7 +8,7 @@
     };
 
   function _required(value) {
-    return value !== null && value.length > 0 ? [true, null] : [false, 'Required'];
+    return value !== null && value.toString().length > 0 ? [true, null] : [false, 'Required'];
   }
 
   //function _length(value, range) {

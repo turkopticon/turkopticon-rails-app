@@ -4,6 +4,7 @@
   rf.error                   = rf.error || { add: _add, clear: _clear };
 
   function _add(src, error) {
+    if (src.block.classList.contains('validation-error')) return null;
     src.block.classList.add('validation-error');
     const errSpan       = src.block.insertBefore(make('span', { class: 'validation-error' }), src.block.firstChild);
     errSpan.textContent = error[1];
