@@ -1,8 +1,9 @@
 (function form(rf) {
   'use strict';
-  const model                                                                        = {},
-        { data:{ pool }, data:{ tree }, error, validator, fn:{ get, getAll, make } } = rf,
+  const { data:{ pool }, data:{ tree }, error, validator, fn:{ get, getAll, make } } = rf,
         anchor                                                                       = get('.c2');
+
+  let model = {};
 
   rf.form = rf.form || {
       init    : _init,
@@ -41,7 +42,7 @@
     const build     = {},
           ctrl      = src.control,
           def       = 'default' in src && src.default,
-          anchorRef = model.recommend && model.recommend.block || model.comments.block;
+          anchorRef = model.recommend && model.recommend.block || model.context.block;
 
     build.block = to
       ? model[to].block.appendChild(make('DIV', { class: 'inline pull right' }))
@@ -119,7 +120,7 @@
   }
 
   function _init() {
-    'title reward rname rid comments'.split(' ').forEach(v => {
+    'title reward rname rid context'.split(' ').forEach(v => {
       if (v in model) return;
       model[v]                 = { ref: getAll(`[name=${v}]`) };
       model[v].value           = model[v].ref[0].value;
@@ -130,7 +131,7 @@
 
     'tos broken deceptive completed'.split(' ').forEach(v => !(v in model) && _add(v));
 
-    get('.submit').onclick = e => {if (!rf.form.isValid) e.preventDefault()};
+    get('.submit').onclick = e => {if (!rf.form.isValid) e.preventDefault(); else (model = null)};
   }
 
   function _serialize(n = 0) {

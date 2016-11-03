@@ -2,18 +2,18 @@
   'use strict';
   rf.data = rf.data || {
       pool: {
-        title      : { validators: { required: [] } },
-        reward     : { validators: { required: [], pattern: [/^(\d*(\.\d{0,2})?$)/, 'reward'] } },
-        rname      : { validators: { required: [] } },
-        rid        : {
+        title    : { validators: { required: [] } },
+        reward   : { validators: { required: [], pattern: [/^(\d*(\.\d{0,2})?$)/, 'reward'] } },
+        rname    : { validators: { required: [] } },
+        rid         : {
           validators: {
             required         : [],
             lengthGreaterThan: [7],
             negPattern       : [/[^A-Z0-9]/, 'requester ID']
           }
         },
-        comments   : { validators: {} },
-        tos        : {
+        context     : { validators: {} },
+        tos         : {
           title     : null,
           control   : {
             tag   : 'input',
@@ -21,10 +21,10 @@
             labels: { class: 'question inline', desc: ['This HIT violates TOS'] },
             values: ['']
           },
-          default   : 'false',
+          default   : false,
           validators: { required: [] }
         },
-        broken     : {
+        broken      : {
           title     : null,
           control   : {
             tag   : 'input',
@@ -32,10 +32,10 @@
             labels: { class: 'question inline', desc: ['This HIT is broken'] },
             values: ['']
           },
-          default   : 'false',
+          default   : false,
           validators: { required: [] }
         },
-        deceptive  : {
+        deceptive   : {
           title     : null,
           control   : {
             tag   : 'input',
@@ -43,10 +43,10 @@
             labels: { class: 'question inline', desc: ['This HIT is deceptive'] },
             values: ['']
           },
-          default   : 'false',
+          default   : false,
           validators: { required: [] }
         },
-        detail     : {
+        _context    : {
           title     : null,
           control   : {
             tag   : 'input',
@@ -54,9 +54,10 @@
             labels: { class: '', desc: [null] },
             values: ['']
           },
-          validators: { required: [], lengthGreaterThan: [5] }
+          default   : '',
+          validators: { required: [], lengthBetween: [5, 200] }
         },
-        completed  : {
+        completed   : {
           title     : 'How many HITs did you complete?',
           control   : {
             tag   : 'input',
@@ -64,9 +65,10 @@
             labels: { class: 'inline', desc: ['None', 'One', 'More than one'] },
             values: ['none', 'one', 'multiple']
           },
+          default   : null,
           validators: { required: [] }
         },
-        time       : {
+        time        : {
           title     : 'Approximately how long did it take you to complete each HIT?',
           control   : {
             tag   : 'input',
@@ -74,9 +76,10 @@
             labels: { class: 'inline', desc: ['minutes', 'seconds'] },
             values: [null, null]
           },
+          default   : null,
           validators: { required: [], valueGreaterThan: [0, 'Time', 'seconds'] }
         },
-        comm       : {
+        comm        : {
           title     : 'Was the requester communicative and responsive?',
           control   : {
             tag   : 'input',
@@ -88,10 +91,10 @@
             },
             values: ['n/a', 'no', 'yes']
           },
-          default   : 0,
+          default   : 'n/a',
           validators: { required: [] }
         },
-        pending    : {
+        pending     : {
           title     : 'Is your work still pending approval?',
           control   : {
             tag   : 'input',
@@ -103,10 +106,10 @@
             },
             values: ['all', 'some', 'none']
           },
-          default   : 0,
+          default   : 'all',
           validators: { required: [] }
         },
-        timePending: {
+        time_pending: {
           title     : 'Approximately how long did it take to approve or reject?',
           control   : {
             tag   : 'input',
@@ -114,9 +117,10 @@
             labels: { class: 'inline', desc: ['days', 'hours'] },
             values: [null, null]
           },
+          default   : null,
           validators: { required: [], valueGreaterThan: [10, 'Time', 'seconds'] }
         },
-        rejected   : {
+        rejected    : {
           title     : 'Was your work rejected?',
           control   : {
             tag   : 'input',
@@ -128,10 +132,10 @@
             },
             values: ['no', 'yes', 'overturned']
           },
-          default   : 0,
+          default   : 'no',
           validators: { required: [] }
         },
-        recommend  : {
+        recommend   : {
           title     : 'Would you recommend this HIT to others?',
           control   : {
             tag   : 'input',
@@ -139,26 +143,26 @@
             labels: { class: 'inline', desc: ['No opinion', 'No', 'Yes'] },
             values: ['n/a', 'no', 'yes']
           },
-          default   : 0,
+          default   : 'n/a',
           validators: { required: [] }
         }
       },
       tree: {
         tos      : {
-          children: ['detail'],
-          as      : ['tosDetail'],
+          children: ['_context'],
+          as      : ['tos_context'],
           add     : { if: ['true'] },
           remove  : { if: ['false'] }
         },
         broken   : {
-          children: ['detail'],
-          as      : ['brokenDetail'],
+          children: ['_context'],
+          as      : ['broken_context'],
           add     : { if: ['true'] },
           remove  : { if: ['false'] }
         },
         deceptive: {
-          children: ['detail'],
-          as      : ['deceptiveDetail'],
+          children: ['_context'],
+          as      : ['deceptive_context'],
           add     : { if: ['true'] },
           remove  : { if: ['false'] }
         },
@@ -168,13 +172,13 @@
           remove  : { grandchildren: ['timePending', 'rejected'], if: ['none'] }
         },
         pending  : {
-          children: ['timePending', 'rejected'],
+          children: ['time_pending', 'rejected'],
           add     : { if: ['some', 'none'] },
           remove  : { if: ['all'] }
         },
         recommend: {
-          children: ['detail'],
-          as      : ['recommendDetail'],
+          children: ['_context'],
+          as      : ['recommend_context'],
           add     : { if: ['yes', 'no'] },
           remove  : { if: ['n/a'] }
         }
