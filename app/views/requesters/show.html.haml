@@ -1,14 +1,15 @@
-%span.title Requester Name: HIT Reviews
+%span.title= "#{@page[:requester].rname}: HIT Reviews"
 .summary
   .th.flex
     .col-1
-      .heading-bar Summary for Requester Name
+      .heading-bar= "Summary for #{@page[:requester].rname}"
     .col-2.flex
       .heading-bar 90 day averages
       .heading-bar All time averages
   .tr.flex
-    .col-1.requester-summary= render 'requester'
-    .col-2.aggregates.flex= render 'aggregates'
+    .col-1.requester-summary= render 'requester', r: @page[:requester]
+    -# TODO: explore possibility of loading aggregates as ujs PATCH
+    .col-2.aggregates.flex= render 'aggregates', a: @page[:aggregates]
 
 
 .heading-bar
@@ -24,7 +25,35 @@
   .col-2.col-review Review
 %hr.divider
 
-.row.tr.flex
-  .col-1.col-stats.flex= render 'reviews/stats'
-  .col-2.col-review= render 'reviews/review'
-%hr.divider
+- @page[:reviews].each do |r|
+  .row.tr.flex{class:"r-#{r.id}"}
+
+    -#.col-1.col-stats.flex= render 'reviews/stats'
+    .col-1.col-stats.flex
+      .col-stats.flex
+        .col-ttc= htime r.time unless r.time.nil?
+        .col-pay
+          %span.block= '$' << '%.2f' % r.hit.reward
+          %span.block.ppt= pay_rate r.hit.reward, r.time
+        .col-tta= htime r.time_pending unless r.time_pending.nil?
+
+    -#.col-2.col-review= render 'reviews/review'
+    .col-2.col-review
+      .review-header
+        %span.hit-title.bold= r.hit.title
+        .tagbox
+          - r.tags.each do |t|
+            %span.inline.tag{'data-context': t[2]}= t[0]
+
+      .review-body= r.context
+
+      .review-footer
+        %ul.inline
+          %li= link_to r.person.email, reviews_path(user: r.person.id)
+          %li.timestamp= r.updated_at
+          %li= link_to 'flag', ''
+          %li= link_to 'comment', ''
+
+  %hr.divider
+
+  -#= console

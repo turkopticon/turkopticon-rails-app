@@ -1,36 +1,21 @@
-.col-recent
-  %span.block
-    %span.bold $7.20
-    \/ hr
-  %span.block
-    %span.bold 3.6
-    days pending
-  %span.block
-    %span.bold 76%
-    of 5 satisfied with response
-  %span.block
-    %span.bold 90%
-    of 10 would recommend
+- [:recent, :all].each do |frame|
+  %div{class: "col-#{frame}"}
+    %span.block
+      - pr = pay_rate a[frame][:reward][0], a[frame][:reward][1], split: true
+      %span.bold= pr[0]
+      = "/ #{pr[1]}"
+    %span.block
+      %span.bold= "#{htime a[frame][:pending]}"
+      pending
+    %span.block
+      %span.bold= "#{a[frame][:comm][0]}"
+      = "of #{a[frame][:comm][1]} satisfied with response"
+    %span.block
+      %span.bold= "#{a[frame][:recommend][0]}"
+      = "of #{a[frame][:recommend][1]} would recommend"
 
-  %ul.inline
-    %li TOS: 2
-    %li broken: 3
+    %ul.inline
+      - [:tos, :broken, :deceptive].each do |k|
+        - next unless a[frame][k] > 0
+        %li= "#{k == :tos ? 'TOS' : k}: #{a[frame][k]}"
 
-.col-all-time
-  %span.block
-    %span.bold $5.10
-    \/ hr
-  %span.block
-    %span.bold 6
-    days pending
-  %span.block
-    %span.bold 40%
-    of 5 satisfied with response
-  %span.block
-    %span.bold 10%
-    of 10 would recommend
-
-  %ul.inline
-    %li TOS: 50
-    %li broken: 10
-    %li deceptive: 20

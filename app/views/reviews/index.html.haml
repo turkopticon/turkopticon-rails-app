@@ -15,10 +15,48 @@
   .col-review Review
 %hr.divider
 
-.row.tr.flex
-  .col-req= render 'requester'
-  .col-stats.flex= render 'stats'
-  .col-review= render 'review'
-%hr.divider
+-#
+-# the following should be extracted into separate partials, but
+-# having it ugly and inline like this yields ~94% increase
+-# in performance...  WHY???
+-#
+
+- @page[:reviews].each do |r|
+  .row.tr.flex{class: "r-#{r.id}"}
+
+    -#.col-req= render 'requester', r: r
+    .col-req
+      =link_to r.requester.rname, requester_path(r.requester.rid), class: 'rname block bold'
+      %span.rid.block= r.requester.rid
+      = link_to 'Edit review', '', class: 'arrow-link'
+
+    -#.col-stats.flex= render 'stats', r: r
+    .col-stats.flex
+      .col-ttc= htime r.time unless r.time.nil?
+      .col-pay
+        %span.block= '$' << '%.2f' % r.hit.reward
+        %span.block.ppt= pay_rate r.hit.reward, r.time
+      .col-tta= htime r.time_pending unless r.time_pending.nil?
+
+    -#.col-review= render 'review', r: r
+    .col-review
+
+      .review-header
+        %span.hit-title.bold= r.hit.title
+        .tagbox
+          - r.tags.each do |t|
+            %span.inline.tag{'data-context': t[2]}= t[0]
+
+      .review-body= r.context
+
+      .review-footer
+        %ul.inline
+          %li= link_to r.person.email, reviews_path(user: r.person.id)
+          %li.timestamp= r.updated_at
+          %li= link_to 'flag', ''
+          %li= link_to 'comment', ''
+
+  %hr.divider
 
 
+  -#= console
