@@ -38,4 +38,13 @@ class Requester < ApplicationRecord
 
     agg
   end
+
+  def manage_alias(name)
+    if self.rname != name
+      self.aliases.push self.rname unless self.aliases.include? self.rname
+      self.rname = name
+    end
+    self
+  end
+
 end
