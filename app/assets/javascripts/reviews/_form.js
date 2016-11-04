@@ -1,7 +1,9 @@
 (function form(rf) {
   'use strict';
-  const { data:{ pool }, data:{ tree }, error, validator, fn:{ get, getAll, make } } = rf,
-        anchor                                                                       = get('.c2');
+  const { data:{ pool }, data:{ tree }, error, validator, fn:{ get, getAll, make } } = rf;
+
+  let anchor,//    get('.c2'),
+      stateRef;//  get('#review_state');
 
   let model = {};
 
@@ -27,7 +29,7 @@
 
     opts = Object.assign({ as: null, to: null }, opts);
 
-    model[opts.as || key] = _render(opts.as || key, pool[key], opts.to);
+    model[opts.as || key] = _render(opts.as || key, pool[key], opts);
   }
 
   function _remove(key) {
@@ -38,14 +40,14 @@
     delete model[key];
   }
 
-  function _render(key, src, to) {
+  function _render(key, src, opt = {}) {
     const build     = {},
           ctrl      = src.control,
-          def       = 'default' in src && src.default,
+          def       = 'default' in opt ? opt.default : src.default,
           anchorRef = model.recommend && model.recommend.block || model.context.block;
 
-    build.block = to
-      ? model[to].block.appendChild(make('DIV', { class: 'inline pull right' }))
+    build.block = opt.to
+      ? model[opt.to].block.appendChild(make('DIV', { class: 'inline pull right' }))
       : anchor.insertBefore(make('DIV'), anchorRef);
 
     if (src.title)
@@ -53,27 +55,46 @@
         .textContent = src.title;
 
     ctrl.labels.desc.forEach((label, i) => {
+      let acc;
       if (!label) {
-        const acc    = build.block.appendChild(make(ctrl.tag, ctrl.attrs));
+        acc          = build.block.appendChild(make(ctrl.tag, ctrl.attrs));
         acc.onchange = _update;
         acc.name     = key;
       } else {
-        const opt    = build.block.appendChild(make('label', { class: ctrl.labels.class })),
-              acc    = opt.appendChild(make(ctrl.tag, ctrl.attrs));
+        const opt    = build.block.appendChild(make('label', { class: ctrl.labels.class }));
+        acc          = opt.appendChild(make(ctrl.tag, ctrl.attrs));
         acc.value    = ctrl.values[i];
         acc.name     = key;
         acc.onchange = _update;
         opt.appendChild(document.createTextNode(label));
-
-        if (typeof def === 'number' && def === i) acc.checked = true;
       }
+
+      if ((def === true && acc.type === 'checkbox')
+          || (acc.type === 'radio' && def === acc.value))
+        acc.checked = true;
+      else if (acc.type === 'text') acc.value = def
     });
 
     build.ref        = getAll(`[name=${key}]`, build.block);
-    build.value      = 'default' in src ? (typeof def === 'string' ? def : ctrl.values[def]) : null;
+    build.value      = def;
     build.validators = src.validators;
+    if (build.ref[0].type === 'number') _setNumFields(key, def, build.ref);
 
     return build;
+  }
+
+  function _setNumFields(name, value, elRefs) {
+    const values = [0, value];
+    if (!value) return null;
+    else if (name === 'time' && value > 60 - 1) {
+      values[0] = Math.floor(value / 60);
+      values[1] = value % 60;
+    }
+    else if (name === 'time_pending' && value > 86400 - 1) {
+      values[0] = Math.floor(value / 86400);
+      values[1] = Math.floor(value % 86400 / 3600);
+    }
+    elRefs.forEach((el, i) => el.value = values[i]);
   }
 
   function _update(e) {
@@ -103,6 +124,7 @@
 
     _validate(model[el.name]);
     _mutate(el.name, model[el.name].value);
+    stateRef.value = _serialize();
   }
 
   function _mutate(key, value) {
@@ -120,22 +142,46 @@
   }
 
   function _init() {
+    // reset dependent references to prevent breakage after browser history navigation
+    anchor   = get('.c2');
+    stateRef = get('#review_state');
+
+    const state = JSON.parse(stateRef.value);
+
     'title reward rname rid context'.split(' ').forEach(v => {
-      if (v in model) return;
-      model[v]                 = { ref: getAll(`[name=${v}]`) };
-      model[v].value           = model[v].ref[0].value;
+      // if (v in model) return;
+      model[v]       = { ref: getAll(`[name=${v}]`) };
+      model[v].value = model[v].ref[0].value = state[v];
       model[v].ref[0].onchange = _update;
       model[v].validators      = pool[v].validators;
       model[v].block           = model[v].ref[0].closest('div');
+      delete state[v];
     });
 
-    'tos broken deceptive completed'.split(' ').forEach(v => !(v in model) && _add(v));
+    // remove orphaned elements from history navigation
+    getAll('div', anchor).forEach(el => el.remove());
+    anchor.insertBefore(model.context.block, anchor.lastElementChild);
 
-    get('.submit').onclick = e => {if (!rf.form.isValid) e.preventDefault(); else (model = null)};
+    if (Object.keys(state).length) // restore from state
+      Object.keys(state).forEach(k => {
+        const ctx   = /_context/.test(k),
+              ctxTo = ctx ? k.split('_')[0] : null,
+              opt   = { as: k, default: state[k], to: ctx ? ctxTo : null };
+        if (!(k in pool) || ctxTo && !(ctxTo in pool)) return;
+        _add(ctx ? '_context' : k, opt);
+      });
+    else // create default skeleton
+      'tos broken deceptive completed'.split(' ').forEach(v => !(v in model) && _add(v));
+
+    get('.submit').onclick = e => {if (!rf.form.isValid) e.preventDefault(); else (window._rf = null)};
   }
 
   function _serialize(n = 0) {
-    return JSON.stringify(model, ['value', ...Object.keys(model)], n);
+    const json = Object.keys(model).reduce((a, b) => {
+      a[b] = model[b].value;
+      return a
+    }, {});
+    return JSON.stringify(json, null, n);
   }
 
   function _value() {
@@ -155,7 +201,8 @@
     }
     // manually trigger validation on entire model
     // returns an obj with all failed fields and their validators
-    else
+    else {
+      stateRef.value = _serialize();
       return Object.keys(model).reduce((obj, key) => {
         const src        = model[key],
               validators = Object.keys(src.validators),
@@ -168,5 +215,6 @@
         }
         return obj;
       }, {});
+    }
   }
 })(window._rf);
