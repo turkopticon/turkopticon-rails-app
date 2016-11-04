@@ -1,4 +1,4 @@
-.reviews-new
+.reviews-new, .reviews-edit
   div.validation-error
     border: 1px solid crimson
   span.validation-error
@@ -8,7 +8,7 @@
     font-size: $fs-smaller
     z-index: 5
     white-space: nowrap
-  a.submit
+  .submit
     background-color: $blue
     margin-top: 20px
     padding: 10px 20px
@@ -19,6 +19,8 @@
     font-size: $fs-bigger
     text-decoration: none
     text-align: center
+    &:focus
+      background-color: #425767
   #reward:before
     @extend .bold
     content: '$'
@@ -28,7 +30,7 @@
     z-index: 2
     color: $brownish
 
-  .flex-unit
+  .col
     margin-right: 15px
 
     &.c1
