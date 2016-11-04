@@ -1,26 +1,5 @@
 %span.title Tell Other Workers About This HIT
-.container.flex
-  .flex-unit.c1
-    %section.invert
-      .field
-        %input{ title: 'HIT Title', type: 'text', name: 'title', placeholder: 'HIT title' }
-      .field
-        %label#reward
-          %input{ title: 'Reward', type: 'number', name: 'reward', step: '0.01', min: '0', placeholder: 'Reward' }
-      %span.block.small the HIT
 
-    %section
-      .field
-        %input{ title: 'Requester Name', type: 'text', name: 'rname', placeholder: 'Requester name' }
-      .field
-        %input{ title: 'Requester ID', type: 'text', name: 'rid', placeholder: 'Requester ID' }
-      %span.block.small the Requester
-
-  .flex-unit.c2
-    .field
-      %span.question.block You can give additional information, context, or constructive comments below
-      %label
-        %textarea.block{ name: 'comments' }
-    %a.submit.block{href: ''} Submit review
+= render 'form'
 
 = javascript_include_tag 'reviews/manifest'

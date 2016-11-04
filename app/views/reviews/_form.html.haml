@@ -1,0 +1,26 @@
+.form.flex
+  .col.c1
+    %section.invert
+      .field
+        %input{ title: 'HIT Title', type: 'text', name: 'title', placeholder: 'HIT title' }
+      .field
+        %label#reward
+          %input{ title: 'Reward', type: 'number', name: 'reward', step: '0.01', min: '0', placeholder: 'Reward' }
+      %span.block.small the HIT
+
+    %section
+      .field
+        %input{ title: 'Requester Name', type: 'text', name: 'rname', placeholder: 'Requester name' }
+      .field
+        %input{ title: 'Requester ID', type: 'text', name: 'rid', placeholder: 'Requester ID' }
+      %span.block.small the Requester
+
+  .col.c2
+    .field
+      %span.question.block You can give additional information, context, or constructive comments below
+      %label
+        %textarea.block{ name: 'context' }
+
+    = form_for @review do |f|
+      = f.hidden_field :state,  value: @state
+      = f.submit 'Submit review', class: 'submit block'
