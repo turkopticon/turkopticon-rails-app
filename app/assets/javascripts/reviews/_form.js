@@ -167,7 +167,7 @@
         const ctx   = /_context/.test(k),
               ctxTo = ctx ? k.split('_')[0] : null,
               opt   = { as: k, default: state[k], to: ctx ? ctxTo : null };
-        if (!(k in pool) || ctxTo && !(ctxTo in pool)) return;
+        if (!((ctx ? ctxTo : k) in pool)) return;
         _add(ctx ? '_context' : k, opt);
       });
     else // create default skeleton
