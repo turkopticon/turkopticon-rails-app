@@ -166,7 +166,7 @@ hr.divider
 .review-header
   margin-bottom: 5px
 
-.review-footer
+.review-footer, .comment-footer
   font-size: $fs-smallest
   margin-top: 5px
   li
@@ -175,6 +175,17 @@ hr.divider
       @extend %pipe-spacer
   .timestamp
     color: rgba(0, 0, 0, 0.7)
+
+.comments-divider
+  margin: 5px 0
+  span
+    text-transform: uppercase
+
+.comments
+  padding-left: 20px
+
+[class^='comment-']
+  margin-bottom: 5px
 
 .aggregates li:not(:last-child):after
   @extend %pipe-spacer

@@ -28,7 +28,8 @@
     .col-req
       =link_to r.requester.rname, requester_path(r.requester.rid), class: 'rname block bold'
       %span.rid.block= r.requester.rid
-      = link_to 'Edit review', '', class: 'arrow-link'
+      - if @user.id == r.person_id
+        = link_to 'Edit review', edit_review_path(r), class: 'arrow-link'
 
     -#.col-stats.flex= render 'stats', r: r
     .col-stats.flex
@@ -56,7 +57,20 @@
           %li= link_to 'flag', ''
           %li= link_to 'comment', ''
 
+      - if (size = r.comments.size) > 0
+        .comments-divider
+          %span= pluralize size, 'comment'
+          = link_to '(hide)', '#'
+        .comments
+          - r.comments.each do |c|
+            %div{ class: "comment-#{c.id}" }
+              = c.body
+              .comment-footer
+                %ul.inline
+                  %li= link_to c.person.email, reviews_path(user: c.person.id)
+                  %li.timestamp= c.updated_at
+
   %hr.divider
 
-
-  -#= console
+= javascript_include_tag 'reviews/comments'
+-#= console

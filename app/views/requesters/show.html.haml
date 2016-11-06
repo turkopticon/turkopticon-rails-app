@@ -54,6 +54,20 @@
           %li= link_to 'flag', ''
           %li= link_to 'comment', ''
 
+      - if (size = r.comments.size) > 0
+        .comments-divider
+          %span= pluralize size, 'comment'
+          = link_to '(hide)', '#'
+        .comments
+          - r.comments.each do |c|
+            %div{ class: "comment-#{c.id}" }
+              = c.body
+              .comment-footer
+                %ul.inline
+                  %li= link_to c.person.email, reviews_path(user: c.person.id)
+                  %li.timestamp= c.updated_at
+
   %hr.divider
 
-  -#= console
+= javascript_include_tag 'reviews/comments'
+-#= console
