@@ -2,7 +2,8 @@ class Requester < ApplicationRecord
   has_many :hits
   has_many :reviews, through: :hits
 
-  validates :rid, uniqueness: true
+  validates :rid, presence: true, uniqueness: true
+  validates :rname, presence: true
   serialize :aliases, Array
 
   # default_scope { includes(hits: [{ reviews: [:person, :comments] }]) }
