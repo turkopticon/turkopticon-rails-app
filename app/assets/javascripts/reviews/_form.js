@@ -151,7 +151,7 @@
     'title reward rname rid context'.split(' ').forEach(v => {
       // if (v in model) return;
       model[v]       = { ref: getAll(`[name=${v}]`) };
-      model[v].value = model[v].ref[0].value = state[v];
+      model[v].value = model[v].ref[0].value = state[v] || null;
       model[v].ref[0].onchange = _update;
       model[v].validators      = pool[v].validators;
       model[v].block           = model[v].ref[0].closest('div');
