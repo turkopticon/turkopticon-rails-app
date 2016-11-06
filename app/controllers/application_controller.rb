@@ -2,6 +2,8 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
   layout 'application' #, :except => [:blogfeed]
+  before_action :retrieve_user
+  before_action :require_login
 
   # before_filter :title, :check_ip
 
@@ -17,14 +19,6 @@ class ApplicationController < ActionController::Base
     request.env['HTTP_X_REAL_IP'] || request.env['REMOTE_ADDR']
   end
 
-  def authorize
-    unless !session[:person_id].nil? and Person.find(session[:person_id]) and !Person.find(session[:person_id]).is_closed
-      session[:original_uri] = request.request_uri
-      flash[:notice]         = "Please log in."
-      redirect_to :controller => "reg", :action => "login"
-    end
-  end
-
   def verify
     unless Person.find(session[:person_id]).email_verified
       session[:original_url] = request.request_uri
@@ -37,6 +31,20 @@ class ApplicationController < ActionController::Base
     unless Person.find(session[:person_id]).can_comment
       flash[:notice] = "Sorry, your account doesn't seem to have commenting and flagging enabled."
       redirect_to :controller => "main", :action => "index"
+    end
+  end
+
+  private
+
+  def retrieve_user
+    @user ||= session[:person_id] ? Person.find(session[:person_id]) : nil
+  end
+
+  def require_login
+    unless @user
+      session[:original_uri] = request.fullpath
+      flash[:notice]         = 'Please login to continue'
+      redirect_to new_session_path
     end
   end
 

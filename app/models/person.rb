@@ -26,16 +26,21 @@ class Person < ActiveRecord::Base
   has_many :legacy_comments
   has_many :ignores
 
-  validates_presence_of :email
-  validates_uniqueness_of :email
-  validates_format_of :email, :with => /\A([a-z0-9])([a-z0-9_\-\.\+])*(?!\.{2,})([a-z0-9])\@(?!mailinator|.*mial\.|spamcatch|spambob|spamavert|spamherelots)([a-z0-9])([a-z0-9\-\.])*\.([a-z]{2,4})\z/i, :message => "is not a recognized email address"
+  before_validation { |r| r.email.downcase!.strip! }
 
-  attr_accessor :password_confirmation
-  #validates_presence_of :password
-  validates_confirmation_of :password
+  validates :email, presence: true, uniqueness: true, format: {
+      with:    /\A([a-z0-9])([a-z0-9_\-\.\+])*(?!\.{2,})([a-z0-9])\@(?!mailinator|.*mial\.|spamcatch|spambob|spamavert|spamherelots)([a-z0-9])([a-z0-9\-\.])*\.([a-z]{2,4})\z/i,
+      message: 'is not a recognized email address' }
+
+  validates :password, presence: true, confirmation: true
+  validates :password_confirmation, presence: true
 
   def verify
     self.update_attributes(:email_verified => true)
+  end
+
+  def verified?
+    self.email_verified?
   end
 
   def close
@@ -59,21 +64,14 @@ class Person < ActiveRecord::Base
     end
     self.save
   end
-  
-  def before_validation
-    self.email = self.email.downcase.strip
-  end
 
-  def validate
-    errors.add_to_base("Missing password.") if hashed_password.blank?
-  end
-
+  # TODO: probably doesn't belong in the model; refactor all display name stuff into a view helper
   def truncated_email
     begin
-      e = email.split("@")
-      f = e[0]
-      g = e[1]
-      dn = f[0,f.length/2] + "...@" + g[0,1] + "..."
+      e  = email.split("@")
+      f  = e[0]
+      g  = e[1]
+      dn = f[0, f.length/2] + "...@" + g[0, 1] + "..."
     rescue Exception
       dn = email
     end
@@ -83,30 +81,26 @@ class Person < ActiveRecord::Base
   def public_email
     if display_name.nil?
       begin
-        e = email.split("@")
-        f = e[0]
-        g = e[1]
-        dn = f[0,f.length/2] + "...@" + g[0,1] + "..."
+        e  = email.split("@")
+        f  = e[0]
+        g  = e[1]
+        dn = f[0, f.length/2] + "...@" + g[0, 1] + "..."
       rescue Exception
         dn = email
       end
     else
-      if display_name.empty?
-        dn = id.to_s
-      else
-        dn = display_name.gsub(/[()]/,"")
-      end
+      dn = display_name.empty? ? id.to_s : display_name.gsub(/[()]/, '')
     end
     if self.is_admin
-      dn += " (admin)"
+      dn << ' (admin)'
     elsif self.is_moderator
-      dn += " (moderator)"
+      dn << ' (moderator)'
     end
     dn
   end
 
   def mod_display_name
-    dn = display_name.nil? ? email : display_name.gsub(/[()]/,"")
+    dn = display_name.nil? ? email : display_name.gsub(/[()]/, "")
     dn = id.to_s if dn.empty?
     if self.is_admin
       dn += " (admin)"
@@ -116,21 +110,12 @@ class Person < ActiveRecord::Base
     dn
   end
 
-  def recently_updated_report?
-    rv = false
-    t = Time.now
-    reports.each{|r| rv = true if r.updated_at > (t - 1.month)}
-    rv
+  def recently_updated_review?
+    reviews.where('updated_at > ?', 1.month.ago).size > 0
   end
 
   def active?
-    if reports.blank?
-      false
-    elsif recently_updated_report?
-      true
-    else
-      false
-    end
+    reviews.empty? ? false : recently_updated_review?
   end
 
   def inactive?
@@ -138,46 +123,38 @@ class Person < ActiveRecord::Base
   end
 
   def self.active_count
-    rv = 0
-    Person.all.each { |p| rv += 1 if p.active? }
-    rv
+    self.joins(:reviews).where('reviews.updated_at > ?', 1.month.ago).size
   end
 
-	def self.authenticate(email, password)
-		person = self.find_by_email(email)
-	 	if person
-	   	expected_password = encrypted_password(password, person.salt)
-	   	if person.hashed_password != expected_password
-				person = nil
-			end
-		end
-		person
-	end
+  def authenticate(password)
+    expected_password = encrypted_password(password, self.salt)
+    self.hashed_password == expected_password
+  end
 
-	def password
-		@password
-	end
+  def password
+    @password
+  end
 
   def password=(pwd)
     if pwd.nil? or pwd.length == 0
-      self.salt = nil
+      self.salt            = nil
       self.hashed_password = nil
     else
       @password = pwd
       create_new_salt
-      self.hashed_password = Person.encrypted_password(self.password, self.salt)
+      self.hashed_password = encrypted_password(self.password, self.salt)
     end
   end
-	
-	private
 
-	def self.encrypted_password(password, salt)
-		string_to_hash = password + "foos" + salt
-		Digest::SHA1.hexdigest(string_to_hash)
-	end
+  private
 
-	def create_new_salt
-		self.salt = self.object_id.to_s + rand.to_s
-	end
+  def encrypted_password(password, salt)
+    string_to_hash = password + "foos" + salt
+    Digest::SHA1.hexdigest(string_to_hash)
+  end
+
+  def create_new_salt
+    self.salt = self.object_id.to_s + rand.to_s
+  end
 
 end

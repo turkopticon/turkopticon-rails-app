@@ -1,5 +1,6 @@
 class MainController < ApplicationController
 
+  skip_before_action :require_login #, only: [:index, :info]
   # before_filter :authorize, :except => [:requester_stats, :info, :help, :help_v2, :install_v2, :install_welcome, :requester_attrs, :requester_attrs_v2, :ditz, :blog, :post, :blogfeed, :requesters, :requester_attrs_2, :x, :ferret_index, :rules, :dedupe_reqs, :backup_db, :check_for_duplicate_requester_objects, :wth]
   # before_filter :check_for_existing_report, :only => :add_report
   # before_filter :verify, :only => :add_report

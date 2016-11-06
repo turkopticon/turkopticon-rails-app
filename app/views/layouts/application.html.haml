@@ -14,11 +14,7 @@
         %a{ href: "#{root_path}" }
           %img{ alt: 'logo', src: "#{asset_path ''}" }
         .usernav.right
-          user
-          %ul.inline
-            %li= link_to 'my reviews', '#'
-            %li= link_to 'settings', '#'
-            %li= link_to 'logout', '#'
+          = render 'layouts/user_bar'
         %nav
           .left
             -# TODO: convert to form
@@ -33,7 +29,7 @@
 
     .content-wrapper.constrainer
       - if flash[:notice]
-        #notice
+        .notice
           = flash[:notice]
 
       = yield

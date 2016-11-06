@@ -3,12 +3,15 @@ Rails.application.routes.draw do
   get 'splash/index' # only used for initial testing
 
   root 'main#info'
-  get 'install' => 'main#install'
-  get 'rules' => 'main#rules'
+  get 'install', to: 'main#install'
+  get 'rules', to: 'main#rules'
   resources 'reviews'
   resources 'requesters', only: [:index, :show], param: :rid
+  resources 'sessions', only: [:new, :create, :destroy], path_names: { new: 'login' }
 
-  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
+  # get 'reg/change_email'
+  # get 'reg/change_password'
+
 end
 
 
