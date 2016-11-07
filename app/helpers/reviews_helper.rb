@@ -18,7 +18,7 @@ module ReviewsHelper
     end
 
     sem.insert(1, :and) if params.key?(:flags) && params.key?(:comments)
-    sem.insert(0, :with) unless sem.length < 1
+    sem.insert(0, :with) if params.key?(:flags) || params.key?(:comments)
     sem.join ' '
   end
 
