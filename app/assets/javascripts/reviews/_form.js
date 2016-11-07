@@ -47,8 +47,9 @@
           anchorRef = model.recommend && model.recommend.block || model.context.block;
 
     build.block = opt.to
-      ? model[opt.to].block.appendChild(make('DIV', { class: 'inline pull right' }))
-      : anchor.insertBefore(make('DIV'), anchorRef);
+      ? model[opt.to].block.appendChild(make('DIV', { class: 'field inline pull right' }))
+      : anchor.insertBefore(make('DIV', { class: (opt.anim ? 'init ' : '') + 'field' }), anchorRef);
+    if (opt.anim) setTimeout(() => build.block.classList.remove('init'), 10);
 
     if (src.title)
       build.block.appendChild(make('span', { class: 'question block' }))
@@ -132,7 +133,7 @@
     if (branch && branch.add.if.includes(value.toString()))
     // add children if not already in model
       branch.children.forEach((child, i) => {
-        const opt = branch.as ? { as: branch.as[i], to: key } : {};
+        const opt = Object.assign((branch.as ? { as: branch.as[i], to: key } : {}), { anim: true });
         if (!((opt.as || child) in model)) _add(child, opt);
       });
     else if (branch && branch.remove.if.includes(value.toString()))
