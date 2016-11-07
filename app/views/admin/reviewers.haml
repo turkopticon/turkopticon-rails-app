@@ -16,7 +16,7 @@
   - @review_counts.each do |reviewer|
     %tr{:style => "background-color: #{cycle('#eee', '#fff')}"}
       %td= reviewer[:person_id]
-      %td= link_to reviewer[:public_email], :controller => "main", :action => "reports_by", :id => reviewer[:person_id]
+      %td= link_to reviewer[:public_email], '' #:controller => "main", :action => "reports_by", :id => reviewer[:person_id]
       %td= reviewer[:acct_date]
       %td= reviewer[:review_count]
       %td= reviewer[:can_comment]

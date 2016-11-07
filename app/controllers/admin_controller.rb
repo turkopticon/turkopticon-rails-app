@@ -1,14 +1,12 @@
 class AdminController < ApplicationController
 
-  before_filter :authorize, :authorize_as_admin, :except => [:review_commenting_requests]
-  layout nil
+  before_action :authorize_as_admin, :except => [:review_commenting_requests]
 
   def authorize_as_admin
-    pid = session[:person_id]
-    unless !pid.nil? and Person.find(pid) and Person.find(pid).is_admin
+    unless @user.is_admin
       session[:original_uri] = request.request_uri
-      flash[:notice] = "Please log in as an administrator."
-      redirect_to :controller => "reg", :action => "login"
+      flash[:notice]         = 'Please log in as an administrator.'
+      redirect_to new_session_path
     end
   end
 
@@ -16,22 +14,20 @@ class AdminController < ApplicationController
   end
 
   def dashboard
-    @user_count = Person.count
-    @new_user_count = Person.all(:conditions => ["created_at > ?", Time.now - 1.month]).count
-    @active_user_count = Report.all(:conditions => ["created_at > ?", Time.now - 1.month]).collect{|r| r.person_id}.uniq.count
-    # @active_user_count = Report.all.select{|r| r.created_at > Time.now - 1.month}.collect{|r| r.person_id}.uniq.count  # slow, don't do that
-    @report_count = Report.count
-    @requester_count = Requester.count
-    @recent_reports = Report.all(:conditions => ["created_at > ?", Time.now - 1.month])
-    @recent_report_count = @recent_reports.count
-    authors = @recent_reports.map{|r| {"id" => r.person_id, "name" => r.person.display_name.nil? ? r.person.email : r.person.display_name}}
-    @author_count = authors.uniq.count
-    @authors_with_counts = authors.group_by{|a| [a["id"], a["name"]]}.map{|k, v| [k, v.length]}.sort_by{|a| a[1]}.reverse
-    @recent_flags = Flag.all(:conditions => ["created_at > ?", Time.now - 1.month])
-    # @recent_flags = Flag.all.select{|f| f.created_at > Time.now - 1.month}  # slow
+    @user_count               = Person.count
+    @new_user_count           = Person.where('created_at > ?', Time.now - 1.month).count
+    @recent_reports           = Report.where('created_at > ?', Time.now - 1.month)
+    @active_user_count        = @recent_reports.collect { |r| r.person_id }.uniq.count
+    @report_count             = Report.count
+    @requester_count          = Requester.count
+    @recent_report_count      = @recent_reports.count
+    authors                   = @recent_reports.map { |r| { id: r.person_id, name: r.person.display_name || r.person.email } }
+    @author_count             = authors.uniq.count
+    @authors_with_counts      = authors.group_by { |a| [a[:id], a[:name]] }.map { |k, v| [k, v.length] }.sort_by { |a| a[1] }.reverse
+    @recent_flags             = Flag.where('created_at > ?', Time.now - 1.month)
     @recently_flagged_reports = @recent_flags.collect{|f| f.report_id}
-    @recent_flaggers = @recent_flags.collect{|f| f.person_id}
-    top_flaggers = {}
+    @recent_flaggers          = @recent_flags.collect{|f| f.person_id}
+    top_flaggers              = {}
     @recent_flaggers.each do |pid|
       if top_flaggers[pid].nil?
         top_flaggers[pid] = 1
@@ -44,7 +40,7 @@ class AdminController < ApplicationController
 
   def reviewers
     reviewers = {}
-    Report.all.each{|r|
+    Review.all.each { |r|
       pid = r.person_id
       if reviewers[pid].nil?
         p = Person.find(pid)
