@@ -1,5 +1,5 @@
 class ForumPersonInfo < ActiveRecord::Base
-  self.set_table_name "forum_person_info"
+  self.table_name = 'forum_person_info'
 
   def up_effect
     self.initialize_karma
