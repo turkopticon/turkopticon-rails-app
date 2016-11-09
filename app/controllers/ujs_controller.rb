@@ -1,0 +1,2 @@
+class UjsController < ApplicationController
+end

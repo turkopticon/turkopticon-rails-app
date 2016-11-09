@@ -55,7 +55,9 @@
           %li= link_to r.person.email, reviews_path(user: r.person.id)
           %li.timestamp= r.updated_at
           %li= link_to 'flag', ''
-          %li= link_to 'comment', ''
+          %li= link_to 'comment', ujs_path(:new_comment, r: r.id), remote: true, method: :patch
+
+      %div{ class: "new-comment-#{r.id}" }
 
       - if (size = r.comments.size) > 0
         .comments-divider

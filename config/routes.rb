@@ -3,11 +3,16 @@ Rails.application.routes.draw do
   get 'splash/index' # only used for initial testing
 
   root 'main#info'
-  get 'install', to: 'main#install'
-  get 'rules', to: 'main#rules'
-  resources 'reviews'
-  resources 'requesters', only: [:index, :show], param: :rid
-  resources 'sessions', only: [:new, :create, :destroy], path_names: { new: 'login' }
+  get :install, to: 'main#install'
+  get :rules, to: 'main#rules'
+  resources :reviews
+  resources :comments, only: [:create, :update]
+  resources :requesters, only: [:index, :show], param: :rid
+  resources :sessions, only: [:new, :create, :destroy], path_names: { new: :login }
+
+  scope :ujs, defaults: { format: :ujs } do
+    patch :new_comment, to: 'ujs#new_comment'
+  end
 
   # get 'reg/change_email'
   # get 'reg/change_password'
