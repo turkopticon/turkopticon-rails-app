@@ -1,14 +1,3 @@
-if (typeof Element.prototype.closest !== 'function')
-  Element.prototype.closest = function closest(selector) {
-    let el = this;
-    while (el && el.nodeType === 1) {
-      if (el.matches(selector)) return el;
-      el = el.parentNode;
-    }
-    return null;
-  };
-
-
 (function helper(rf) {
   rf.fn = rf.fn || {
       get   : (...args) => (args[1] || document).querySelector(args[0]),
@@ -20,4 +9,3 @@ if (typeof Element.prototype.closest !== 'function')
       }
     };
 })(window._rf || (window._rf = {}));
-

@@ -1,4 +1,4 @@
-//=require ./poly.js.es6
+//=require ./_helper.js.es6
 //=require ./_data.js.es6
 //=require ./_validator.js.es6
 //=require ./_error.js.es6
