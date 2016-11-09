@@ -22,11 +22,12 @@ class Person < ActiveRecord::Base
 
   has_many :reports #legacy reviews
   has_many :reviews
+  has_many :comments
   has_many :flags
   has_many :legacy_comments
   has_many :ignores
 
-  before_validation { |r| r.email.downcase!.strip! }
+  before_validation { |r| r.email = r.email.downcase.strip }
 
   validates :email, presence: true, uniqueness: true, format: {
       with:    /\A([a-z0-9])([a-z0-9_\-\.\+])*(?!\.{2,})([a-z0-9])\@(?!mailinator|.*mial\.|spamcatch|spambob|spamavert|spamherelots)([a-z0-9])([a-z0-9\-\.])*\.([a-z]{2,4})\z/i,
