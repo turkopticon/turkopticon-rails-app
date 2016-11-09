@@ -8,7 +8,7 @@
 
 def seed
   8.times do
-    Person.create({ email: "#{rand_rid}@test.com" })
+    Person.create({ email: "#{rand_rid}@test.com", password: 'user', password_confirmation: 'user' })
   end
 
   10.times do |i|
