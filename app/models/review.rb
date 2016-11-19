@@ -19,7 +19,7 @@ class Review < ApplicationRecord
   def tags
     tags = %w( tos broken deceptive recommend )
                .map { |t| [t, self[t], self["#{t}_context"]] }
-               .select { |t| t[1] == true || t[1] =~ '(no|yes)' }
+               .select { |t| t[1] == true || t[1] =~ /(no|yes)/ }
     tags.unshift ['rejected', true, 'some or all of my work was rejected'] if self.rejected == 'yes'
     tags
   end
