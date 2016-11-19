@@ -25,11 +25,11 @@ class Requester < ApplicationRecord
     [:comm, :recommend].each do |k|
       n            = av.where.not(k => 'n/a').count
       x            = n > 0 && av.where(k => 'yes').count
-      agg[:all][k] = [n > 0 ? '%.f%%' % (x/n.to_f) : '--', n]
+      agg[:all][k] = [n > 0 ? '%.f%%' % (100*x/n.to_f) : '--', n]
 
       n               = rv.where.not(k => 'n/a').count
       x               = n > 0 && rv.where(k => 'yes').count
-      agg[:recent][k] = [n > 0 ? '%.f%%' % (x/n.to_f) : '--', n]
+      agg[:recent][k] = [n > 0 ? '%.f%%' % (100*x/n.to_f) : '--', n]
     end
 
     [:tos, :broken, :deceptive].each do |k|
