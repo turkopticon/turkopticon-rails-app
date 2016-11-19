@@ -87,13 +87,13 @@
   function _setNumFields(name, value, elRefs) {
     const values = [0, value];
     if (!value) return null;
-    else if (name === 'time' && value > 60 - 1) {
+    else if (name === 'time' && value >= 60) {
       values[0] = Math.floor(value / 60);
       values[1] = value % 60;
     }
-    else if (name === 'time_pending' && value > 86400 - 1) {
+    else if (name === 'time_pending') {
       values[0] = Math.floor(value / 86400);
-      values[1] = Math.floor(value % 86400 / 3600);
+      values[1] = values[0] === 0 ? +(value / 3600).toFixed(2) : Math.floor(value % 86400 / 3600);
     }
     elRefs.forEach((el, i) => el.value = values[i]);
   }
