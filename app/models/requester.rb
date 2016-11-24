@@ -10,31 +10,28 @@ class Requester < ApplicationRecord
   scope :by_rid, -> (rid) { includes(:hits).where(rid: rid).take }
 
   def aggregates
-    agg    = { all: {}, recent: {} }
-    av, rv = self.reviews.valid, self.reviews.recent.valid
+    agg = { all: {}, recent: {} }
 
-    reward             = self.hits.map { |h| hv = h.reviews.valid; [h.reward.to_f * hv.count(:time), hv.sum(:time)] }
-    agg[:all][:reward] = reward.reduce([0, 0]) { |a, b| a[0] += b[0]; a[1] += b[1]; a }
+    [:all, :recent].each do |period|
+      review = period == :all ? self.reviews.valid : self.reviews.recent.valid
 
-    reward                = self.hits.map { |h| hv = h.reviews.recent.valid; [h.reward.to_f * hv.count(:time), hv.sum(:time)] }
-    agg[:recent][:reward] = reward.reduce([0, 0]) { |a, b| a[0] += b[0]; a[1] += b[1]; a }
+      rewards = self.hits.map do |hit|
+        hv = hit.reviews.valid
+        [(hit.reward.to_f * hv.count(:time)).round(2), hv.sum(:time)]
+      end
 
-    agg[:all][:pending]    = av.average(:time_pending)
-    agg[:recent][:pending] = rv.average(:time_pending)
+      agg[period][:reward]    = rewards.reduce([0, 0]) { |a, b| a[0] += b[0]; a[1] += b[1]; a } << review.count(:time)
+      agg[period][:reward][0] = agg[period][:reward][0].round(2)
+      agg[period][:pending]   = review.average(:time_pending).to_f
 
-    [:comm, :recommend].each do |k|
-      n            = av.where.not(k => 'n/a').count
-      x            = n > 0 && av.where(k => 'yes').count
-      agg[:all][k] = [n > 0 ? '%.f%%' % (100*x/n.to_f) : '--', n]
+      [:comm, :recommend].each do |key|
+        n = review.where.not(key => 'n/a').size
+        x = n > 0 && review.where(key => 'yes').size
 
-      n               = rv.where.not(k => 'n/a').count
-      x               = n > 0 && rv.where(k => 'yes').count
-      agg[:recent][k] = [n > 0 ? '%.f%%' % (100*x/n.to_f) : '--', n]
-    end
+        agg[period][key] = [n > 0 ? '%.f%%' % (100*x/n.to_f) : '--', n]
+      end
 
-    [:tos, :broken, :deceptive].each do |k|
-      agg[:all][k]    = av.where(k => true).count
-      agg[:recent][k] = rv.where(k => true).count
+      [:tos, :broken, :deceptive].each { |key| agg[period][key] = review.where(key => true).size }
     end
 
     agg
