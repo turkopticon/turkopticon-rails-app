@@ -61,6 +61,7 @@ GEM
       execjs
     coffee-script-source (1.10.0)
     concurrent-ruby (1.0.2)
+    dalli (2.7.6)
     debug_inspector (0.0.2)
     diff-lcs (1.2.5)
     erubis (2.7.0)
@@ -200,6 +201,7 @@ DEPENDENCIES
   byebug
   capybara
   coffee-rails (~> 4.2)
+  dalli (~> 2.7)
   factory_girl_rails
   haml
   jbuilder (~> 2.5)
