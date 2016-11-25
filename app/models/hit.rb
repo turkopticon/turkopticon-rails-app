@@ -1,5 +1,5 @@
 class Hit < ApplicationRecord
-  belongs_to :requester
+  belongs_to :requester, touch: true
   has_many :reviews
 
   validates :title, presence: true
