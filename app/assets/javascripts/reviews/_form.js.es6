@@ -146,11 +146,11 @@
     // reset dependent references to prevent breakage after browser history navigation
     anchor   = get('.c2');
     stateRef = get('#review_state');
+    model    = {};
 
     const state = JSON.parse(stateRef.value);
 
     'title reward rname rid context'.split(' ').forEach(v => {
-      // if (v in model) return;
       model[v]       = { ref: getAll(`[name=${v}]`) };
       model[v].value = model[v].ref[0].value = state[v] || null;
       model[v].ref[0].onchange = _update;
