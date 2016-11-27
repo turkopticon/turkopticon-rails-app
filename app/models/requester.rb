@@ -6,8 +6,12 @@ class Requester < ApplicationRecord
   validates :rname, presence: true
   serialize :aliases, Array
 
-  # default_scope { includes(hits: [{ reviews: [:person, :comments] }]) }
-  scope :by_rid, -> (rid) { includes(:hits).where(rid: rid).take }
+  # noinspection RubyResolve
+  after_touch do
+    Rails.cache.delete([self.class.name, 'rid', rid]) # assume only rid uses find_by()
+  end
+
+  # scope :by_rid, -> (rid) { includes(:hits).where(rid: rid).take }
 
   def aggregates
     agg = { all: {}, recent: {} }
@@ -15,7 +19,7 @@ class Requester < ApplicationRecord
     [:all, :recent].each do |period|
       review = period == :all ? self.reviews.valid : self.reviews.recent.valid
 
-      rewards = self.hits.map do |hit|
+      rewards = hits.map do |hit|
         hv = hit.reviews.valid
         [(hit.reward.to_f * hv.count(:time)).round(2), hv.sum(:time)]
       end
@@ -43,6 +47,26 @@ class Requester < ApplicationRecord
       self.rname = name
     end
     self
+  end
+
+  def cached_aggregates
+    Rails.cache.fetch([self.cache_key, 'aggregates']) { aggregates }
+  end
+
+  # def cached_multi_aggregates(sth)
+  #   # Rails.cache.fetch_multi() {}
+  # end
+
+  def self.cached_find_by(opts = {})
+    key = opts.keys[0]
+    val = opts[key]
+    Rails.cache.fetch([name, key.to_s, val]) { find_by(key => val) }
+  end
+
+  def self.cached_multi_find_by(opts = {})
+    key = opts.keys[0].to_s
+    val = opts[key.to_sym].map { |v| [name, key, v] }
+    Rails.cache.fetch_multi(*val) { |ck| find_by(key => ck[2]) }
   end
 
 end
