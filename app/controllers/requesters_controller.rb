@@ -4,7 +4,7 @@ class RequestersController < ApplicationController
   end
 
   def show
-    req   = Requester.by_rid(params[:rid])
-    @page = { requester: req, reviews: req.reviews.order(created_at: :desc), aggregates: req.aggregates }
+    req   = Requester.cached_find_by(rid: params[:rid])
+    @page = { requester: req, reviews: req.reviews.order(created_at: :desc), aggregates: req.cached_aggregates }
   end
 end
