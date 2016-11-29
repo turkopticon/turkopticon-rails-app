@@ -11,8 +11,8 @@
   %body{ class: "#{controller_name}-#{action_name}" }
     %header
       .constrainer
-        %a{ href: "#{root_path}" }
-          %img{ alt: 'logo', src: "#{asset_path ''}" }
+        #logo-container.inline
+          %a{ href: "#{root_path}" }= render 'layouts/logo'
         .usernav.right
           = render 'layouts/user_bar'
         %nav
