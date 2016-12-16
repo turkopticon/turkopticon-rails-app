@@ -53,4 +53,16 @@ module ReviewsHelper
           .join
     end
   end
+
+  def tag_class(data)
+    name, value = data
+    case
+      when name == 'rejected' && value then
+        'critical'
+      when name == 'recommend' && value == 'yes' then
+        'positive'
+      else
+        'negative'
+    end
+  end
 end
