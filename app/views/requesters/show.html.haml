@@ -53,6 +53,8 @@
           %li.timestamp= r.updated_at
           %li= link_to 'flag', ''
           %li= link_to 'comment', ujs_path(:new_comment, r: r.id), remote: true, method: :patch
+          - if @user.id == r.person_id
+            %li= link_to 'edit', edit_review_path(r)
 
       %div{ class: "new-comment-#{r.id}" }
 
