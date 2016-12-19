@@ -69,4 +69,12 @@ module ReviewsHelper
         'negative'
     end
   end
+
+  def tag_label(tag)
+    if tag[0] == 'recommend'
+      tag[1] == 'no' ? 'not recommended' : tag[0] << 'ed'
+    else
+      tag[0]
+    end
+  end
 end
