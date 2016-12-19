@@ -15,7 +15,7 @@ class Requester < ApplicationRecord
     agg = { all: {}, recent: {} }
 
     [:all, :recent].each do |period|
-      review                  = period == :all ? self.reviews.valid : self.reviews.recent.valid
+      review = period == :all ? self.reviews.valid : self.reviews.recent.valid
 
       rewards = hits.map do |hit|
         hv = hit.reviews.valid.where('time > 0')
@@ -40,10 +40,10 @@ class Requester < ApplicationRecord
   end
 
   def manage_alias(name)
-    if self.rname != name
+    if self.rname && self.rname != name
       self.aliases.push self.rname unless self.aliases.include? self.rname
-      self.rname = name
     end
+    self.rname = name
     self
   end
 
