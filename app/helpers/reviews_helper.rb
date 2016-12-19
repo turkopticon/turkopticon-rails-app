@@ -61,8 +61,8 @@ module ReviewsHelper
   def tag_class(data)
     name, value = data
     case
-      when name == 'rejected' && value then
-        'critical'
+      # when name == 'rejected' && value then
+      #   'critical'
       when name == 'recommend' && value == 'yes' then
         'positive'
       else
