@@ -7,9 +7,7 @@ class Requester < ApplicationRecord
   serialize :aliases, Array
 
   # noinspection RubyResolve
-  after_touch do
-    Rails.cache.delete([self.class.name, 'rid', rid]) # assume only rid uses find_by()
-  end
+  after_touch lambda { Rails.cache.delete([self.class.name, 'rid', rid]) } # assume only rid uses find_by()
 
   # scope :by_rid, -> (rid) { includes(:hits).where(rid: rid).take }
 
@@ -17,14 +15,14 @@ class Requester < ApplicationRecord
     agg = { all: {}, recent: {} }
 
     [:all, :recent].each do |period|
-      review = period == :all ? self.reviews.valid : self.reviews.recent.valid
+      review                  = period == :all ? self.reviews.valid : self.reviews.recent.valid
 
       rewards = hits.map do |hit|
-        hv = hit.reviews.valid
-        [(hit.reward.to_f * hv.count(:time)).round(2), hv.sum(:time)]
+        hv = hit.reviews.valid.where('time > 0')
+        [(hit.reward.to_f * hv.size).round(2), hv.sum(:time)]
       end
 
-      agg[period][:reward]    = rewards.reduce([0, 0]) { |a, b| a[0] += b[0]; a[1] += b[1]; a } << review.count(:time)
+      agg[period][:reward]    = rewards.reduce([0, 0]) { |a, b| a[0] += b[0]; a[1] += b[1]; a } << review.where('time > 0').size
       agg[period][:reward][0] = agg[period][:reward][0].round(2)
       agg[period][:pending]   = review.average(:time_pending).to_f
 
