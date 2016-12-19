@@ -24,7 +24,11 @@ module ReviewsHelper
 
   def pay_rate(pay, time, opt = {})
     opt = { unit: :hr, split: false }.merge(opt)
-    return nil unless time && time > 0
+
+    unless time && time > 0
+      return opt[:split] ? ['--', opt[:unit]] : nil
+    end
+
     base = pay/time
     exp  = case opt[:unit]
              when :hr, :h, :hour then
