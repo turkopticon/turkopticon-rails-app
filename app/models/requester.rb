@@ -33,7 +33,7 @@ class Requester < ApplicationRecord
         agg[period][key] = [n > 0 ? '%.f%%' % (100*x/n.to_f) : '--', n]
       end
 
-      [:tos, :broken, :deceptive].each { |key| agg[period][key] = review.where(key => true).size }
+      [:tos, :broken].each { |key| agg[period][key] = review.where(key => true).size }
     end
 
     agg

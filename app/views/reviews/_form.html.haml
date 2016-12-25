@@ -1,26 +1,116 @@
 .form.flex
   .col.c1
     %section.invert
-      .field
-        %input{ title: 'HIT Title', type: 'text', name: 'title', placeholder: 'HIT title' }
-      .field
+      %fieldset{'data-name': :title, 'data-role': :default}
+        %input{ title: 'HIT Title', type: :text, name: :title, placeholder: 'HIT title' }
+      %fieldset{'data-name': :reward, 'data-role': :reward}
         %label#reward
-          %input{ title: 'Reward', type: 'number', name: 'reward', step: '0.01', min: '0', placeholder: 'Reward' }
+          %input{ title: 'Reward', type: :number, name: :reward, step: 0.01, min: 0, placeholder: 'Reward' }
       %span.block.small the HIT
 
     %section
-      .field
-        %input{ title: 'Requester Name', type: 'text', name: 'rname', placeholder: 'Requester name' }
-      .field
-        %input{ title: 'Requester ID', type: 'text', name: 'rid', placeholder: 'Requester ID' }
+      %fieldset{'data-name': :rname, 'data-role': :default}
+        %input{ title: 'Requester Name', type: :text, name: :rname, placeholder: 'Requester name' }
+      %fieldset{'data-name': :rid, 'data-role': :id}
+        %input{ title: 'Requester ID', type: :text, name: :rid, placeholder: 'Requester ID' }
       %span.block.small the Requester
 
   .col.c2
-    .field
-      %span.question.block You can give additional information, context, or constructive comments below
+    %fieldset{'data-name': :tos, 'data-type': :checkbox}
+      %label.question.inline
+        %input.mutator.context{type: :checkbox, name: :tos}
+        This HIT violates TOS.
+      %span= link_to '[see TOS]', '', rel: :nofollow
+
+    %fieldset.hidden.merge-top{'data-name': :tos_context, 'data-role': :context}
+      %input{placeholder: 'Please explain', name: :tos_context, type: :text}
+
+    %fieldset{'data-name': :broken, 'data-type': :checkbox}
+      %label.question.inline
+        %input.mutator.context{type: :checkbox, name: :broken}
+        This HIT is broken.
+      %span= link_to '[what makes a HIT broken?]', ''
+
+    %fieldset.hidden.merge-top{'data-name': :broken_context, 'data-role': :context}
+      %input{placeholder: 'Please explain', name: :broken_context, type: :text}
+
+    %fieldset{'data-name': :time, 'data-type': :time, 'data-role': :time}
+      %legend.required Approximately how long did it take you to complete each HIT?
+      %label.inline
+        %input{type: :number, name: :time, step: 1, min: 0}
+        minutes
+      %label.inline
+        %input{type: :number, name: :time, step: 1, min: 0}
+        seconds
+      %br
+      %label.inline
+        %input.mutator{type: :checkbox, name: :time, value: -1}
+        I don't know.
+      %br
+      %label.inline
+        %input.mutator{type: :checkbox, name: :time, value: -2}
+        I didn't finish the HIT.
+
+    %fieldset{'data-name': :comm, 'data-type': :radio, 'data-role': :default}
+      %legend.required Was the requester communicative and responsive?
+      %label.block
+        %input{type: :radio, name: :comm, value: 'n/a', checked: true}
+        I did not contact the requester.
+      %label.block
+        %input{type: :radio, name: :comm, value: 'no'}
+        No, the requester did not respond to my satisfaction.
+      %label.block
+        %input{type: :radio, name: :comm, value: 'yes'}
+        Yes, the requester responded to my satisfaction.
+
+    %fieldset{'data-name': :rejected, 'data-type': :radio, 'data-role': :default}
+      %legend.required How much of your work was rejected?
+      %label.inline
+        %input{type: :radio, name: :rejected, value: 'all'}
+        All
+      %label.inline
+        %input{type: :radio, name: :rejected, value: 'some'}
+        Some
+      %label.inline
+        %input{type: :radio, name: :rejected, value: 'none'}
+        None
+      %label.block
+        %input{type: :radio, name: :rejected, value: 'overturned'}
+        All rejections were overturned.
+
+    %fieldset{'data-name': :time_pending, 'data-type': :time, 'data-role': :time}
+      %legend.required Approximately how long did it take to approve or reject?
+      %label.inline
+        %input{type: :number, name: :time_pending, step: 1, min: 0}
+        days
+      %label.inline
+        %input{type: :number, name: :time_pending, step: 1, min: 0}
+        hours
+      %br
+      %label.inline
+        %input.mutator{type: :checkbox, name: :time_pending, value: -1}
+        I'm still waiting.
+
+    %fieldset{'data-name': :recommend, 'data-type': :radio, 'data-role': :default}
+      %legend.required Would you recommend this HIT to others?
+      %label.inline
+        %input.mutator.context{type: :radio, name: :recommend, value: 'n/a', checked: true}
+        No opinion
+      %label.inline
+        %input.mutator.context{type: :radio, name: :recommend, value: 'no'}
+        No
+      %label.inline
+        %input.mutator.context{type: :radio, name: :recommend, value: 'yes'}
+        Yes
+
+    %fieldset.hidden.merge-top{'data-name': :recommend_context, 'data-role': :context}
+      %input{placeholder: 'Please explain', name: :recommend_context, type: :text}
+
+    %fieldset{'data-name': :context}
+      %legend You can give additional information, context, or constructive comments below.
       %label
-        %textarea.block{ name: 'context' }
+        %textarea.block{ name: :context }
 
     = form_for @review do |f|
       = f.hidden_field :state,  value: @state
-      = f.submit 'Submit review', class: 'submit block'
+      = f.submit 'Submit review', class: [:submit, :block]

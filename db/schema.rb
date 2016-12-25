@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161119160536) do
+ActiveRecord::Schema.define(version: 20161225103246) do
 
   create_table "aliases", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "requester_id"
@@ -228,13 +228,9 @@ ActiveRecord::Schema.define(version: 20161119160536) do
     t.text "tos_context", limit: 65535
     t.boolean "broken"
     t.text "broken_context", limit: 65535
-    t.boolean "deceptive"
-    t.text "deceptive_context", limit: 65535
     t.decimal "reward", precision: 6, scale: 2
-    t.string "completed"
     t.integer "time"
     t.string "comm"
-    t.string "pending"
     t.integer "time_pending"
     t.string "rejected"
     t.string "recommend"

@@ -15,7 +15,7 @@
       = "of #{a[frame][:recommend][1]} would recommend"
 
     %ul.inline
-      - [:tos, :broken, :deceptive].each do |k|
+      - [:tos, :broken].each do |k|
         - next unless a[frame][k] > 0
         %li= "#{k == :tos ? 'TOS' : k}: #{a[frame][k]}"
 
