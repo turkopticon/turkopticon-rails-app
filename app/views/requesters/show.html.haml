@@ -49,7 +49,10 @@
 
       .review-footer
         %ul.inline
-          %li= link_to r.person.email, reviews_path(user: r.person.id)
+          %li
+            = link_to nameify(r.person), reviews_path(user: r.person.id)
+            - if r.person.moderator? || r.person.admin?
+              = user_class(r.person)
           %li.timestamp= r.updated_at
           %li= link_to 'flag', ''
           %li= link_to 'comment', ujs_path(:new_comment, r: r.id), remote: true, method: :patch
@@ -68,7 +71,10 @@
               = c.body
               .comment-footer
                 %ul.inline
-                  %li= link_to c.person.email, reviews_path(user: c.person.id)
+                  %li
+                    = link_to nameify(c.person), reviews_path(user: c.person.id)
+                    - if c.person.moderator? || c.person.admin?
+                      = user_class(c.person)
                   %li.timestamp= c.updated_at
 
   %hr.divider

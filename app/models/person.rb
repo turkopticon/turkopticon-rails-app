@@ -44,6 +44,14 @@ class Person < ActiveRecord::Base
     self.email_verified?
   end
 
+  def admin?
+    self.is_admin?
+  end
+
+  def moderator?
+    self.is_moderator?
+  end
+
   def close
     self.update_attributes(:is_closed => true, :closed_at => Time.now)
   end
@@ -64,51 +72,6 @@ class Person < ActiveRecord::Base
       self.most_recent_first_in_my_reviews = true
     end
     self.save
-  end
-
-  # TODO: probably doesn't belong in the model; refactor all display name stuff into a view helper
-  def truncated_email
-    begin
-      e  = email.split("@")
-      f  = e[0]
-      g  = e[1]
-      dn = f[0, f.length/2] + "...@" + g[0, 1] + "..."
-    rescue Exception
-      dn = email
-    end
-    dn
-  end
-
-  def public_email
-    if display_name.nil?
-      begin
-        e  = email.split("@")
-        f  = e[0]
-        g  = e[1]
-        dn = f[0, f.length/2] + "...@" + g[0, 1] + "..."
-      rescue Exception
-        dn = email
-      end
-    else
-      dn = display_name.empty? ? id.to_s : display_name.gsub(/[()]/, '')
-    end
-    if self.is_admin
-      dn << ' (admin)'
-    elsif self.is_moderator
-      dn << ' (moderator)'
-    end
-    dn
-  end
-
-  def mod_display_name
-    dn = display_name.nil? ? email : display_name.gsub(/[()]/, "")
-    dn = id.to_s if dn.empty?
-    if self.is_admin
-      dn += " (admin)"
-    else
-      dn += " (moderator)" if self.is_moderator
-    end
-    dn
   end
 
   def recently_updated_review?
