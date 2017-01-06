@@ -1,221 +1,257 @@
-(function form(rf) {
-  'use strict';
-  const { data:{ pool }, data:{ tree }, error, validator, fn:{ get, getAll, make } } = rf;
+// TODO: explore methods of getting sprockets to conditionally wrap modules in IIFE
+(function () {
 
-  let anchor,//    get('.c2'),
-      stateRef;//  get('#review_state');
-
-  let model = {};
-
-  rf.form = rf.form || {
-      init    : _init,
-      validate: _validate,
-      get model() {
-        return model;
-      },
-      get value() {
-        return _value();
-      },
-      get json() {
-        return _serialize(2);
-      },
-      get isValid() {
-        return Object.keys(_validate()).length === 0;
-      }
-    };
-
-  function _add(key, opts = {}) {
-    if (!(key in pool)) return console.warn(`Invalid key '${key}'`);
-
-    opts = Object.assign({ as: null, to: null }, opts);
-
-    model[opts.as || key] = _render(opts.as || key, pool[key], opts);
-  }
-
-  function _remove(key) {
-    if (!(key in model)) return console.warn(`Key '${key}' not found in model`);
-
-    model[key].block.remove();
-    model[key] = null; // null for gc before deleting key
-    delete model[key];
-  }
-
-  function _render(key, src, opt = {}) {
-    const build     = {},
-          ctrl      = src.control,
-          def       = 'default' in opt ? opt.default : src.default,
-          anchorRef = model.recommend && model.recommend.block || model.context.block;
-
-    build.block = opt.to
-      ? model[opt.to].block.appendChild(make('DIV', { class: 'field inline pull right' }))
-      : anchor.insertBefore(make('DIV', { class: (opt.anim ? 'init ' : '') + 'field' }), anchorRef);
-    if (opt.anim) setTimeout(() => build.block.classList.remove('init'), 10);
-
-    if (src.title)
-      build.block.appendChild(make('span', { class: 'question block' }))
-        .textContent = src.title;
-
-    ctrl.labels.desc.forEach((label, i) => {
-      let acc;
-      if (!label) {
-        acc          = build.block.appendChild(make(ctrl.tag, ctrl.attrs));
-        acc.onchange = _update;
-        acc.name     = key;
-      } else {
-        const opt    = build.block.appendChild(make('label', { class: ctrl.labels.class }));
-        acc          = opt.appendChild(make(ctrl.tag, ctrl.attrs));
-        acc.value    = ctrl.values[i];
-        acc.name     = key;
-        acc.onchange = _update;
-        opt.appendChild(document.createTextNode(label));
-      }
-
-      if ((def === true && acc.type === 'checkbox')
-          || (acc.type === 'radio' && def === acc.value))
-        acc.checked = true;
-      else if (acc.type === 'text') acc.value = def
-    });
-
-    build.ref        = getAll(`[name=${key}]`, build.block);
-    build.value      = def;
-    build.validators = src.validators;
-    if (build.ref[0].type === 'number') _setNumFields(key, def, build.ref);
-
-    return build;
-  }
-
-  function _setNumFields(name, value, elRefs) {
-    const values = [0, value];
-    if (!value) return null;
-    else if (name === 'time' && value >= 60) {
-      values[0] = Math.floor(value / 60);
-      values[1] = value % 60;
-    }
-    else if (name === 'time_pending') {
-      values[0] = Math.floor(value / 86400);
-      values[1] = values[0] === 0 ? +(value / 3600).toFixed(2) : Math.floor(value % 86400 / 3600);
-    }
-    elRefs.forEach((el, i) => el.value = values[i]);
-  }
-
-  function _update(e) {
-    const el = e.target;
-    switch (el.type) {
-      case 'checkbox':
-        model[el.name].value = el.checked;
-        break;
-      case 'radio':
-        if (el.checked) model[el.name].value = el.value;
-        break;
-      case 'number':
-        if (el.name === 'reward')
-          model[el.name].value = (+el.value);
-        else { // reduce everything down to seconds
-          const group = getAll('[type=number]', el.parentNode.parentNode),
-                lcv   = [24, 60, 60, 1].slice(el.name === 'time' ? -2 : 0);
-
-          model[el.name].value = group.map(v => +v.value).reduce((a, b, i) => lcv[i] * (a + b), 0);
-          model[el.name].value *= el.name === 'time' ? 1 : 60;
-          model[el.name].value = Math.ceil(model[el.name].value);
-        }
-        break;
-      default:
-        model[el.name].value = el.value.trim();
+  class Validator {
+    static required(value) {
+      return value !== null && value !== undefined && value.toString().length > 0 ? [true, null] : [false, 'Required'];
     }
 
-    _validate(model[el.name]);
-    _mutate(el.name, model[el.name].value);
-    stateRef.value = _serialize();
-  }
-
-  function _mutate(key, value) {
-    const branch = tree[key];
-    if (branch && branch.add.if.includes(value.toString()))
-    // add children if not already in model
-      branch.children.forEach((child, i) => {
-        const opt = Object.assign((branch.as ? { as: branch.as[i], to: key } : {}), { anim: true });
-        if (!((opt.as || child) in model)) _add(child, opt);
-      });
-    else if (branch && branch.remove.if.includes(value.toString()))
-    // remove children and grandchildren if exists
-      [...(branch.as || branch.children), ...(branch.remove.grandchildren || [])]
-        .forEach(child => (child in model) && _remove(child));
-  }
-
-  function _init() {
-    // reset dependent references to prevent breakage after browser history navigation
-    anchor   = get('.c2');
-    stateRef = get('#review_state');
-    model    = {};
-
-    const state = JSON.parse(stateRef.value);
-
-    'title reward rname rid context'.split(' ').forEach(v => {
-      model[v]       = { ref: getAll(`[name=${v}]`) };
-      model[v].value = model[v].ref[0].value = state[v] || null;
-      model[v].ref[0].onchange = _update;
-      model[v].validators      = pool[v].validators;
-      model[v].block           = model[v].ref[0].closest('div');
-      delete state[v];
-    });
-
-    // remove orphaned elements from history navigation
-    getAll('div', anchor).forEach(el => el.remove());
-    anchor.insertBefore(model.context.block, anchor.lastElementChild);
-
-    if (Object.keys(state).length) // restore from state
-      Object.keys(state).forEach(k => {
-        const ctx   = /_context/.test(k),
-              ctxTo = ctx ? k.split('_')[0] : null,
-              opt   = { as: k, default: state[k], to: ctx ? ctxTo : null };
-        if (!((ctx ? ctxTo : k) in pool)) return;
-        _add(ctx ? '_context' : k, opt);
-      });
-    else // create default skeleton
-      'tos broken deceptive completed'.split(' ').forEach(v => !(v in model) && _add(v));
-
-    get('.submit').onclick = e => {if (!rf.form.isValid) e.preventDefault(); else (window._rf = null)};
-  }
-
-  function _serialize(n = 0) {
-    const json = Object.keys(model).reduce((a, b) => {
-      a[b] = model[b].value;
-      return a
-    }, {});
-    return JSON.stringify(json, null, n);
-  }
-
-  function _value() {
-    return JSON.parse(_serialize());
-  }
-
-  function _validate(field) {
-    if (field) { // run validation on a single field set
-      error.clear(field);
-
-      // run validators and filter out passed results
-      const result = Object.keys(field.validators)
-                           .map(v => validator[v](field.value, ...field.validators[v]))
-                           .filter(v => !v[0]);
-
-      if (result.length) error.add(field, result[0]);
+    static valueGreaterThan(value, min, name, units) {
+      return value && value > min
+        ? [true, null]
+        : [false, `${name || 'Value'} must be greater than ${min} ${units || ''}`];
     }
-    // manually trigger validation on entire model
-    // returns an obj with all failed fields and their validators
-    else {
-      stateRef.value = _serialize();
-      return Object.keys(model).reduce((obj, key) => {
-        const src        = model[key],
-              validators = Object.keys(src.validators),
-              result     = validators.map(v => validator[v](src.value, ...src.validators[v]));
 
-        // some validators failed; record it in return obj and set error classes in DOM
-        if (!(result.reduce((a, b) => a && b[0], true))) {
-          obj[key] = result.reduce((a, b, i) => b[0] === false ? (a[validators[i]] = b) && a : a, {});
-          error.add(src, result.filter(v => !v[0])[0]);
-        }
-        return obj;
+    static lengthGreaterThan(value, min) {
+      return value && value.length > min ? [true, null] : [false, `Length must be greater than ${min}`];
+    }
+
+    static lengthBetween(value, min, max) {
+      return value && value.length <= max && value.length >= min
+        ? [true, null]
+        : [false, `Length (${value.length}) must be between ${min} and ${max}`]
+    }
+
+    static negPattern(value, re, name) {
+      return value && re.test(value) ? [false, `Improperly formatted ${name || 'value'}`] : [true, null];
+    }
+
+    static pattern(value, re, name) {
+      return value && re.test(value) ? [true, null] : [false, `Improperly formatted ${name || 'value'}`];
+    }
+  }
+
+  class FormStore {
+    constructor() {
+      this.store = {};
+      this.state = document.querySelector('#review_state');
+    }
+
+    get value() { return this.serialize(); }
+
+    remove(field) {
+      delete this.store[field];
+    }
+
+    update(field, properties, overwrite = true) {
+      if (!overwrite && this.store.hasOwnProperty(field)) return;
+
+      this.store[field] = Object.assign(this.store[field] || {}, properties);
+      this.state.value  = this.value;
+    }
+
+    serialize(n = 0) {
+      const json = Object.keys(this.store).reduce((a, b) => {
+        a[b] = this.store[b].value;
+        return a
       }, {});
+      return JSON.stringify(json, null, n);
     }
   }
-})(window._rf);
+
+  class FormControl {
+    constructor(store, view, validators) {
+      this.store      = store || new FormStore();
+      this.view       = view || new FormView();
+      this.validators = validators;
+
+      this.view.bindMutateTime(this.updateField.bind(this));
+      this.view.bindMutateContext(this.removeField.bind(this));
+      onEvent(this.view.form, 'change', ({ target }) => this.validate(target.closest('fieldset')));
+
+      this.view.restore(JSON.parse(this.store.state.value));
+      this.view.fields.forEach(field => this.updateField(field, { value: getValueOf(field) }));
+    }
+
+    removeField(field) {
+      this.store.remove(field.dataset.name);
+    }
+
+    updateField(field, props) {
+      const error = props.error;
+
+      this.store.update(field.dataset.name, props);
+      FormView.manageError(field, error || null);
+    }
+
+    validate(field) {
+      const props      = { value: getValueOf(field) },
+            validators = this.validators[field.dataset.role],
+            result     = validators && Object.keys(validators)
+                                             .map(v => Validator[v](props.value, ...validators[v]))
+                                             .filter(v => !v[0]) || [];
+
+      if (field.dataset.type === 'time' && result.length && field.querySelector('.mutator:checked') && /greater/.test(result[0][1]))
+        void(result.shift());
+      props.isvalid = result.length ? result[0][0] : true;
+      props.error   = result.length ? result[0][1] : null;
+      this.updateField(field, props, field)
+    }
+
+    get isValid() {
+      return this.view.fields.filter(f => f.classList.contains('validation-error')).length === 0;
+    }
+  }
+
+  class FormView {
+    constructor() {
+      this.form = document.querySelector('.form.flex');
+    }
+
+    get allFields() { return Array.from(this.form.querySelectorAll('fieldset')); }
+
+    get fields() { return Array.from(this.form.querySelectorAll('fieldset:not(.hidden)')); }
+
+    bindMutateContext(callback) {
+      delegateEvent(this.form, '.mutator.context', 'click', ({ target }) => {
+        const context = this.form.querySelector(`fieldset[data-name=${target.name}_context]`);
+
+        if (target.value !== 'n/a')
+          context.classList[target.checked ? 'remove' : 'add']('hidden');
+        else
+          context.classList.add('hidden');
+
+        if (context.classList.contains('hidden')) {
+          context.querySelector('input').value = null;
+          context.classList.remove('validation-error');
+          context.dataset.error = null;
+          callback(context);
+        }
+      });
+    }
+
+    bindMutateTime(callback) {
+      function mutate(field, handler) {
+        const mutationTargets = Array.from(field.querySelectorAll('[type=number]')),
+              isChecked       = [].some.call(field.querySelectorAll('[type=checkbox]'), el => el.checked);
+        if (isChecked)
+          handler(mutationTargets, { disabled: true, value: null });
+        else
+          handler(mutationTargets, { disabled: false });
+      }
+
+      delegateEvent(this.form, '.mutator:not(.context)', 'click', ({ target }) => {
+        const parent = target.closest('fieldset');
+
+        mutate(parent, (targets, props) => Object.keys(props).forEach(p => targets.forEach(t => t[p] = props[p])));
+        callback(parent, { value: getValueOf(parent) });
+      });
+    }
+
+    static manageError(field, error) {
+      field.dataset.error = error;
+      field.classList[error ? 'add' : 'remove']('validation-error');
+    }
+
+    restore(state) {
+      this.allFields
+          .filter(f => f.dataset.name in state)
+          .forEach(f => setValueOf(f, state[f.dataset.name]));
+    }
+  }
+
+  function getValueOf(field) {
+    const { name, type } = field.dataset;
+
+    switch (type) {
+      case 'radio':
+        const checked = field.querySelector(':checked');
+        return checked && checked.value;
+      case 'checkbox':
+        return field.querySelector(':checked') && true || false;
+      case 'time':
+        const group = Array.from(field.querySelectorAll('[type=number]:not(:disabled)'));
+
+        if (!group.length) // user checked "don't know" option or similar
+          return +field.querySelector(':checked').value;
+
+        const lcv   = [24, 60, 60, 1].slice(name === 'time' ? -2 : 0),
+              value = group.map(v => +v.value).reduce((a, b, i) => lcv[i] * (a + b), 0);
+
+        return Math.ceil(value * (name === 'time' ? 1 : 60));
+      default:
+        return field.querySelector(`[name=${name}]`).value;
+    }
+  }
+
+  function setValueOf(field, value) {
+    const { name, type } = field.dataset;
+
+    switch (type) {
+      case 'radio':
+        return field.querySelector(`[value="${value}"]`).click();
+      case 'checkbox':
+        return value && field.querySelector(`[name=${name}]`).click();
+      case 'time':
+        if (value < 1)
+          return field.querySelector(`[value="${value}"]`).click();
+
+        const values = [0, value];
+        if (name === 'time' && value >= 60) {
+          values[0] = Math.floor(value / 60);
+          values[1] = value % 60;
+        } else if (name === 'time_pending') {
+          values[0] = Math.floor(value / 86400);
+          values[1] = values[0] === 0 ? +(value / 3600).toFixed(2) : Math.floor(value % 86400 / 3600);
+        }
+        return [].forEach.call(field.querySelectorAll('[type=number]'), (el, i) => el.value = values[i]);
+      default:
+        field.querySelector(`[name=${name}]`).value = value;
+    }
+  }
+
+  // TODO: extract to global helpers
+  function onEvent(target, type, handler) {
+    target.addEventListener(type, handler);
+  }
+
+  // TODO: extract to global helpers
+  function delegateEvent(target, selector, type, handler) {
+    function dispatcher(event) {
+      const targets = target.querySelectorAll(selector);
+      let i         = targets.length;
+
+      while (i--) {
+        if (event.target === targets[i]) {
+          handler(event);
+          break;
+        }
+      }
+    }
+
+    onEvent(target, type, dispatcher);
+  }
+
+  const validators = {
+    default: { required: [] },
+    reward : { required: [], pattern: [/^(\d*(\.\d{0,2})?$)/, 'reward'] },
+    id     : { required: [], lengthGreaterThan: [7], negPattern: [/[^A-Z0-9]/, 'requester ID'] },
+    context: { required: [], lengthBetween: [5, 200] },
+    time   : { required: [], valueGreaterThan: [0, 'Time', 'seconds'] },
+  };
+
+  console.log(document.querySelector('#review_state').value);
+  const fc = new FormControl(null, null, validators);
+
+  fc.view.form.querySelector('[type=submit].submit.block').addEventListener('click', e => {
+    e.stopImmediatePropagation();
+    fc.view.fields.forEach(fc.validate.bind(fc));
+    fc.store.state.value = fc.store.value;
+    if (!fc.isValid) {
+      e.preventDefault();
+      const { top } = fc.view.form.querySelector('.validation-error').getBoundingClientRect();
+      window.scrollBy(0, top - 10);
+    }
+  });
+
+})();
