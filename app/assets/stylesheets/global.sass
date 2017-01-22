@@ -52,6 +52,13 @@ div, input:not([type=image])
     &:after
       content: ' >>'
 
+.pagination
+  float: right
+  .current
+    @extend .bold
+  span > a
+    color: $tannish
+
 ul.inline
   margin: 0
   padding: 0

@@ -1,4 +1,6 @@
 class Requester < ApplicationRecord
+  include PgSearch
+
   has_many :hits
   has_many :reviews, through: :hits
 
@@ -9,7 +11,9 @@ class Requester < ApplicationRecord
   # noinspection RubyResolve
   after_touch lambda { Rails.cache.delete([self.class.name, 'rid', rid]) } # assume only rid uses find_by()
 
-  # scope :by_rid, -> (rid) { includes(:hits).where(rid: rid).take }
+  pg_search_scope :name_search,
+                  against: [[:rname, 'A'], [:aliases, 'B']],
+                  using:   { tsearch: { dictionary: 'english', prefix: true } }
 
   def aggregates
     agg = { all: {}, recent: {} }

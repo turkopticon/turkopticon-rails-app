@@ -6,7 +6,7 @@ class ReviewsController < ApplicationController
     @page = { location: query.values.reject { |v| v == 'false' }.length > 0 ? 'Reviews' : 'Recent Reviews',
               rname:    params[:rid] && "for #{Requester.find_by(params[:rid]).rname || params[:rid]}",
               params:   query.to_unsafe_h,
-              reviews:  query[:user] ? Review.by_user(query[:user]) : Review.newest(25) }
+              reviews:  query[:user] ? Review.by_user(query[:user]).page(params[:page] || 1) : Review.newest.page(params[:page] || 1) }
 
   end
 

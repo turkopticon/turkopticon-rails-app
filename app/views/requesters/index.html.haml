@@ -1,6 +1,8 @@
 %span.title= @page[:title]
 
-.heading-bar 3 of 3 results
+.heading-bar
+  = page_entries_info @page[:requesters], entry_name: 'requester'
+  = paginate @page[:requesters], window: 2
 
 .row.th.flex
   .col-1 Requester
@@ -10,8 +12,8 @@
 
 %hr.divider
 
-- 3.times do
+- @page[:requesters].each do |r|
   .row.tr.flex
-    .col-1.requester= render 'requester'
-    .col-2.aggregates.flex= render 'aggregates'
+    .col-1.requester= render 'requester', r: r
+    .col-2.aggregates.flex= render 'aggregates', a: r.cached_aggregates
   %hr.divider

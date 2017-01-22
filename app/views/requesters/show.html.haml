@@ -13,7 +13,8 @@
 
 
 .heading-bar
-  Reviews of HITs (1-20 of 540)
+  = page_entries_info @page[:reviews], entry_name: 'review'
+  = paginate @page[:reviews], window: 2
 
 .row.th.flex
   .col-1.col-stats.flex

@@ -1,3 +1,7 @@
+//%placeholder
+//  color: $h-tannish
+//  opacity: 0.82
+
 header
   background-color: $h-brownish
   color: $h-tannish
@@ -38,11 +42,34 @@ header
   nav
     margin-top: 5px
     font-size: $fs-big
-
-    button
-      background-color: $blue
-      color: #fff
-      border: none
-      padding: 5px 10px
-      border-radius: 5px
+    form
+      display: inline-block
+    .group
+      border-bottom: 1px solid $h-tannish
+    .rsfsubmit
+      vertical-align: text-bottom
+      height: 80%
+      border: transparent
+      background: transparent image_url('ic_search_24px.svg') no-repeat center/133%
+    //input[type=image]
+    //  vertical-align: text-bottom
+    //  height: 80%
+    input[type=text]
+      border-color: transparent
+      background-color: transparent
+      color: $tannish
+      &:focus
+        outline: none
+      &::-webkit-input-placeholder
+        //@extend %placeholder
+        color: $h-tannish
+        opacity: 0.82
+      &::-moz-placeholder
+        //@extend %placeholder
+        color: $h-tannish
+        opacity: 0.82
+      &:-ms-input-placeholder
+        //@extend %placeholder
+        color: $h-tannish
+        opacity: 0.82
 

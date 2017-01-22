@@ -17,9 +17,11 @@
           = render 'layouts/user_bar'
         %nav
           .left
-            -# TODO: convert to form
-            %input{ title: 'search', type: 'text' }
-            %button{ type: 'submit' } Search
+            = form_tag requesters_path, method: :get do
+              .group
+                = text_field_tag :q, params[:q], id: nil, placeholder: 'Search requesters'
+                = submit_tag ' ', class: :rsfsubmit, name: nil
+                -#= image_submit_tag 'ic_search_24px.svg', alt: :submit, role: :submit
             %ul.inline
               %li= link_to 'Recent Reviews', reviews_path
           .right
@@ -33,3 +35,5 @@
           = flash[:notice]
 
       = yield
+
+    %footer{ style: 'height:100px;' }

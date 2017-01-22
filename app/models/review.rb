@@ -7,7 +7,7 @@ class Review < ApplicationRecord
   attr_writer :dependent_params
 
   default_scope { includes(:requester, :hit, :person) }
-  scope :newest, -> (max) { order(created_at: :desc).limit(max) }
+  scope :newest, -> { order(created_at: :desc) }
   scope :of_requester, -> (rid) { where('requesters.rid': rid) }
   scope :by_user, -> (id) { where(person_id: id) }
   scope :valid, -> { where(valid_review: true) }
