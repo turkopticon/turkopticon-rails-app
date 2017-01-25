@@ -77,8 +77,8 @@ class ModController < ApplicationController
 
   def flag
     @report = Report.find(params[:id])
-    @flag = Flag.new(params[:flag])
-    if request.post? and @flag.save and @report.update_flag_data
+    @legacy_flag = LegacyFlag.new(params[:legacy_flag])
+    if request.post? and @legacy_flag.save and @report.update_flag_data
       @report.update_attributes(:flag_count => @report.flags.count)
       flash[:notice] = "Flagged report #{params[:id]}."
       redirect_to :action => "index"
@@ -86,7 +86,7 @@ class ModController < ApplicationController
   end
 
   def agree_with_flagger
-    Flag.create(:person_id => session[:person_id], :report_id => params[:id], :comment => "agree w/ flagger")
+    LegacyFlag.create(:person_id => session[:person_id], :report_id => params[:id], :comment => "agree w/ flagger")
     report = Report.find(params[:id])
     report.update_flag_data
     report.update_attributes(:flag_count => report.flags.count)

@@ -21,10 +21,11 @@
 class Person < ActiveRecord::Base
 
   has_many :reports #legacy reviews
+  has_many :legacy_flags
+  has_many :legacy_comments
   has_many :reviews
   has_many :comments
   has_many :flags
-  has_many :legacy_comments
   has_many :ignores
 
   before_validation { |r| r.email = r.email.downcase.strip }

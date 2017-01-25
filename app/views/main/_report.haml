@@ -83,7 +83,7 @@
           &nbsp;|&nbsp;
           = link_to "edit", :controller => "main", :action => "edit_report", :id => report.id
         - unless session[:person_id].nil?
-          - flag = Flag.find_by_report_id_and_person_id(report.id, session[:person_id])
+          - flag = LegacyFlag.find_by_report_id_and_person_id(report.id, session[:person_id])
           &nbsp;|&nbsp;
           - if flag
             = link_to "unflag", {:controller => "main", :action => "convert_flag", :id => flag.id}, :confirm => "Are you sure? This will convert your flag to a comment."

@@ -31,8 +31,11 @@
 
     .content-wrapper.constrainer
       - if flash[:notice]
-        .notice
-          = flash[:notice]
+        .flash.notice= flash[:notice]
+      - if flash[:success]
+        .flash.success= flash[:success]
+      - if flash[:error]
+        .flash.error= flash[:error]
 
       = yield
 

@@ -29,7 +29,7 @@ class Report < ActiveRecord::Base
 
   belongs_to :person
   belongs_to :legacy_requesters, class_name: 'LegacyRequester', foreign_key: 'requester_id'
-  has_many :flags
+  has_many :legacy_flags
   has_many :legacy_comments
   has_many :ignores
 

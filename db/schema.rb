@@ -10,110 +10,124 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161225103246) do
+ActiveRecord::Schema.define(version: 20170125103407) do
 
-  create_table "aliases", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
+  create_table "aliases", force: :cascade do |t|
     t.integer  "requester_id"
     t.integer  "formerly"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  create_table "comments", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.text "body", limit: 65535
+  create_table "comments", force: :cascade do |t|
+    t.text "body"
     t.integer "review_id"
     t.integer  "person_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["person_id"], name: "index_comments_on_person_id", using: :btree
-    t.index ["review_id"], name: "index_comments_on_review_id", using: :btree
+    t.index ["person_id"], name: "public_comments_person_id0_idx", using: :btree
+    t.index ["review_id"], name: "public_comments_review_id1_idx", using: :btree
   end
 
-  create_table "flags", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.integer  "report_id"
+  create_table "flags", force: :cascade do |t|
+    t.string "reason"
+    t.text "context"
     t.integer  "person_id"
-    t.text "comment", limit: 65535
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.text "displayed_notes", limit: 65535
+    t.integer "review_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["person_id"], name: "index_flags_on_person_id", using: :btree
+    t.index ["review_id"], name: "index_flags_on_review_id", using: :btree
   end
 
-  create_table "follows", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "follows", force: :cascade do |t|
     t.integer  "person_id"
-    t.string   "follow_type"
+    t.string "follow_type", limit: 255
     t.integer  "follow_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  create_table "forum_person_info", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "forum_person_info", force: :cascade do |t|
     t.integer  "person_id"
     t.decimal "karma", precision: 5, scale: 2
-    t.string   "mail_forum_notifications"
+    t.string "mail_forum_notifications", limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  create_table "forum_post_versions", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "forum_post_versions", force: :cascade do |t|
     t.integer  "post_id"
-    t.string   "ip"
-    t.text "title", limit: 65535
-    t.text "body", limit: 65535
+    t.string "ip", limit: 255
+    t.text "title"
+    t.text "body"
     t.integer  "next"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "person_id"
   end
 
-  create_table "forum_posts", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "forum_posts", force: :cascade do |t|
     t.integer  "person_id"
     t.integer  "parent_id"
-    t.string   "slug"
-    t.boolean  "sticky"
+    t.string "slug", limit: 255
+    t.integer "sticky", limit: 2
     t.decimal "score", precision: 5, scale: 2
     t.integer  "replies"
     t.integer  "views"
-    t.string   "last_reply_display_name"
-    t.string   "last_reply_person_id"
+    t.string "last_reply_display_name", limit: 255
+    t.string "last_reply_person_id", limit: 255
     t.integer  "last_reply_id"
     t.datetime "last_reply_at"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "thread_head"
-    t.boolean  "deleted"
+    t.integer "deleted", limit: 2
     t.decimal "initial_score", precision: 5, scale: 2
   end
 
-  create_table "hits", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.string "title"
+  create_table "hits", force: :cascade do |t|
+    t.string "title", limit: 255
     t.decimal "reward", precision: 6, scale: 2
     t.integer "requester_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["requester_id"], name: "index_hits_on_requester_id", using: :btree
-    t.index ["title"], name: "index_hits_on_title", using: :btree
+    t.index ["requester_id"], name: "public_hits_requester_id0_idx", using: :btree
+    t.index ["title"], name: "public_hits_title1_idx", using: :btree
   end
 
-  create_table "ignores", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "ignores", force: :cascade do |t|
     t.integer  "person_id"
     t.integer  "report_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  create_table "legacy_comments", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "legacy_comments", force: :cascade do |t|
     t.integer "report_id"
     t.integer "person_id"
-    t.text "body", limit: 65535
+    t.text "body"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.text "notes", limit: 65535
-    t.text "displayed_notes", limit: 65535
+    t.text "notes"
+    t.text "displayed_notes"
   end
 
-  create_table "legacy_requesters", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.string "amzn_requester_id"
-    t.string "amzn_requester_name"
+  create_table "legacy_flags", force: :cascade do |t|
+    t.integer "report_id"
+    t.integer "person_id"
+    t.text "comment"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.text "displayed_notes"
+  end
+
+  create_table "legacy_requesters", force: :cascade do |t|
+    t.string "amzn_requester_id", limit: 255
+    t.string "amzn_requester_name", limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
     t.decimal "ava", precision: 3, scale: 2
@@ -123,140 +137,142 @@ ActiveRecord::Schema.define(version: 20161225103246) do
     t.decimal "av_fair", precision: 3, scale: 2
     t.decimal "av_fast", precision: 3, scale: 2
     t.integer "tos_flags"
-    t.string "old_name"
+    t.string "old_name", limit: 255
     t.integer "all_rejected"
     t.integer "some_rejected"
     t.integer "all_approved_or_pending"
     t.integer "all_pending_or_didnt_do_hits"
   end
 
-  create_table "notifications", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "notifications", force: :cascade do |t|
     t.integer  "person_id"
-    t.text "title", limit: 65535
-    t.text "body", limit: 65535
-    t.boolean  "read"
+    t.text "title"
+    t.text "body"
+    t.integer "read", limit: 2
     t.datetime "read_at"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  create_table "people", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.string   "email"
-    t.string   "hashed_password"
-    t.string   "salt"
-    t.boolean  "email_verified"
+  create_table "people", force: :cascade do |t|
+    t.string "email", limit: 255
+    t.string "hashed_password", limit: 255
+    t.string "salt", limit: 255
+    t.integer "email_verified", limit: 2
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "is_admin"
-    t.string   "display_name"
-    t.boolean  "is_moderator"
-    t.boolean  "is_closed"
+    t.integer "is_admin", limit: 2
+    t.string "display_name", limit: 255
+    t.integer "is_moderator", limit: 2
+    t.integer "is_closed", limit: 2
     t.datetime "closed_at"
-    t.boolean  "most_recent_first_in_my_reviews"
-    t.boolean  "can_comment"
-    t.boolean  "commenting_requested"
+    t.integer "most_recent_first_in_my_reviews", limit: 2
+    t.integer "can_comment", limit: 2
+    t.integer "commenting_requested", limit: 2
     t.datetime "commenting_requested_at"
-    t.boolean  "commenting_request_ignored"
-    t.boolean  "order_reviews_by_edit_date"
-    t.boolean  "show_fancy_links"
+    t.integer "commenting_request_ignored", limit: 2
+    t.integer "order_reviews_by_edit_date", limit: 2
+    t.integer "show_fancy_links", limit: 2
     t.integer  "commenting_enabled_by"
     t.datetime "commenting_enabled_at"
     t.integer  "commenting_disabled_by"
     t.datetime "commenting_disabled_at"
   end
 
-  create_table "posts", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "posts", force: :cascade do |t|
     t.integer  "person_id"
     t.integer  "parent_id"
-    t.text "title", limit: 65535
-    t.text "body", limit: 65535
+    t.text "title"
+    t.text "body"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "slug"
-    t.boolean  "is_sticky"
+    t.string "slug", limit: 255
+    t.integer "is_sticky", limit: 2
   end
 
-  create_table "reports", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "reports", force: :cascade do |t|
     t.integer  "person_id"
     t.integer  "requester_id"
-    t.string   "hit_id"
-    t.text "description", limit: 65535
+    t.string "hit_id", limit: 255
+    t.text "description"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "how_many_hits"
+    t.string "how_many_hits", limit: 255
     t.integer  "fair"
     t.integer  "fast"
     t.integer  "pay"
     t.integer  "comm"
-    t.boolean  "is_flagged"
-    t.boolean  "is_hidden"
-    t.boolean  "tos_viol"
-    t.string   "amzn_requester_id"
-    t.text "displayed_notes", limit: 65535
-    t.string   "amzn_requester_name"
+    t.integer "is_flagged", limit: 2
+    t.integer "is_hidden", limit: 2
+    t.integer "tos_viol", limit: 2
+    t.string "amzn_requester_id", limit: 255
+    t.text "displayed_notes"
+    t.string "amzn_requester_name", limit: 255
     t.integer  "flag_count"
     t.integer  "comment_count"
-    t.string   "ip"
+    t.string "ip", limit: 255
     t.integer "ignore_count", default: 0
-    t.text "hit_names", limit: 65535
-    t.boolean  "dont_censor"
-    t.string   "rejected"
+    t.text "hit_names"
+    t.integer "dont_censor", limit: 2
+    t.string "rejected", limit: 255
   end
 
-  create_table "reputation_statements", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "reputation_statements", force: :cascade do |t|
     t.integer  "person_id"
     t.integer  "post_id"
-    t.string   "statement"
+    t.string "statement", limit: 255
     t.decimal "effect", precision: 3, scale: 2
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "ip"
+    t.string "ip", limit: 255
   end
 
-  create_table "requesters", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.string "rname"
-    t.string "rid"
-    t.text "aliases", limit: 65535
+  create_table "requesters", force: :cascade do |t|
+    t.string "rname", limit: 255
+    t.string "rid", limit: 255
+    t.text "aliases"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["rid"], name: "index_requesters_on_rid", using: :btree
-    t.index ["rname"], name: "index_requesters_on_rname", using: :btree
+    t.index ["rid"], name: "public_requesters_rid0_idx", using: :btree
+    t.index ["rname"], name: "public_requesters_rname1_idx", using: :btree
   end
 
-  create_table "reviews", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.boolean "tos"
-    t.text "tos_context", limit: 65535
-    t.boolean "broken"
-    t.text "broken_context", limit: 65535
+  create_table "reviews", force: :cascade do |t|
+    t.integer "tos", limit: 2
+    t.text "tos_context"
+    t.integer "broken", limit: 2
+    t.text "broken_context"
     t.decimal "reward", precision: 6, scale: 2
     t.integer "time"
-    t.string "comm"
+    t.string "comm", limit: 255
     t.integer "time_pending"
-    t.string "rejected"
-    t.string "recommend"
-    t.text "recommend_context", limit: 65535
-    t.text "context", limit: 65535
-    t.boolean "valid_review", default: true, null: false
+    t.string "rejected", limit: 255
+    t.string "recommend", limit: 255
+    t.text "recommend_context"
+    t.text "context"
+    t.integer "valid_review", limit: 2, default: 1, null: false
     t.integer "hit_id"
     t.integer "person_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["hit_id"], name: "index_reviews_on_hit_id", using: :btree
-    t.index ["person_id"], name: "index_reviews_on_person_id", using: :btree
+    t.index ["hit_id"], name: "public_reviews_hit_id0_idx", using: :btree
+    t.index ["person_id"], name: "public_reviews_person_id1_idx", using: :btree
   end
 
-  create_table "rules_versions", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "rules_versions", force: :cascade do |t|
     t.integer  "parent_id"
-    t.boolean  "is_current"
+    t.integer "is_current", limit: 2
     t.integer  "edited_by_person_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.text "body", limit: 65535
+    t.text "body"
   end
 
-  add_foreign_key "comments", "people"
-  add_foreign_key "comments", "reviews"
-  add_foreign_key "hits", "requesters"
-  add_foreign_key "reviews", "hits"
-  add_foreign_key "reviews", "people"
+  add_foreign_key "comments", "people", name: "comments_person_id_fkey", on_update: :restrict, on_delete: :restrict
+  add_foreign_key "comments", "reviews", name: "comments_review_id_fkey", on_update: :restrict, on_delete: :restrict
+  add_foreign_key "flags", "people"
+  add_foreign_key "flags", "reviews"
+  add_foreign_key "hits", "requesters", name: "hits_requester_id_fkey", on_update: :restrict, on_delete: :restrict
+  add_foreign_key "reviews", "hits", name: "reviews_hit_id_fkey", on_update: :restrict, on_delete: :restrict
+  add_foreign_key "reviews", "people", name: "reviews_person_id_fkey", on_update: :restrict, on_delete: :restrict
 end

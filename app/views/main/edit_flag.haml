@@ -11,11 +11,11 @@
     %strong.label Posted On
     = @report.created_at.strftime("%b %d %Y")
 
-= error_messages_for :flag
+= error_messages_for :legacy_flag
 - form_tag(:action => 'edit_flag') do
-  = hidden_field :flag, :report_id, :value => @report.id
-  = hidden_field :flag, :person_id, :value => @flag.person_id
+  = hidden_field :legacy_flag, :report_id, :value => @report.id
+  = hidden_field :legacy_flag, :person_id, :value => @legacy_flag.person_id
   %br/
-  = text_area :flag, :comment
+  = text_area :legacy_flag, :comment
   %p
     %div{:style => "text-align: right; width: 26em;"}= submit_tag 'Update Flag'

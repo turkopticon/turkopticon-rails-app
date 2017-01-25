@@ -50,12 +50,12 @@
         - flags_and_comments.each do |item|
           %tr
             %td{:valign => "top"}
-              - if item.class == Flag
+              - if item.class == LegacyFlag
                 %img{:src => "/images/warning.gif"}
               - else
                 %img{:src => "/images/bubble.png"}
             %td
-              = item.class == Flag ? item.comment.gsub(/\n/,'<br/>') : item.body.gsub(/\n/,'<br/>')
+              = item.class == LegacyFlag ? item.comment.gsub(/\n/,'<br/>') : item.body.gsub(/\n/,'<br/>')
               .notes= item.displayed_notes
               .meta
                 = item.created_at.strftime("%b %d %Y %H:%M")
@@ -68,11 +68,11 @@
           %br/
     .placeholder{:id => report.id}
   %td.center{:valign => "top"}
-    - if Flag.find_by_person_id_and_report_id(@person.id, report.id).nil?
+    - if LegacyFlag.find_by_person_id_and_report_id(@person.id, report.id).nil?
       = link_to_remote "Flag", :url => {:controller => "mod", :action => "flag", :id => report.id}
       %br/
     - if flags.count > 0
-      - if Flag.find_by_person_id_and_report_id(@person.id, report.id).nil?
+      - if LegacyFlag.find_by_person_id_and_report_id(@person.id, report.id).nil?
         = link_to "Agree&nbsp;w/&nbsp;Flagger", :controller => "mod", :action => "agree_with_flagger", :id => report.id
         %br/
       - if Ignore.find_by_person_id_and_report_id(@person.id, report.id).nil?

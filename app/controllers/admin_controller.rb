@@ -24,7 +24,7 @@ class AdminController < ApplicationController
     authors                   = @recent_reports.map { |r| { id: r.person_id, name: r.person.display_name || r.person.email } }
     @author_count             = authors.uniq.count
     @authors_with_counts      = authors.group_by { |a| [a[:id], a[:name]] }.map { |k, v| [k, v.length] }.sort_by { |a| a[1] }.reverse
-    @recent_flags             = Flag.where('created_at > ?', Time.now - 1.month)
+    @recent_flags             = LegacyFlag.where('created_at > ?', Time.now - 1.month)
     @recently_flagged_reports = @recent_flags.collect{|f| f.report_id}
     @recent_flaggers          = @recent_flags.collect{|f| f.person_id}
     top_flaggers              = {}

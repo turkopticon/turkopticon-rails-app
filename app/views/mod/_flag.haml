@@ -1,32 +1,32 @@
 .lightbox{:id => @report.id}
   - form_tag("/mod/flag/#{@report.id}") do
-    = hidden_field :flag, :report_id, :value => @report.id
-    = hidden_field :flag, :person_id, :value => session[:person_id]
-    = radio_button :flag, :comment, "profanity"
+    = hidden_field :legacy_flag, :report_id, :value => @report.id
+    = hidden_field :legacy_flag, :person_id, :value => session[:person_id]
+    = radio_button :legacy_flag, :comment, "profanity"
     profanity
     %br/
-    = radio_button :flag, :comment, "directly insults worker or requester"
+    = radio_button :legacy_flag, :comment, "directly insults worker or requester"
     directly insults worker or requester
     %br/
-    = radio_button :flag, :comment, "racism"
+    = radio_button :legacy_flag, :comment, "racism"
     racism
     %br/
-    = radio_button :flag, :comment, "threat/incitement to violence"
+    = radio_button :legacy_flag, :comment, "threat/incitement to violence"
     threat/incitement to violence
     %br/
-    = radio_button :flag, :comment, "review incorrectly claims TOS violation"
+    = radio_button :legacy_flag, :comment, "review incorrectly claims TOS violation"
     review incorrectly claims TOS violation
     %br/
-    = radio_button :flag, :comment, "possible requester self-review"
+    = radio_button :legacy_flag, :comment, "possible requester self-review"
     possible requester self-review
     %br/
-    = radio_button :flag, :comment, "otherwise suspicious review; see reviewer's other reviews"
+    = radio_button :legacy_flag, :comment, "otherwise suspicious review; see reviewer's other reviews"
     otherwise suspicious review; see reviewer's other reviews
     %br/
-    = radio_button :flag, :comment, "not a review for this requester/irrelevant"
+    = radio_button :legacy_flag, :comment, "not a review for this requester/irrelevant"
     not a review for this requester/irrelevant
     %br/
-    = radio_button :flag, :comment, "other"
+    = radio_button :legacy_flag, :comment, "other"
     other
     %br/
     = submit_tag "Flag Report"

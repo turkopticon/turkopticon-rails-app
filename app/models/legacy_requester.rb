@@ -25,7 +25,7 @@ class LegacyRequester < ActiveRecord::Base
 #  validates_uniqueness_of :amzn_requester_id
 
   has_many :reports #, class_name: 'Report', foreign_key: 'requester_id'
-  has_many :flags, :through => :reports
+  has_many :legacy_flags, :through => :reports
 
   def has_hidden_reports?
     hidden_report_count > 0
