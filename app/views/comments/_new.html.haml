@@ -1,9 +1,11 @@
-- if !@user.can_comment?
-  %strong Sorry, your account doesn't have commenting enabled.
+.patch.new-comment.container
+  - if !@user.can_comment?
+    %strong Sorry, your account doesn't have commenting enabled.
 
-- else
-  = form_tag comments_path(r: r), remote: true do
-    %p
-      = text_area_tag :body, nil, style: 'width:100%;height:100px;resize:vertical'
-    %p
-      = submit_tag 'Submit comment', class: [:submit, :med]
+  - else
+    = form_tag comments_path(r: r), remote: true do
+      %p
+        = text_area_tag :body, nil, style: 'width:100%;height:100px;resize:vertical'
+      %p
+        = submit_tag 'Submit comment', class: [:control, :submit, :med]
+        = button_tag 'Cancel', class: [:control, :cancel, :med], type: :button
