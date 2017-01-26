@@ -17,9 +17,11 @@ Rails.application.routes.draw do
     resources :reviews
     resources :requesters, only: [:index, :show], param: :rid
     resources :comments, only: [:create, :update]
+    resources :flags, only: [:create, :update]
 
     scope :ujs, defaults: { format: :ujs } do
       patch :new_comment, to: 'ujs#new_comment'
+      patch :new_flag, to: 'ujs#new_flag'
     end
 
     get :install, to: 'main#install'

@@ -1,0 +1,7 @@
+.patch.new-flag.container
+  = form_tag flags_path(r: r), remote: true do
+    %strong Flag this review
+    = select_tag 'reason', options_for_select(options), prompt: 'Select a reason', id: nil
+    %p{style: 'margin-bottom:0;'}
+      = submit_tag 'Submit', class: [:control, :submit, :small]
+      = button_tag 'Cancel', class: [:control, :cancel, :small], type: :button

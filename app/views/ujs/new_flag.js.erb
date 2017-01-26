@@ -1,0 +1,2 @@
+if ($('.flag-<%= params[:r] %>').find('form').length === 0)
+  $('.flag-<%= params[:r] %>').append('<%= j render('flags/new', r: params[:r], options: @options) %>');

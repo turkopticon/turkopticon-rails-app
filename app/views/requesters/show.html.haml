@@ -55,7 +55,7 @@
             - if r.person.moderator? || r.person.admin?
               = user_class(r.person)
           %li.timestamp= r.updated_at
-          %li= link_to 'flag', ''
+          %li{class: "flag-#{r.id}"}= link_to 'flag', ujs_path(:new_flag, r: r.id), remote: true, method: :patch
           %li= link_to 'comment', ujs_path(:new_comment, r: r.id), remote: true, method: :patch
           - if @user.id == r.person_id
             %li= link_to 'edit', edit_review_path(r)

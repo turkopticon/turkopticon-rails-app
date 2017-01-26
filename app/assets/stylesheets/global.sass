@@ -96,7 +96,7 @@ hr.divider
 .bold
   font-weight: 700
 
-.submit
+.control
   background-color: $blue
   margin-top: 20px
   padding: 10px 20px
@@ -111,6 +111,27 @@ hr.divider
   &.med
     font-size: $fs-default
     margin-top: 0
+  &.small
+    font-size: $fs-small
+    margin-top: 0
+    padding: 5px 10px
+
+// ujs
+
+.new-flag
+  position: absolute
+  z-index: 5
+  top: 100%
+  left: 50%
+  transform: translateX(-50%)
+  padding: 10px
+  box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.75)
+  background-color: $tannish
+  font-size: $fs-small
+  select
+    width: 220px
+    height: 25px
+    margin-top: 5px
 
 // page title
 
