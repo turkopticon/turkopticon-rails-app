@@ -29,56 +29,9 @@
 - @page[:reviews].each do |r|
   .row.tr.flex{class:"r-#{r.id}"}
 
-    -#.col-1.col-stats.flex= render 'reviews/stats'
-    .col-1.col-stats.flex
-      .col-stats.flex
-        .col-ttc= htime r.time unless r.time.nil?
-        .col-pay
-          %span.block= '$' << '%.2f' % r.hit.reward
-          %span.block.ppt= pay_rate r.hit.reward, r.time
-        .col-tta= htime r.time_pending unless r.time_pending.nil?
-
-    -#.col-2.col-review= render 'reviews/review'
-    .col-2.col-review
-      .review-header
-        %span.hit-title.bold= r.hit.title
-        .tagbox
-          - r.tags.each do |t|
-            %span.inline.tag{'data-context': t[2], class: tag_class(t)}= tag_label t
-
-      .review-body= r.context
-
-      .review-footer
-        %ul.inline
-          %li
-            = link_to nameify(r.person), reviews_path(user: r.person.id)
-            - if r.person.moderator? || r.person.admin?
-              = user_class(r.person)
-          %li.timestamp= r.updated_at
-          %li{class: "flag-#{r.id}"}= link_to 'flag', ujs_path(:new_flag, r: r.id), remote: true, method: :patch
-          %li= link_to 'comment', ujs_path(:new_comment, r: r.id), remote: true, method: :patch
-          - if @user.id == r.person_id
-            %li= link_to 'edit', edit_review_path(r)
-
-      %div{ class: "new-comment-#{r.id}" }
-
-      - if (size = r.comments.size) > 0
-        .comments-divider
-          %span= pluralize size, 'comment'
-          = link_to '(hide)', '#'
-        .comments
-          - r.comments.each do |c|
-            %div{ class: "comment-#{c.id}" }
-              = c.body
-              .comment-footer
-                %ul.inline
-                  %li
-                    = link_to nameify(c.person), reviews_path(user: c.person.id)
-                    - if c.person.moderator? || c.person.admin?
-                      = user_class(c.person)
-                  %li.timestamp= c.updated_at
+    .col-1.col-stats.flex= render 'reviews/stats', r: r
+    .col-2.col-review= render 'reviews/review', r: r
 
   %hr.divider
 
 = javascript_include_tag 'reviews/comments'
--#= console

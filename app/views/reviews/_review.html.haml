@@ -1,14 +1,35 @@
 .review-header
-  %span.hit-title.bold Where did my hot wings go?
+  %span.hit-title.bold= r.hit.title
   .tagbox
-    %span.inline.tag dat tag!
-    %span.inline.tag broken
-.review-body
-  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam eget euismod nulla. Curabitur sit amet laoreet nisi, eget ultricies justo. Ut vel commodo tortor. Etiam cursus ligula orci. Cras pretium, magna in sagittis faucibus, diam ex tempor elit, a ultrices magna urna sed quam. Sed sem lorem, pellentesque id mattis at, eleifend et purus. Sed dignissim gravida velit vel posuere. Proin rutrum aliquam porttitor. Phasellus eget pulvinar arcu. Sed quis posuere tortor. Duis lacinia imperdiet nibh quis feugiat
-.review-footer
-  %ul.inline
-    %li= link_to 'some user', ''
-    %li.timestamp 2016 Jul 12 19:37:58(CEST)
-    %li= link_to 'flag', ''
-    %li= link_to 'comment', ''
+    - r.tags.each do |t|
+      %span.inline.tag{'data-context': t[2], class: tag_class(t)}= tag_label t
 
+  .review-body= r.context
+
+  .review-footer
+    %ul.inline
+      %li
+        = link_to nameify(r.person), reviews_path(user: r.person.id)
+        - if r.person.moderator? || r.person.admin?
+          = user_class(r.person)
+      %li.timestamp= r.updated_at
+      %li{class: "flag-#{r.id}"}= link_to 'flag', ujs_path(:new_flag, r: r.id), remote: true, method: :patch
+      %li= link_to 'comment', ujs_path(:new_comment, r: r.id), remote: true, method: :patch
+
+  %div{ class: "new-comment-#{r.id}" }
+
+  - if (size = r.comments.size) > 0
+    .comments-divider
+      %span= pluralize size, 'comment'
+      = link_to '(hide)', '#'
+    .comments
+      - r.comments.each do |c|
+        %div{ class: "comment-#{c.id}" }
+          = c.body
+          .comment-footer
+            %ul.inline
+              %li
+                = link_to nameify(c.person), reviews_path(user: c.person.id)
+                - if c.person.moderator? || c.person.admin?
+                  = user_class(c.person)
+              %li.timestamp= c.updated_at

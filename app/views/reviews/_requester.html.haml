@@ -1,3 +1,4 @@
-=link_to r.requester.rname, '', class: 'rname block bold'
+=link_to r.requester.rname, requester_path(r.requester.rid), class: 'rname block bold'
 %span.rid.block= r.requester.rid
-= link_to 'Edit review', '', class: 'arrow-link'
+- if @user.id == r.person_id
+  = link_to 'Edit review', edit_review_path(r), class: 'arrow-link'

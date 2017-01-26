@@ -1,5 +1,6 @@
-.col-ttc= r.time
+.col-ttc= htime r.time unless r.time.nil?
 .col-pay
-  %span.inline= "$#{r.hit.reward}"
-  %span.inline.ppt $8.14/hr
-.col-tta= "#{r.time_pending}"
+  %span.block= '$' << '%.2f' % r.hit.reward
+  %span.block.ppt= pay_rate r.hit.reward, r.time
+.col-tta= htime r.time_pending unless r.time_pending.nil?
+
