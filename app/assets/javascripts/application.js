@@ -14,4 +14,5 @@
 //= require jquery_ujs
 //= require turbolinks
 //= require poly.js.es6
+//= require helpers.js.es6
 // require_tree .
