@@ -28,6 +28,7 @@ class Person < ActiveRecord::Base
   has_many :flags
   has_many :ignores
 
+  before_create :set_confirmation_token
   before_validation { |r| r.email = r.email.downcase.strip }
 
   validates :email, presence: true, uniqueness: true, format: {
@@ -37,8 +38,8 @@ class Person < ActiveRecord::Base
   validates :password, presence: true, confirmation: true
   validates :password_confirmation, presence: true
 
-  def verify
-    self.update_attributes(:email_verified => true)
+  def activate!
+    self.update_columns email_verified: true, confirmation_token: nil
   end
 
   def verified?
@@ -120,6 +121,10 @@ class Person < ActiveRecord::Base
 
   def create_new_salt
     self.salt = self.object_id.to_s + rand.to_s
+  end
+
+  def set_confirmation_token
+    self.confirmation_token = SecureRandom.urlsafe_base64 40 if self.confirmation_token.nil?
   end
 
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170125103407) do
+ActiveRecord::Schema.define(version: 20170127204507) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -177,6 +177,8 @@ ActiveRecord::Schema.define(version: 20170125103407) do
     t.datetime "commenting_enabled_at"
     t.integer  "commenting_disabled_by"
     t.datetime "commenting_disabled_at"
+    t.string "confirmation_token"
+    t.index ["confirmation_token"], name: "index_people_on_confirmation_token", using: :btree
   end
 
   create_table "posts", force: :cascade do |t|

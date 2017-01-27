@@ -13,11 +13,13 @@ Rails.application.routes.draw do
   constraints subdomain: '' do
     root 'main#info', as: :root
 
+    resources :accounts, only: [:new, :create], param: :token do
+      get :activate, on: :member
+    end
     resources :sessions, only: [:new, :create, :destroy], path_names: { new: :login }
     resources :reviews
     resources :requesters, only: [:index, :show], param: :rid
-    resources :comments, only: [:create, :update]
-    resources :flags, only: [:create, :update]
+    resources :comments, :flags, only: [:create, :update]
 
     scope :ujs, defaults: { format: :ujs } do
       patch :new_comment, to: 'ujs#new_comment'

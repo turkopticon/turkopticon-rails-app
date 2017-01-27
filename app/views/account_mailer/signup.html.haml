@@ -1,0 +1,6 @@
+%p
+  %strong= @greeting
+%p
+  Thanks for registering. Simply click the link below to activate your account and get started with Turkopticon.
+%p
+  = link_to activate_account_url(@user.confirmation_token), activate_account_url(@user.confirmation_token)
