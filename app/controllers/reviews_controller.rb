@@ -16,7 +16,9 @@ class ReviewsController < ApplicationController
   end
 
   def edit
-    @review = Review.find(params[:id])
+    @review     = Review.find(params[:id])
+    @authorized = @review.person_id == @user.id
+
     rev     = @review.as_json.reject { |k, v| k =~ /(_(?:id|at|.+ew)\z|\Aid)/ || v.nil? }
     hit     = @review.hit.as_json.select { |k| %w(title reward).include? k }
     req     = @review.requester.as_json.select { |k| %w(rname rid).include? k }

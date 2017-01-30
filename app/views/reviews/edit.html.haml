@@ -1,6 +1,7 @@
 %span.title Edit review
 
-= render 'form'
-
-= javascript_include_tag 'reviews/form_manifest'
-
+- if @authorized
+  = render 'form'
+  = javascript_include_tag 'reviews/form_manifest'
+- else
+  %p You do not have permission to make edits on this review.
