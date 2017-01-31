@@ -19,4 +19,8 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def require_access_level(access_level)
+    render 'accounts/unauthorized' unless @user.send (access_level.to_s + '?').to_sym
+  end
+
 end

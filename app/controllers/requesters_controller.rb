@@ -1,4 +1,6 @@
 class RequestersController < ApplicationController
+  before_action -> { require_access_level :verified }
+
   def index
     @page              = { title: params[:q] ? "Search results for '#{params[:q]}'" : 'Recently reviewed requesters' }
     @page[:requesters] = if params[:q].present?

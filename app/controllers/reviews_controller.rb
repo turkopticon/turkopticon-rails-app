@@ -1,4 +1,5 @@
 class ReviewsController < ApplicationController
+  before_action -> { require_access_level :verified }
 
   def index
     # TODO: fully integrate queries
