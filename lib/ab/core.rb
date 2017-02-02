@@ -2,7 +2,7 @@ module AB::Core
   def ab(name, variants)
     session[name] = variants.keys.sample if session[name].nil?
 
-    if ABTest.find_by(name: name).nil?
+    if AB::Test.find_by(name: name).nil?
       create_test name, variants
     end
 
@@ -10,15 +10,12 @@ module AB::Core
   end
 
   def ab_impression(name, variant)
-    ABTest.includes(:variants)
-        .where(name: name).take.variants
-        .where(name: variant).increment! :sample
+    # AB::Variant.where(name: variant).joins(:test).where(ab_tests: {name: name}).take.increment! :sample
+    AB::Variant.isolate(name, variant).increment! :sample
   end
 
   def ab_conversion(name, variant, user_id)
-    ABTest.includes(:variants)
-        .where(name: name).take.variants
-        .where(name: variant).increment! user_id
+    AB::Variant.isolate(name, variant).increment! user_id
   end
 
   def ab_reset(name)
@@ -28,7 +25,7 @@ module AB::Core
   protected
 
   def create_test(name, variants)
-    test = ABTest.create name: name
-    variants.each { |k, _| ABTest::Variant.create name: k, abtest: test }
+    test = AB::Test.create name: name
+    variants.each { |k, _| AB::Variant.create name: k, test: test }
   end
 end
