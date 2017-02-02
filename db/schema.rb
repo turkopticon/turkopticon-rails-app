@@ -10,10 +10,27 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170127204507) do
+ActiveRecord::Schema.define(version: 20170202193532) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "ab_tests", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_ab_tests_on_name", using: :btree
+  end
+
+  create_table "ab_variants", force: :cascade do |t|
+    t.string "name"
+    t.jsonb "data", default: "{}", null: false
+    t.integer "ab_tests_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["ab_tests_id"], name: "index_ab_variants_on_ab_tests_id", using: :btree
+    t.index ["name"], name: "index_ab_variants_on_name", using: :btree
+  end
 
   create_table "aliases", force: :cascade do |t|
     t.integer  "requester_id"
@@ -270,6 +287,7 @@ ActiveRecord::Schema.define(version: 20170127204507) do
     t.text "body"
   end
 
+  add_foreign_key "ab_variants", "ab_tests", column: "ab_tests_id"
   add_foreign_key "comments", "people", name: "comments_person_id_fkey", on_update: :restrict, on_delete: :restrict
   add_foreign_key "comments", "reviews", name: "comments_review_id_fkey", on_update: :restrict, on_delete: :restrict
   add_foreign_key "flags", "people"
