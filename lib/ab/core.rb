@@ -6,6 +6,7 @@ module AB::Core
       create_test name, variants
     end
 
+    ab_impression(name, session[name])
     variants[session[name].to_sym]
   end
 

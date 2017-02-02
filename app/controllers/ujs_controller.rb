@@ -1,4 +1,6 @@
 class UjsController < ApplicationController
+  include AB::Core
+
   def new_flag
     @options = [
         'Rule violation: insults worker or requester',
@@ -10,5 +12,7 @@ class UjsController < ApplicationController
         'Other: review inconsistency',
         'Other: incorrectly claims TOS violation'
     ]
+
+    @variant = ab(:ab_nflockup, { command: 'flags/new', question: 'flags/new_abv2' })
   end
 end

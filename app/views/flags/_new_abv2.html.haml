@@ -1,6 +1,8 @@
+-# question variant
+
 .patch.new-flag.container
   = form_tag flags_path(r: r), remote: true do
-    %strong Flag this review
+    %strong Why do you want to flag?
     = select_tag 'reason', options_for_select(options), prompt: 'Select a reason', id: nil
     %p{style: 'margin-bottom:0;'}
       = submit_tag 'Submit Flag', class: [:control, :submit, :small]

@@ -1,10 +1,13 @@
 class FlagsController < ApplicationController
+  include AB::Core
+
   def create
     @flag        = Flag.new flag_params
     @flag.person = @user
     @flag.review = Review.unscoped.find(params[:r])
     if @flag.save
-      flash[:success] = 'Flag added'
+      ab_conversion(:ab_nflockup, session[:ab_nflockup], @user.id)
+      flash[:success] = 'Your flag was added and will be reviewed by a moderator'
     else
       flash[:error] = 'Your flag was unable to be saved'
     end
