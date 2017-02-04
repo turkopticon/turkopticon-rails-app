@@ -44,6 +44,7 @@ div, input:not([type=image])
 
 .content-wrapper
   padding-left: 15px
+  min-height: 420px
   a
     text-decoration: none
     border: none
@@ -77,24 +78,36 @@ hr.divider
 
 .left
   float: left
-
 .right
   float: right
-
 .flex
   display: flex
-
 .block
   display: block
-
 .inline
   display: inline-block
-
 .hidden
   display: none
 
 .bold
   font-weight: 700
+
+.fs-xxs
+  font-size: $fs-smallest
+.fs-xs
+  font-size: $fs-smaller
+
+.fs-s
+  font-size: $fs-small
+
+.fs-m, .fs-default
+  font-size: $fs-default
+
+.fs-l
+  font-size: $fs-big
+
+.fs-xl
+  font-size: $fs-bigger
 
 .required:after
   content: ' *'
@@ -158,7 +171,7 @@ hr.divider
   flex: 1
 
 .col-stats
-  text-align: center
+  text-align: left
 
 .tr
   font-size: $fs-small
