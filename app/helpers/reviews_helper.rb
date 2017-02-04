@@ -1,13 +1,13 @@
 module ReviewsHelper
 
-  def semantic_params(params)
+  def semantic_params(params, reviews)
     # params[:comments] = true if params[:user].present?
     params.delete_if { |_, v| v == 'false' }
 
     sem = params.sort.map do |v|
       case v[0]
         when :user, 'user' then
-          "by #{v[1]}"
+          "by #{nameify reviews[0].person}"
         when :comments, 'comments' then
           :comments
         when :flags, 'flags' then

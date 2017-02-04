@@ -1,7 +1,7 @@
 %span.title
   = @page[:location]
   = @page[:rname]
-  %span.sub-title= semantic_params @page[:params]
+  %span.sub-title= semantic_params @page[:params], @page[:reviews]
 .heading-bar
   = page_entries_info @page[:reviews], entry_name: 'review'
   = paginate @page[:reviews], window: 2
