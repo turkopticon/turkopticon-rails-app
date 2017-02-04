@@ -3,6 +3,7 @@ class Review < ApplicationRecord
   belongs_to :person
   has_one :requester, through: :hit
   has_many :comments
+  has_many :flags
 
   attr_writer :dependent_params
 
