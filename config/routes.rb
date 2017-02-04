@@ -21,6 +21,14 @@ Rails.application.routes.draw do
     resources :requesters, only: [:index, :show], param: :rid
     resources :comments, :flags, only: [:create, :update]
 
+    namespace :mod do
+      resources :dashboard, :flags, only: [:index]
+    end
+
+    namespace :admin do
+      resources :dashboard, only: [:index]
+    end
+
     scope :ujs, defaults: { format: :ujs } do
       patch :new_comment, to: 'ujs#new_comment'
       patch :new_flag, to: 'ujs#new_flag'
