@@ -43,15 +43,15 @@ class Person < ActiveRecord::Base
   end
 
   def verified?
-    self.email_verified?
+    email_verified?
   end
 
   def admin?
-    self.is_admin?
+    is_admin?
   end
 
   def moderator?
-    self.is_moderator?
+    is_admin? || is_moderator?
   end
 
   def close
