@@ -9,7 +9,7 @@ class Requester < ApplicationRecord
   serialize :aliases, Array
 
   # noinspection RubyResolve
-  after_touch lambda { Rails.cache.delete([self.class.name, 'rid', rid]) } # assume only rid uses find_by()
+  after_touch -> { Rails.cache.delete([self.class.name, 'rid', rid]) } # assume only rid uses find_by()
 
   pg_search_scope :name_search,
                   against: [[:rname, 'A'], [:aliases, 'B']],
