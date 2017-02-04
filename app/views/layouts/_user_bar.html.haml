@@ -1,6 +1,10 @@
 - if @user
-  = @user.email
+  %span.block#user= @user.display_name.blank? ? "#{@user.email}" : "#{@user.display_name} [#{@user.email}]"
   %ul.inline
+    - if @user.admin?
+      %li= link_to 'admin', admin_dashboard_index_path
+    - if @user.moderator?
+      %li= link_to 'moderator', mod_dashboard_index_path
     %li= link_to 'my reviews', reviews_path(user: @user.id)
     %li= link_to 'settings', ''
     %li= link_to 'logout', session_path(@user.id), method: :delete

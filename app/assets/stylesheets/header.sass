@@ -18,26 +18,31 @@ header
     path
       fill: $tannish
 
+  #user
+    text-align: right
+
   a
     color: $h-tannish
-
-  img
-    width: 200px
-    height: 55px
-
-  ul.inline
-    margin-left: 10px
 
   li
     margin-left: 10px
 
   .usernav
     font-size: $fs-smaller
-
-    li:before
-      content: '- '
-      position: absolute
-      left: -8px
+    //.class:before
+    //  content: '('
+    //  padding: 0 2.5px
+    //.class:after
+    //  content: ')'
+    //  padding: 0 2.5px
+    //  margin-right: 2.5px
+    ul
+      display: inline-flex
+    li
+      margin: 0
+    li:not(:first-child):before
+      content: '\002022'
+      margin: 0 5px
 
   nav
     margin-top: 5px
