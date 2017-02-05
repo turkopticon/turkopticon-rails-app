@@ -22,7 +22,8 @@ Rails.application.routes.draw do
     resources :comments, :flags, only: [:create, :update]
 
     namespace :mod do
-      resources :dashboard, :flags, only: [:index]
+      resources :dashboard, only: [:index]
+      resources :flags, only: [:index, :show, :put, :update]
     end
 
     namespace :admin do
