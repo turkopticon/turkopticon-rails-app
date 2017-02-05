@@ -9,7 +9,7 @@ class ReviewsController < ApplicationController
               params:   query.to_unsafe_h }
 
     if query[:user]
-      @page[:reviews] = Review.by_user(query[:user]).newest.valid.page(params[:page])
+      @page[:reviews] = Review.by_user(query[:user]).newest.page(params[:page])
     else
       @page[:reviews] = Review.newest.valid.page(params[:page])
     end
