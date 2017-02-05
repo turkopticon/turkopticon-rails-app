@@ -1,0 +1,22 @@
+.review-header
+  %span.hit-title.bold= r.hit.title
+  .tagbox
+    - r.tags.each do |t|
+      %span.inline.tag{'data-context': t[2], class: tag_class(t)}= tag_label t
+
+  .review-body= r.context
+
+  .review-footer
+    %ul.inline
+      %li
+        = link_to nameify(r.person), reviews_path(user: r.person.id)
+        - if r.person.moderator?
+          = user_class(r.person)
+      %li
+        %time.timestamp{ datetime: r.created_at, title: "#{time_ago_in_words r.created_at} ago" }= r.created_at
+        - unless r.created_at == r.updated_at
+          %time.edited{ datetime: r.updated_at, title: "edited #{time_ago_in_words r.updated_at} ago\n#{r.updated_at}" } [e]
+      - if r.person.moderator?
+        %li= r.valid_review? ? link_to('remove review', review_path(r, 'review[valid_review]': false), method: :put) : 'removed'
+        - unless r.valid_review?
+          %li= link_to 'undo', review_path(r, 'review[valid_review]': true), method: :put

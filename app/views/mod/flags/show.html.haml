@@ -1,0 +1,32 @@
+-# TODO: breadcrumbs
+
+- if @flag.nil?
+  %span.bold.block That flag does not exist.
+
+- else
+  %span.bold.block= @flag.reason
+  .detail-line{ style: 'margin-bottom:10px' }
+    flagged
+    - time = @flag.created_at
+    %time{ datetime:time, title:time }= "#{time_ago_in_words time} ago"
+    -#
+    -# TODO: Comments
+    -#
+
+  -# TODO: actions -- tags/labels, mark flag as
+  %hr.divider
+
+  .review{ style: 'text-align:left' }
+    .row.th.flex
+      .col-req
+      .col-stats.flex
+        .col-ttc Time to Complete
+        .col-pay HIT Pay
+        .col-tta Time to Approve
+    .row.tr.flex
+      .col-req{ style: 'margin-top: -2.44%' }= render 'reviews/requester', r: @flag.review
+      .col-stats.flex= render 'reviews/stats', r: @flag.review
+
+    .row{ style: 'margin-top:10px' }= render 'reviews/review-slim', r: @flag.review
+
+  %hr.divider

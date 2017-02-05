@@ -78,14 +78,19 @@ hr.divider
 
 .left
   float: left
+
 .right
   float: right
+
 .flex
   display: flex
+
 .block
   display: block
+
 .inline
   display: inline-block
+
 .hidden
   display: none
 
@@ -94,6 +99,7 @@ hr.divider
 
 .fs-xxs
   font-size: $fs-smallest
+
 .fs-xs
   font-size: $fs-smaller
 
@@ -139,6 +145,7 @@ hr.divider
 // ujs
 
 .new-flag
+  @extend .fs-s
   position: absolute
   z-index: 5
   top: 100%
@@ -147,7 +154,6 @@ hr.divider
   padding: 10px
   box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.75)
   background-color: $tannish
-  font-size: $fs-small
   select
     width: 220px
     height: 25px
@@ -156,16 +162,15 @@ hr.divider
 // page title
 
 .title
-  @extend .bold
+  @extend .bold, .fs-xl
+  //@extend .fs-xl
   margin-bottom: 15px
-  font-size: $fs-bigger
   display: block
 
 // review styles
 
 .row
   justify-content: space-between
-  font-size: $fs-smaller
 
 [class^='col-']
   flex: 1
@@ -174,19 +179,22 @@ hr.divider
   text-align: left
 
 .tr
-  font-size: $fs-small
+  @extend .fs-s
+
+.th
+  @extend .fs-xs
 
 .tagbox
   margin-top: 3px
 
 .tag
+  @extend .fs-xs
   color: white
   background-color: #000
   opacity: 0.7
   border-radius: 5px
   padding: 3px
   margin-right: 3px
-  font-size: $fs-smaller
   cursor: default
   min-width: 20px
   text-align: center
@@ -240,14 +248,15 @@ hr.divider
   margin-bottom: 5px
 
 .review-footer, .comment-footer
-  font-size: $fs-smallest
+  @extend .fs-xxs
   margin-top: 5px
   li
     margin: 0
     &:not(:last-child):after
       @extend %pipe-spacer
-  .timestamp
+  time.timestamp
     color: rgba(0, 0, 0, 0.7)
+    white-space: nowrap
 
 .comments-divider
   margin: 5px 0
