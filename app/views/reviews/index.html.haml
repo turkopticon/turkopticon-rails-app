@@ -21,7 +21,7 @@
 
     .col-req= render 'requester', r: r
     .col-stats.flex= render 'stats', r: r
-    .col-review= render 'review', r: r, flaggers: r.flags.open.map(&:person_id)
+    .col-review= render 'review', r: r, flaggers: r.flags.status(:open).map(&:person_id)
 
   %hr.divider
 
