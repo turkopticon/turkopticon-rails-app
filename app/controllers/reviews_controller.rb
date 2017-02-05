@@ -6,8 +6,13 @@ class ReviewsController < ApplicationController
     query = params.slice(:user, :comments, :flags)
     @page = { location: query.values.reject { |v| v == 'false' }.length > 0 ? 'Reviews' : 'Recent Reviews',
               rname:    params[:rid] && "for #{Requester.find_by(params[:rid]).rname || params[:rid]}",
-              params:   query.to_unsafe_h,
-              reviews:  query[:user] ? Review.by_user(query[:user]).page(params[:page] || 1) : Review.newest.page(params[:page] || 1) }
+              params:   query.to_unsafe_h }
+
+    if query[:user]
+      @page[:reviews] = Review.by_user(query[:user]).newest.valid.page(params[:page])
+    else
+      @page[:reviews] = Review.newest.valid.page(params[:page])
+    end
 
   end
 
@@ -20,10 +25,10 @@ class ReviewsController < ApplicationController
     @review     = Review.find(params[:id])
     @authorized = @review.person_id == @user.id
 
-    rev     = @review.as_json.reject { |k, v| k =~ /(_(?:id|at|.+ew)\z|\Aid)/ || v.nil? }
-    hit     = @review.hit.as_json.select { |k| %w(title reward).include? k }
-    req     = @review.requester.as_json.select { |k| %w(rname rid).include? k }
-    @state  = rev.merge(hit.merge req).to_json
+    rev         = @review.as_json.reject { |k, v| k =~ /(_(?:id|at|.+ew)\z|\Aid)/ || v.nil? }
+    hit         = @review.hit.as_json.select { |k| %w(title reward).include? k }
+    req         = @review.requester.as_json.select { |k| %w(rname rid).include? k }
+    @state      = rev.merge(hit.merge req).to_json
   end
 
   def create
@@ -38,9 +43,18 @@ class ReviewsController < ApplicationController
     end
   end
 
+  # noinspection RailsChecklist01
   def update
+    @review = Review.find(params[:id])
+
+    if request.put? && @user.moderator?
+      state = mod_params[:valid_review].to_bool
+      issue = state.nil? || @review.flags.status(:open).empty?
+      (@review.update_column(:valid_review, state) and @review.requester.touch) unless issue
+      return redirect_back fallback_location: mod_flags_path
+    end
+
     review_params            = form_params.reject { |k| %w(rid rname title reward).include? k }
-    @review                  = Review.find(params[:id])
     @review.dependent_params = form_params.select { |k| %w(rid rname title reward).include? k }.merge user: @user
 
     if @review.update(review_params)
@@ -54,6 +68,10 @@ class ReviewsController < ApplicationController
 
   def form_params
     JSON.parse(params.require(:review).permit(:state).to_h[:state])
+  end
+
+  def mod_params
+    params.require(:review).permit(:valid_review)
   end
 
 end
