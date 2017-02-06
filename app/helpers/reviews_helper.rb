@@ -1,25 +1,16 @@
 module ReviewsHelper
 
-  def semantic_params(params, reviews)
-    # params[:comments] = true if params[:user].present?
-    params.delete_if { |_, v| v == 'false' }
+  def title_from_params(params, target_user)
+    title = target_user.nil? ? 'Recent Reviews' : 'Reviews'
 
-    sem = params.sort.map do |v|
-      case v[0]
-        when :user, 'user' then
-          "by #{nameify reviews[0].person}"
-        when :comments, 'comments' then
-          :comments
-        when :flags, 'flags' then
-          :flags
-        else
-          nil
-      end
+    if target_user
+      user  = "by #{nameify target_user}"
+      scope = (params[:scope] || []).uniq.select { |s| %w(comments flags).include? s }
+      scope = scope.empty? ? nil : 'with ' << scope.join(' or ')
+      title = [title, scope, user].join ' '
     end
 
-    sem.insert(1, :and) if params.key?(:flags) && params.key?(:comments)
-    sem.insert(0, :with) if params.key?(:flags) || params.key?(:comments)
-    sem.join ' '
+    title
   end
 
   def pay_rate(pay, time, opt = {})

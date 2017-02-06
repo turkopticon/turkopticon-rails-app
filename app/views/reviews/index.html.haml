@@ -1,10 +1,7 @@
-%span.title
-  = @page[:location]
-  = @page[:rname]
-  %span.sub-title= semantic_params @page[:params], @page[:reviews]
+%span.title= title_from_params params, @page[:target]
 .heading-bar
-  = page_entries_info @page[:reviews], entry_name: 'review'
-  = paginate @page[:reviews], window: 2
+  = page_entries_info @reviews, entry_name: 'review'
+  = paginate @reviews, window: 2
 .row.th.flex
   .col-req Requester
   .col-stats.flex
@@ -16,7 +13,7 @@
   .col-review Review
 %hr.divider
 
-- @page[:reviews].each do |r|
+- @reviews.each do |r|
   .row.tr.flex{class: "r-#{r.id}"}
 
     .col-req= render 'requester', r: r

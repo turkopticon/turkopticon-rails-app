@@ -2,18 +2,13 @@ class ReviewsController < ApplicationController
   before_action -> { require_access_level :verified }
 
   def index
-    # TODO: fully integrate queries
-    query = params.slice(:user, :comments, :flags)
-    @page = { location: query.values.reject { |v| v == 'false' }.length > 0 ? 'Reviews' : 'Recent Reviews',
-              rname:    params[:rid] && "for #{Requester.find_by(params[:rid]).rname || params[:rid]}",
-              params:   query.to_unsafe_h }
+    @page = { target: params[:user] && Person.select(:email, :display_name).find_by(id: params[:user]) }
 
-    if query[:user]
-      @page[:reviews] = Review.by_user(query[:user]).newest.page(params[:page])
+    if params[:user]
+      @reviews = load_from_query(params.slice :user, :scope).newest.page(params[:page])
     else
-      @page[:reviews] = Review.newest.valid.page(params[:page])
+      @reviews = Review.newest.valid.page(params[:page])
     end
-
   end
 
   def new
@@ -72,6 +67,17 @@ class ReviewsController < ApplicationController
 
   def mod_params
     params.require(:review).permit(:valid_review)
+  end
+
+  def load_from_query(params)
+    permitted = -> (s) { %w(comments flags).include? s }
+    if params[:scope] && !(scope = params[:scope].uniq.select &permitted).empty?
+      tables = scope.map &:to_sym
+      cond   = scope.map { |s| s + '.person_id = :id' }.join ' OR '
+      Review.left_outer_joins(tables).where(cond, id: params[:user]).distinct
+    else
+      Review.by_user(params[:user])
+    end
   end
 
 end
