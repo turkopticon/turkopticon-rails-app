@@ -16,12 +16,11 @@
         %time.timestamp{ datetime: r.created_at, title: "#{time_ago_in_words r.created_at} ago" }= r.created_at
         - unless r.created_at == r.updated_at
           %time.edited{ datetime: r.updated_at, title: "edited #{time_ago_in_words r.updated_at} ago\n#{r.updated_at}" } [e]
-      - unless r.valid_review?
-        %li{ style: 'text-transform:uppercase'} invalidated
-      - if flaggers.include? @user.id
-        %li flagged
+      - if r.valid_review?
+        %li{class: "flag-#{r.id}"}
+          = link_to_unless(flaggers.include?(@user.id), 'flag', ujs_path(:new_flag, r: r.id), remote: true, method: :patch) { 'flagged' }
       - else
-        %li{class: "flag-#{r.id}"}= link_to 'flag', ujs_path(:new_flag, r: r.id), remote: true, method: :patch
+        %li{ style: 'text-transform:uppercase'} invalidated
       %li= link_to 'comment', ujs_path(:new_comment, r: r.id), remote: true, method: :patch
 
   %div{ class: "new-comment-#{r.id}" }
