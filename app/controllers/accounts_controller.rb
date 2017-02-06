@@ -2,10 +2,11 @@ class AccountsController < ApplicationController
   skip_before_action :require_login
 
   def create
-    user = Person.new person_params
+    @usr = Person.new person_params
 
-    if user.save
-      AccountMailer.signup(user).deliver_later
+    if @usr.save
+      AccountMailer.signup(@usr).deliver_later
+      OMNILOGGER.account ltag(@usr, 'CREATE account (registration)')
       render 'verify'
     else
       render 'new'

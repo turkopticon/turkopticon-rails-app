@@ -6,6 +6,7 @@ class CommentsController < ApplicationController
     @comment.review = Review.unscoped.find(params[:r])
     @comment.body.strip!
     if @comment.save
+      # OMNILOGGER.comment ltag("CREATE comment for review##{params[:r]}")
       flash[:success] = 'Your comment was saved'
     else
       flash[:notice] = 'Your comment was unable to be saved'

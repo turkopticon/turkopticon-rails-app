@@ -2,13 +2,7 @@ class SessionsController < ApplicationController
   skip_before_action :require_login
 
   def create
-    # email = params[:email].split('@')
-    # if email[0] == 'admin'
-    #   session[:person_id] = email[1]
-    #   return redirect_to root_path
-    # end
     user = Person.find_by(email: params[:email])
-    # msg = 'Please verify or update your email address to continue using Turkopticon'
     if user && !user.is_closed? && user.authenticate(params[:password])
       # return redirect_to '/reg/change_email', notice: msg unless user.verified?
 
@@ -18,6 +12,8 @@ class SessionsController < ApplicationController
 
       uri                    = session[:original_uri]
       session[:original_uri] = nil
+
+      OMNILOGGER.account ltag(user, 'CREATE session (login)')
       redirect_to uri || root_path
     else
       flash[:notice] = 'Sorry, invalid username/password combination'
@@ -26,6 +22,7 @@ class SessionsController < ApplicationController
   end
 
   def destroy
+    OMNILOGGER.account ltag('DESTROY session (logout)')
     @user               = nil
     session[:person_id] = nil
     flash[:notice]      = 'Logged out'

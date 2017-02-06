@@ -26,6 +26,8 @@ class Mod::FlagsController < Mod::DashboardController
     if request.put? && @user.moderator?
       flag = Flag.find_by id: params[:id]
       flag.modify mod_params, @user.id
+
+      OMNILOGGER.moderator ltag("UPDATE flag##{params[:id]} #{mod_params.to_json}")
     end
 
     redirect_back fallback_location: mod_flags_path

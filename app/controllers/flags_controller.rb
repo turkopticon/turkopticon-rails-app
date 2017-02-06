@@ -8,6 +8,7 @@ class FlagsController < ApplicationController
     if @flag.save
       ab_conversion(:ab_nflockup, session[:ab_nflockup], @user.id)
       flash[:success] = 'Your flag was added and will be reviewed by a moderator'
+      OMNILOGGER.flag ltag("CREATE flag for review##{params[:r]}: #{@flag.reason}")
     else
       flash[:error] = 'Your flag was unable to be saved'
     end

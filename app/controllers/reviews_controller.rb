@@ -27,11 +27,14 @@ class ReviewsController < ApplicationController
   end
 
   def create
-    review_params            = form_params.reject { |k| %w(rid rname title reward).include? k }
+    form          = form_params
+    review_params = form.reject { |k| %w(rid rname title reward).include? k }
     @review                  = Review.new(review_params)
-    @review.dependent_params = form_params.select { |k| %w(rid rname title reward).include? k }.merge user: @user
+
+    @review.dependent_params = form.select { |k| %w(rid rname title reward).include? k }.merge user: @user
 
     if @review.save
+      OMNILOGGER.review ltag("CREATE review for #{form[:rname]} [#{form[:rid]}]")
       redirect_to requester_path @review.requester.rid
     else
       render 'new'
@@ -46,6 +49,8 @@ class ReviewsController < ApplicationController
       state = mod_params[:valid_review].to_bool
       issue = state.nil? || @review.flags.status(:open).empty?
       (@review.update_column(:valid_review, state) and @review.requester.touch) unless issue
+
+      OMNILOGGER.moderator(ltag("UPDATE review##{params[:id]} valid_review:#{state}")) unless issue
       return redirect_back fallback_location: mod_flags_path
     end
 
