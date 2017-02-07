@@ -7,4 +7,5 @@
 .rid= "ID: #{r.rid}"
 %div
   = link_to 'Add a review for this requester', new_review_path(rid: r.rid, rname: r.rname), class: 'arrow-link'
-  = link_to 'Find requester on AMT', '', class: 'arrow-link'
+  = link_to 'Find requester on AMT', amt_search(r), class: 'arrow-link', rel: :nofollow
+  = link_to 'Contact requester on AMT', amt_contact(r), class: 'arrow-link', rel: :nofollow
