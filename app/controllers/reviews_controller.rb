@@ -27,11 +27,12 @@ class ReviewsController < ApplicationController
   end
 
   def create
-    form          = form_params
-    review_params = form.reject { |k| %w(rid rname title reward).include? k }
-    @review                  = Review.new(review_params)
+    form      = form_params
+    condition = -> (key, _) { %w(rid rname title reward).include? key }
+    review    = form.reject(&condition).merge ip: request.ip
+    @review   = Review.new(review)
 
-    @review.dependent_params = form.select { |k| %w(rid rname title reward).include? k }.merge user: @user
+    @review.dependent_params = form.select(&condition).merge user: @user
 
     if @review.save
       OMNILOGGER.review ltag("CREATE review for #{form[:rname]} [#{form[:rid]}]")
@@ -54,10 +55,12 @@ class ReviewsController < ApplicationController
       return redirect_back fallback_location: mod_flags_path
     end
 
-    review_params            = form_params.reject { |k| %w(rid rname title reward).include? k }
-    @review.dependent_params = form_params.select { |k| %w(rid rname title reward).include? k }.merge user: @user
+    condition = -> (key, _) { %w(rid rname title reward).include? key }
+    form      = form_params
+    review    = form.reject(&condition) #.merge ip: request.ip
 
-    if @review.update(review_params)
+    @review.dependent_params = form.select(&condition).merge user: @user
+    if @review.update(review)
       redirect_to requester_path @review.requester.rid
     else
       render 'edit'

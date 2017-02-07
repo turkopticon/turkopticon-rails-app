@@ -820,7 +820,8 @@ CREATE TABLE reviews (
   hit_id            INTEGER,
   person_id         INTEGER,
   created_at        TIMESTAMP WITHOUT TIME ZONE NOT NULL,
-  updated_at        TIMESTAMP WITHOUT TIME ZONE NOT NULL
+  updated_at        TIMESTAMP WITHOUT TIME ZONE NOT NULL,
+  ip                INET
 );
 
 
@@ -1306,6 +1307,13 @@ CREATE INDEX index_flags_on_tags
 CREATE INDEX index_people_on_confirmation_token
   ON people USING BTREE (confirmation_token);
 
+--
+-- Name: index_reviews_on_ip; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_reviews_on_ip
+  ON reviews USING BTREE (ip);
+
 
 --
 -- Name: public_comments_person_id0_idx; Type: INDEX; Schema: public; Owner: -
@@ -1345,6 +1353,7 @@ CREATE INDEX public_hits_title1_idx
 
 CREATE INDEX public_requesters_rid0_idx
   ON requesters USING BTREE (rid);
+
 
 --
 -- Name: public_requesters_rname1_idx; Type: INDEX; Schema: public; Owner: -
@@ -1409,12 +1418,14 @@ ALTER TABLE ONLY ab_variants
 ALTER TABLE ONLY flags
   ADD CONSTRAINT fk_rails_c3ef19e5b1 FOREIGN KEY (review_id) REFERENCES reviews (id);
 
+
 --
 -- Name: hits_requester_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY hits
   ADD CONSTRAINT hits_requester_id_fkey FOREIGN KEY (requester_id) REFERENCES requesters (id) ON UPDATE RESTRICT ON DELETE RESTRICT;
+
 
 --
 -- Name: reviews_hit_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
@@ -1450,6 +1461,6 @@ VALUES ('20081109050154'), ('20081109050712'), ('20081109051730'), ('20090107000
   ('20160402221950'), ('20160405220940'), ('20160405223656'), ('20160423213025'), ('20160501145056'),
   ('20161030060407'), ('20161030072001'), ('20161030072723'), ('20161030075457'), ('20161030082820'),
   ('20161030083039'), ('20161119160536'), ('20161225103246'), ('20170125102921'), ('20170125103407'),
-  ('20170127204507'), ('20170202193532'), ('20170203220801');
+  ('20170127204507'), ('20170202193532'), ('20170203220801'), ('20170207064846');
 
 
