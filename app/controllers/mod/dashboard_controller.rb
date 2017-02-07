@@ -3,8 +3,8 @@ class Mod::DashboardController < ApplicationController
   def index
     @flags = Flag.newest.status(:open).page(1)
     @flags.each do |flag|
-      unless flag.activity.empty? || flag.activity[:status].nil?
-        flag.activity[:status].each { |s| s[:by] = Person.find(s[:by]) }
+      unless flag.activity.empty?
+        flag.activity.each { |s| s[:by] = Person.select(:display_name, :email).find(s[:by]) }
       end
     end
   end

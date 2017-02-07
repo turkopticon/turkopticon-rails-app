@@ -9,14 +9,14 @@ class Flag < ApplicationRecord
   scope :status, -> (status) { where(open: status == :open ? true : false) }
 
   def modify(params, user_id)
-    state                  = params[:open] && params[:open].to_bool
-    self.open              = state unless state.nil?
+    state     = params[:open] && params[:open].to_bool
+    action    = state ? :reopened : :closed
+    self.open = state unless state.nil?
 
     # TODO: tagging
 
-    self.activity[:status] ||= []
     unless state.nil?
-      self.activity[:status] << { status: state ? :reopened : :closed, by: user_id, at: Time.now }
+      self.activity << { type: :status, action: action, by: user_id, at: Time.now }
     end
 
     save

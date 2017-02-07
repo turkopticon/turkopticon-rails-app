@@ -5,10 +5,10 @@
       %li
         %time{ datetime: flag.created_at, title: flag.created_at }
           = "flagged #{time_ago_in_words flag.created_at} ago"
-      - unless flag.activity[:status].nil?
-        - act = flag.activity[:status].sort { |a,b| b[:at] <=> a[:at] }[0]
+      - unless flag.activity.empty?
+        - act = flag.activity.sort { |a,b| b[:at] <=> a[:at] }[0]
         -# TODO: extract to helper
-        %li= "#{act[:status]} by <strong>#{nameify act[:by]}</strong> <time datetime=#{act[:at]} title=#{act[:at]}>#{time_ago_in_words act[:at]} ago </time>".html_safe
+        %li= "#{act[:action]} by <strong>#{nameify act[:by]}</strong> <time datetime=#{act[:at]} title=#{act[:at]}>#{time_ago_in_words act[:at]} ago </time>".html_safe
       - if flag.open?
         %li= link_to 'close flag', mod_flag_path(flag, 'flag[open]': false), method: :put
       - else
