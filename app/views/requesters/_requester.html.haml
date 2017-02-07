@@ -2,7 +2,7 @@
   = link_to r.rname, requester_path(r.rid), class: 'bold'
 
 - if r.aliases.length > 0
-  .aliases= "Aliases: #{r.aliases.join ', '}"
+  .aliases= "Aliases: #{r.aliases.reverse.join ', '}"
 
 .rid= "ID: #{r.rid}"
 %div
