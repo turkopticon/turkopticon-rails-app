@@ -7,6 +7,10 @@ class IndifferentJSON
   end
 
   def self.load(jsonb)
-    (jsonb || {}).with_indifferent_access
+    if Array === jsonb
+      return jsonb.map &:with_indifferent_access
+    else
+      (jsonb || {}).with_indifferent_access
+    end
   end
 end
