@@ -22,6 +22,8 @@
       - else
         %li{ style: 'text-transform:uppercase'} invalidated
       %li= link_to 'comment', ujs_path(:new_comment, r: r.id), remote: true, method: :patch
+      - if controller_name == 'requesters' && @user.id == r.person_id
+        %li= link_to 'edit', edit_review_path(r)
 
   %div{ class: "new-comment-#{r.id}" }
 
@@ -40,3 +42,4 @@
                 - if c.person.moderator? || c.person.admin?
                   = user_class(c.person)
               %li.timestamp= c.updated_at
+
