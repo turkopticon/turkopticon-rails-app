@@ -209,7 +209,7 @@ CREATE TABLE flags (
   updated_at TIMESTAMP WITHOUT TIME ZONE                               NOT NULL,
   open       BOOLEAN DEFAULT TRUE                                      NOT NULL,
   tags       CHARACTER VARYING [] DEFAULT '{}' :: CHARACTER VARYING [] NOT NULL,
-  activity   JSONB DEFAULT '{}' :: JSONB                               NOT NULL
+  activity   JSONB DEFAULT '[]' :: JSONB                               NOT NULL
 );
 
 
@@ -1251,6 +1251,7 @@ ALTER TABLE ONLY rules_versions
 ALTER TABLE ONLY schema_migrations
     ADD CONSTRAINT schema_migrations_pkey PRIMARY KEY (version);
 
+
 --
 -- Name: index_ab_tests_on_name; Type: INDEX; Schema: public; Owner: -
 --
@@ -1376,12 +1377,14 @@ CREATE INDEX public_reviews_person_id1_idx
 ALTER TABLE ONLY comments
   ADD CONSTRAINT comments_person_id_fkey FOREIGN KEY (person_id) REFERENCES people (id) ON UPDATE RESTRICT ON DELETE RESTRICT;
 
+
 --
 -- Name: comments_review_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY comments
   ADD CONSTRAINT comments_review_id_fkey FOREIGN KEY (review_id) REFERENCES reviews (id) ON UPDATE RESTRICT ON DELETE RESTRICT;
+
 
 --
 -- Name: fk_rails_05ab74abbd; Type: FK CONSTRAINT; Schema: public; Owner: -
@@ -1390,12 +1393,14 @@ ALTER TABLE ONLY comments
 ALTER TABLE ONLY flags
   ADD CONSTRAINT fk_rails_05ab74abbd FOREIGN KEY (person_id) REFERENCES people (id);
 
+
 --
 -- Name: fk_rails_3fc4766dfa; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ab_variants
   ADD CONSTRAINT fk_rails_3fc4766dfa FOREIGN KEY (test_id) REFERENCES ab_tests (id);
+
 
 --
 -- Name: fk_rails_c3ef19e5b1; Type: FK CONSTRAINT; Schema: public; Owner: -
