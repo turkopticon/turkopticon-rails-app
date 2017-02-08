@@ -1,5 +1,6 @@
 class Mod::DashboardController < ApplicationController
-  # before_action -> { require_access_level :moderator }
+  before_action -> { require_access_level :moderator }
+
   def index
     @flags = Flag.newest.status(:open).page(1)
     @flags.each do |flag|
