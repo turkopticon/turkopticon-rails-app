@@ -52,7 +52,7 @@ class Requester < ApplicationRecord
   end
 
   def cached_aggregates
-    Rails.cache.fetch([self.cache_key, 'aggregates']) { aggregates }
+    Rails.cache.fetch([self.cache_key, 'aggregates'], expires_in: (Time.now.end_of_day - Time.now).to_i) { aggregates }
   end
 
   # def cached_multi_aggregates(sth)
