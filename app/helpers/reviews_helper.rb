@@ -22,9 +22,9 @@ module ReviewsHelper
 
     base = pay/time
     exp  = case opt[:unit]
-             when :hr, :h, :hour then
+             when :hr
                2
-             when :min, :m, :minute then
+             when :min
                1
              else
                0
@@ -37,8 +37,10 @@ module ReviewsHelper
   def htime(sec, approx = true)
     sec = sec.to_i
     return nil unless sec && sec > 0
-    if sec > 86400 && approx
-      '%.2f days' % (sec/86400.0)
+    if sec >= 86400 && approx
+      est = sec/86400.0
+      tmp = est > 1 ? '%.2f ' : '%i '
+      (tmp % est) << 'day'.pluralize(est)
     else
       units = %w(d h m s)
       [sec/86400, sec%86400/3600, sec/60%60, sec%60]
