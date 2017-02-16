@@ -1,5 +1,5 @@
 class AccountsController < ApplicationController
-  skip_before_action :require_login
+  skip_before_action :require_login, except: :settings
 
   def create
     @usr = Person.new person_params
@@ -11,6 +11,16 @@ class AccountsController < ApplicationController
     else
       render 'new'
     end
+  end
+
+  def update
+    @user.assign_attributes person_params
+    if @user.save context: params[:context].to_sym
+      flash[:success] = 'Settings updated'
+    else
+      flash[:error] = 'Changes were unable to be saved'
+    end
+    redirect_back fallback_location: account_settings_path
   end
 
   def activate
@@ -30,6 +40,6 @@ class AccountsController < ApplicationController
   private
 
   def person_params
-    params.require(:person).permit(:display_name, :email, :password, :password_confirmation)
+    params.require(:person).permit(:display_name, :email, :time_unit, :password, :password_confirmation)
   end
 end

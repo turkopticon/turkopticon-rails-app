@@ -1,0 +1,32 @@
+%span.title Account Settings
+
+%section.form
+  .form-title.bold.fs-l Display settings
+  = form_for @user, url: account_path(@user.id), method: :put do |f|
+    = f.hidden_field nil, name: :context, value: :update, id: nil
+    %p
+      = f.label :display_name, class: :block
+      = f.text_field :display_name
+    %p
+      %span.block Time unit
+      %span.block
+        = f.radio_button :time_unit, :hr
+        = f.label :time_unit, 'Hours', value: :hr
+        %span.example $9.60/hr
+      %span.block
+        = f.radio_button :time_unit, :min
+        = f.label :time_unit, 'Minutes', value: :min
+        %span.example $0.16/min
+
+    %p= f.submit 'Update', class: [:control, :small, :block]
+
+%section.form
+  .form-title.bold.fs-l Change password
+  = form_for @user, url: account_path(@user.id), method: :put do |f|
+    %p
+      = f.hidden_field nil, name: :context, value: :change_password
+      = f.label :password, 'New password', class: :block
+      = f.password_field :password
+      = f.label :password_confirmation, 'Confirm new password', class: :block
+      = f.password_field :password_confirmation
+    %p= f.submit 'Update password', class: [:control, :small, :block]

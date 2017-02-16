@@ -35,8 +35,8 @@ class Person < ActiveRecord::Base
       with:    /\A([a-z0-9])([a-z0-9_\-\.\+])*(?!\.{2,})([a-z0-9])\@(?!mailinator|.*mial\.|spamcatch|spambob|spamavert|spamherelots)([a-z0-9])([a-z0-9\-\.])*\.([a-z]{2,4})\z/i,
       message: 'is not a recognized email address' }
 
-  validates :password, presence: true, confirmation: true
-  validates :password_confirmation, presence: true
+  validates :password, presence: true, confirmation: true, on: [:create, :change_password]
+  validates :password_confirmation, presence: true, on: [:create, :change_password]
 
   def activate!
     self.update_columns email_verified: true, confirmation_token: nil

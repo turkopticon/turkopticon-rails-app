@@ -1,6 +1,6 @@
 module ApplicationHelper
   def nameify(user)
-    return user.display_name unless !user.display_name || user.display_name.empty?
+    return user.display_name unless !user.display_name || user.display_name.strip.empty?
     id, domain = user.email.split '@'
     id[0, [id.length/2, 1].max] << '...@' << domain[0, 1] << '...'
   end

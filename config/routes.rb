@@ -13,8 +13,10 @@ Rails.application.routes.draw do
   constraints subdomain: '' do
     root 'main#info', as: :root
 
-    resources :accounts, only: [:new, :create], param: :token do
-      get :activate, on: :member
+    resources :accounts, only: [:new, :create, :update]
+    scope :account do
+      get :settings, to: 'accounts#settings', as: :account_settings
+      get '/activate/:token', to: 'accounts#activate', as: :activate_account
     end
     resources :sessions, only: [:new, :create, :destroy], path_names: { new: :login }
     resources :reviews
