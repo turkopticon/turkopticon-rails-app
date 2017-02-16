@@ -15,4 +15,23 @@ module ApplicationHelper
         nil
     end
   end
+
+  def markdown(txt)
+    options  = {
+        space_after_headers: true,
+        fenced_code_blocks:  true,
+        autolink:            true,
+        superscript:         true,
+        underline:           true,
+        no_intra_emphasis:   true,
+        tables:              true
+    }
+    renderer = Redcarpet::Render::HTML.new filter_html:     true,
+                                           hard_wrap:       true,
+                                           with_toc_data:   true,
+                                           link_attributes: { rel: 'nofollow', target: '_blank' }
+    markdown = Redcarpet::Markdown.new renderer, options
+
+    markdown.render(txt).html_safe
+  end
 end

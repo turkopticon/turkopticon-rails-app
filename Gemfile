@@ -24,7 +24,8 @@ gem 'pg_search'
 # javascript es6 compatibility (upgrade to sprockets 4 when avail)
 gem 'sprockets'
 gem 'sprockets-es6'
-
+# User redcarpet for markdown support
+gem 'redcarpet'
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
