@@ -1,7 +1,7 @@
 - [:recent, :all].each do |frame|
   %div{class: "col-#{frame}"}
     %span.block
-      - pr = pay_rate a[frame][:reward][0], a[frame][:reward][1], split: true
+      - pr = pay_rate a[frame][:reward][0], a[frame][:reward][1], unit: @user.time_unit.to_sym, split: true
       %span.bold= pr[0]
       = "/ #{pr[1]}"
     %span.block

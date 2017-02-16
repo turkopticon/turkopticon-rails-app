@@ -1,6 +1,6 @@
 .col-ttc= htime r.time unless r.time.nil?
 .col-pay
   %span.block= '$' << '%.2f' % r.hit.reward
-  %span.block.ppt= pay_rate r.hit.reward, r.time
+  %span.block.ppt= pay_rate r.hit.reward, r.time, unit: @user.time_unit.to_sym
 .col-tta= htime r.time_pending unless r.time_pending.nil?
 
