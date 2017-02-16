@@ -596,30 +596,28 @@ ALTER SEQUENCE notifications_id_seq OWNED BY notifications.id;
 --
 
 CREATE TABLE people (
-  id                              INTEGER NOT NULL,
-  email                           CHARACTER VARYING(255),
-  hashed_password                 CHARACTER VARYING(255),
-  salt                            CHARACTER VARYING(255),
-  email_verified                  SMALLINT,
-  created_at                      TIMESTAMP WITHOUT TIME ZONE,
-  updated_at                      TIMESTAMP WITHOUT TIME ZONE,
-  is_admin                        SMALLINT,
-  display_name                    CHARACTER VARYING(255),
-  is_moderator                    SMALLINT,
-  is_closed                       SMALLINT,
-  closed_at                       TIMESTAMP WITHOUT TIME ZONE,
-  most_recent_first_in_my_reviews SMALLINT,
-  can_comment                     SMALLINT,
-  commenting_requested            SMALLINT,
-  commenting_requested_at         TIMESTAMP WITHOUT TIME ZONE,
-  commenting_request_ignored      SMALLINT,
-  order_reviews_by_edit_date      SMALLINT,
-  show_fancy_links                SMALLINT,
-  commenting_enabled_by           INTEGER,
-  commenting_enabled_at           TIMESTAMP WITHOUT TIME ZONE,
-  commenting_disabled_by          INTEGER,
-  commenting_disabled_at          TIMESTAMP WITHOUT TIME ZONE,
-  confirmation_token              CHARACTER VARYING
+  id                         INTEGER NOT NULL,
+  email                      CHARACTER VARYING(255),
+  hashed_password            CHARACTER VARYING(255),
+  salt                       CHARACTER VARYING(255),
+  email_verified             SMALLINT,
+  created_at                 TIMESTAMP WITHOUT TIME ZONE,
+  updated_at                 TIMESTAMP WITHOUT TIME ZONE,
+  is_admin                   SMALLINT,
+  display_name               CHARACTER VARYING(255),
+  is_moderator               SMALLINT,
+  is_closed                  SMALLINT,
+  closed_at                  TIMESTAMP WITHOUT TIME ZONE,
+  can_comment                SMALLINT,
+  commenting_requested       SMALLINT,
+  commenting_requested_at    TIMESTAMP WITHOUT TIME ZONE,
+  commenting_request_ignored SMALLINT,
+  commenting_enabled_by      INTEGER,
+  commenting_enabled_at      TIMESTAMP WITHOUT TIME ZONE,
+  commenting_disabled_by     INTEGER,
+  commenting_disabled_at     TIMESTAMP WITHOUT TIME ZONE,
+  confirmation_token         CHARACTER VARYING,
+  time_unit                  CHARACTER VARYING(3) DEFAULT 'hr' :: CHARACTER VARYING
 );
 
 
@@ -1307,6 +1305,7 @@ CREATE INDEX index_flags_on_tags
 CREATE INDEX index_people_on_confirmation_token
   ON people USING BTREE (confirmation_token);
 
+
 --
 -- Name: index_reviews_on_ip; Type: INDEX; Schema: public; Owner: -
 --
@@ -1434,6 +1433,7 @@ ALTER TABLE ONLY hits
 ALTER TABLE ONLY reviews
   ADD CONSTRAINT reviews_hit_id_fkey FOREIGN KEY (hit_id) REFERENCES hits (id) ON UPDATE RESTRICT ON DELETE RESTRICT;
 
+
 --
 -- Name: reviews_person_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
@@ -1461,6 +1461,7 @@ VALUES ('20081109050154'), ('20081109050712'), ('20081109051730'), ('20090107000
   ('20160402221950'), ('20160405220940'), ('20160405223656'), ('20160423213025'), ('20160501145056'),
   ('20161030060407'), ('20161030072001'), ('20161030072723'), ('20161030075457'), ('20161030082820'),
   ('20161030083039'), ('20161119160536'), ('20161225103246'), ('20170125102921'), ('20170125103407'),
-  ('20170127204507'), ('20170202193532'), ('20170203220801'), ('20170207064846');
+  ('20170127204507'), ('20170202193532'), ('20170203220801'), ('20170207064846'), ('20170216121604'),
+  ('20170216121845');
 
 
