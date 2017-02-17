@@ -5,7 +5,7 @@ class ApplicationController < ActionController::Base
   before_action :retrieve_user
   before_action :require_login
 
-  OMNILOGGER = Omnilogger.new :account, :flag, :review, :moderator, :admin
+  OMNILOGGER ||= Omnilogger.new :account, :flag, :review, :moderator, :admin
 
   private
 
