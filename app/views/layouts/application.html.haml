@@ -39,4 +39,15 @@
 
       = yield
 
-    %footer{ style: 'height:100px;' }
+    %footer
+      %hr.divider
+
+      .flex.fs-xxs
+        %ul.inline
+          %li &copy; Turkopticon
+          %li= link_to 'Terms', doc_path(name: :terms)
+          %li= link_to 'Privacy', doc_path(name: :privacy)
+
+        %ul.inline{ style: 'text-align:end;'}
+          %li= link_to 'GitHub', 'https://github.com/turkopticon/turkopticon-rails-app', rel: :nofollow
+          %li= link_to 'Twitter', 'https://twitter.com/turkopticon', rel: :nofollow

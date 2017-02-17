@@ -1,0 +1,8 @@
+%span.title{ style:'font-size:2em;' }= @doc.title
+
+- if %w(terms privacy rules).include? @doc.name
+  %span{ style: 'text-transform:uppercase;' }
+    effective date:
+    %time.timestamp{ datetime: @doc.updated_at }= @doc.updated_at.to_s.split[0]
+
+= markdown(@doc.body)
