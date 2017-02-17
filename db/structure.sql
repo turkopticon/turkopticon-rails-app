@@ -194,6 +194,67 @@ CACHE 1;
 
 ALTER SEQUENCE comments_id_seq OWNED BY comments.id;
 
+--
+-- Name: docs_documents; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE docs_documents (
+  id         INTEGER                     NOT NULL,
+  name       CHARACTER VARYING(20),
+  title      CHARACTER VARYING(100),
+  body       TEXT,
+  created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL,
+  updated_at TIMESTAMP WITHOUT TIME ZONE NOT NULL
+);
+
+--
+-- Name: docs_documents_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE docs_documents_id_seq
+START WITH 1
+INCREMENT BY 1
+NO MINVALUE
+NO MAXVALUE
+CACHE 1;
+
+--
+-- Name: docs_documents_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE docs_documents_id_seq OWNED BY docs_documents.id;
+
+--
+-- Name: docs_versions; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE docs_versions (
+  id          INTEGER                     NOT NULL,
+  name        CHARACTER VARYING(20),
+  title       CHARACTER VARYING(100),
+  body        TEXT,
+  document_id INTEGER,
+  created_at  TIMESTAMP WITHOUT TIME ZONE NOT NULL,
+  updated_at  TIMESTAMP WITHOUT TIME ZONE NOT NULL
+);
+
+--
+-- Name: docs_versions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE docs_versions_id_seq
+START WITH 1
+INCREMENT BY 1
+NO MINVALUE
+NO MAXVALUE
+CACHE 1;
+
+--
+-- Name: docs_versions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE docs_versions_id_seq OWNED BY docs_versions.id;
+
 
 --
 -- Name: flags; Type: TABLE; Schema: public; Owner: -
@@ -921,6 +982,22 @@ ALTER TABLE ONLY comments
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY docs_documents
+  ALTER COLUMN id SET DEFAULT nextval('docs_documents_id_seq' :: REGCLASS);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY docs_versions
+  ALTER COLUMN id SET DEFAULT nextval('docs_versions_id_seq' :: REGCLASS);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY flags
   ALTER COLUMN id SET DEFAULT nextval('flags_id_seq' :: REGCLASS);
 
@@ -947,6 +1024,7 @@ ALTER TABLE ONLY forum_person_info
 
 ALTER TABLE ONLY forum_post_versions
   ALTER COLUMN id SET DEFAULT nextval('forum_post_versions_id_seq' :: REGCLASS);
+
 
 --
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
@@ -1027,6 +1105,7 @@ ALTER TABLE ONLY posts
 ALTER TABLE ONLY reports
   ALTER COLUMN id SET DEFAULT nextval('reports_id_seq' :: REGCLASS);
 
+
 --
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
@@ -1042,14 +1121,12 @@ ALTER TABLE ONLY reputation_statements
 ALTER TABLE ONLY requesters
   ALTER COLUMN id SET DEFAULT nextval('requesters_id_seq' :: REGCLASS);
 
-
 --
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY reviews
   ALTER COLUMN id SET DEFAULT nextval('reviews_id_seq' :: REGCLASS);
-
 
 --
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
@@ -1097,6 +1174,20 @@ ALTER TABLE ONLY ar_internal_metadata
 
 ALTER TABLE ONLY comments
     ADD CONSTRAINT comments_pkey PRIMARY KEY (id);
+
+--
+-- Name: docs_documents_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY docs_documents
+  ADD CONSTRAINT docs_documents_pkey PRIMARY KEY (id);
+
+--
+-- Name: docs_versions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY docs_versions
+  ADD CONSTRAINT docs_versions_pkey PRIMARY KEY (id);
 
 
 --
@@ -1273,6 +1364,13 @@ CREATE INDEX index_ab_variants_on_name
 CREATE INDEX index_ab_variants_on_test_id
   ON ab_variants USING BTREE (test_id);
 
+--
+-- Name: index_docs_versions_on_document_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_docs_versions_on_document_id
+  ON docs_versions USING BTREE (document_id);
+
 
 --
 -- Name: index_flags_on_person_id; Type: INDEX; Schema: public; Owner: -
@@ -1401,6 +1499,13 @@ ALTER TABLE ONLY comments
 ALTER TABLE ONLY flags
   ADD CONSTRAINT fk_rails_05ab74abbd FOREIGN KEY (person_id) REFERENCES people (id);
 
+--
+-- Name: fk_rails_13a9314e80; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY docs_versions
+  ADD CONSTRAINT fk_rails_13a9314e80 FOREIGN KEY (document_id) REFERENCES docs_documents (id);
+
 
 --
 -- Name: fk_rails_3fc4766dfa; Type: FK CONSTRAINT; Schema: public; Owner: -
@@ -1441,6 +1546,7 @@ ALTER TABLE ONLY reviews
 ALTER TABLE ONLY reviews
   ADD CONSTRAINT reviews_person_id_fkey FOREIGN KEY (person_id) REFERENCES people (id) ON UPDATE RESTRICT ON DELETE RESTRICT;
 
+
 --
 -- PostgreSQL database dump complete
 --
@@ -1462,6 +1568,6 @@ VALUES ('20081109050154'), ('20081109050712'), ('20081109051730'), ('20090107000
   ('20161030060407'), ('20161030072001'), ('20161030072723'), ('20161030075457'), ('20161030082820'),
   ('20161030083039'), ('20161119160536'), ('20161225103246'), ('20170125102921'), ('20170125103407'),
   ('20170127204507'), ('20170202193532'), ('20170203220801'), ('20170207064846'), ('20170216121604'),
-  ('20170216121845');
+  ('20170216121845'), ('20170216221002');
 
 
