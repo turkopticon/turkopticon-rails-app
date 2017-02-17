@@ -22,6 +22,7 @@ Rails.application.routes.draw do
     resources :reviews
     resources :requesters, only: [:index, :show], param: :rid
     resources :comments, :flags, only: [:create, :update]
+    resources :docs, only: [:show], param: :name
 
     namespace :mod do
       resources :dashboard, only: [:index]
@@ -30,6 +31,7 @@ Rails.application.routes.draw do
 
     namespace :admin do
       resources :dashboard, only: [:index]
+      resources :documents, only: [:new, :create, :edit, :update]
     end
 
     scope :ujs, defaults: { format: :ujs } do

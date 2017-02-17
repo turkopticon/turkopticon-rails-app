@@ -1,0 +1,14 @@
+= form_for doc, url: action_name == 'edit' ? admin_document_path(doc) : admin_documents_path do |f|
+  %p
+    = f.label :name
+    = f.text_field :name, class: :block
+
+  %p
+    = f.label :title
+    = f.text_field :title, class: :block
+
+  %p
+    = f.label :body
+    = f.text_area :body, class: :block
+
+  %p= f.submit :submit, class: [:control, :med, :block]

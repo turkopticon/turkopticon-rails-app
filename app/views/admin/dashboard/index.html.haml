@@ -2,3 +2,11 @@
 %p
   Under construction
 
+= link_to 'create a new document', new_admin_document_path
+
+%p
+  - @docs.each do |doc|
+    %span.block
+      = doc.name
+      = link_to :edit, edit_admin_document_path(doc)
+
