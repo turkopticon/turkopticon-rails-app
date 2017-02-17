@@ -18,15 +18,15 @@ class Requester < ApplicationRecord
   def aggregates
     agg = { all: {}, recent: {} }
 
+    # TODO: optimize
+
     [:all, :recent].each do |period|
-      review = period == :all ? self.reviews.valid : self.reviews.recent.valid
+      review                  = period == :all ? self.reviews.valid : self.reviews.recent.valid
 
-      rewards = hits.map do |hit|
-        hv = hit.reviews.valid.where('time > 0')
-        [(hit.reward.to_f * hv.size).round(2), hv.sum(:time)]
-      end
+      revt    = review.where 'time > 0'
+      rewards = revt.map { |rev| [rev.hit.reward.to_f, rev.time] }
 
-      agg[period][:reward]    = rewards.reduce([0, 0]) { |a, b| a[0] += b[0]; a[1] += b[1]; a } << review.where('time > 0').size
+      agg[period][:reward]    = rewards.reduce([0, 0]) { |a, b| a[0] += b[0]; a[1] += b[1]; a } << revt.size
       agg[period][:reward][0] = agg[period][:reward][0].round(2)
       agg[period][:pending]   = review.average(:time_pending).to_f
 
