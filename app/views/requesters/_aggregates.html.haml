@@ -8,14 +8,14 @@
       %span.bold= "#{htime(a[frame][:pending]) || '-- days'}"
       pending
     %span.block
-      %span.bold= "#{a[frame][:comm][0]}"
+      %span.bold= "#{pct a[frame][:comm]}"
       = "of #{a[frame][:comm][1]} satisfied with response"
     %span.block
-      %span.bold= "#{a[frame][:recommend][0]}"
+      %span.bold= "#{pct a[frame][:recommend]}"
       = "of #{a[frame][:recommend][1]} would recommend"
 
     %ul.inline
-      - [:tos, :broken].each do |k|
-        - next unless a[frame][k] > 0
-        %li= "#{k == :tos ? 'TOS' : k}: #{a[frame][k]}"
+      - [:tos, :broken, :rejected].each do |k|
+        - next unless a[frame][k][0] > 0
+        %li= "#{k == :tos ? 'TOS' : k}: #{a[frame][k][0]}"
 

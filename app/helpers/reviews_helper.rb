@@ -51,6 +51,11 @@ module ReviewsHelper
     end
   end
 
+  def pct(vals)
+    x, n = vals
+    n > 0 ? '%.f%%' % (100*x/n.to_f) : '--'
+  end
+
   def tag_class(data)
     name, value = data
     case
