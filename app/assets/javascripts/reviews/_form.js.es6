@@ -218,7 +218,6 @@
     time   : { required: [], valueGreaterThan: [0, 'Time', 'seconds'] },
   };
 
-  console.log(document.querySelector('#review_state').value);
   const fc = new FormControl(null, null, validators);
 
   fc.view.form.querySelector('[type=submit].submit.block').addEventListener('click', e => {
