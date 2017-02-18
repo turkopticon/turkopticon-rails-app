@@ -4,8 +4,13 @@
     %title='turkopticon'
     = csrf_meta_tags
     = stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload'
+    :javascript
+      window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+      ga('create', 'UA-92176952-1', 'auto');
     = javascript_include_tag 'application', 'data-turbolinks-track': 'reload'
-    %link{ href: '/feed', rel: 'alternate', title: 'RSS', type: 'application/rss+xml' }
+    - if Rails.env.production?
+      = javascript_include_tag 'https://www.google-analytics.com/analytics.js', async: true
+    -#%link{ href: '/feed', rel: 'alternate', title: 'RSS', type: 'application/rss+xml' }
     %meta{:name => 'google-site-verification', :content => 'UWLKIWNd0faYwT10vzkBZI5wvuQpuRtiEcZh9ZiMsBM'}
 
   %body{ class: "#{controller_name}-#{action_name}" }
@@ -51,3 +56,9 @@
         %ul.inline{ style: 'text-align:end;'}
           %li= link_to 'GitHub', 'https://github.com/turkopticon/turkopticon-rails-app', rel: :nofollow
           %li= link_to 'Twitter', 'https://twitter.com/turkopticon', rel: :nofollow
+
+    :javascript
+      if (typeof ga === 'function') {
+        ga('set', 'page', location.pathname);
+        ga('send', 'pageview', { title: '#{controller_name}##{action_name}' })
+      }
