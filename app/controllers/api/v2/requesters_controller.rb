@@ -1,5 +1,5 @@
 # noinspection RubyStringKeysInHashInspection
-class Api::V2d0a::RequestersController < Api::V2d0a::ApiController
+class Api::V2::RequestersController < Api::V2::ApiController
   def index
     if params[:rids] && params[:rids].length > 0
       rids = params[:rids].split ','

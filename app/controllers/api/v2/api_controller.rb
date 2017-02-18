@@ -1,5 +1,5 @@
-module Api::V2d0a
-  VERSION = '2.0-alpha'
+module Api::V2
+  VERSION = '2'
   class ApiController < ActionController::API
   end
 end
