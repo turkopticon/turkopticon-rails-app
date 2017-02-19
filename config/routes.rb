@@ -40,7 +40,6 @@ Rails.application.routes.draw do
     end
 
     get :install, to: 'main#install'
-    get :rules, to: 'main#rules'
   end
 
   # get 'reg/change_email'
