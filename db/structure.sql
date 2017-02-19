@@ -19,20 +19,17 @@ SET row_security = OFF;
 
 CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
 
-
 --
 -- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: -
 --
 
 COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
 
-
 --
 -- Name: btree_gin; Type: EXTENSION; Schema: -; Owner: -
 --
 
 CREATE EXTENSION IF NOT EXISTS btree_gin WITH SCHEMA public;
-
 
 --
 -- Name: EXTENSION btree_gin; Type: COMMENT; Schema: -; Owner: -
@@ -58,7 +55,6 @@ CREATE TABLE ab_tests (
   updated_at TIMESTAMP WITHOUT TIME ZONE NOT NULL
 );
 
-
 --
 -- Name: ab_tests_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
@@ -70,13 +66,11 @@ NO MINVALUE
 NO MAXVALUE
 CACHE 1;
 
-
 --
 -- Name: ab_tests_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
 ALTER SEQUENCE ab_tests_id_seq OWNED BY ab_tests.id;
-
 
 --
 -- Name: ab_variants; Type: TABLE; Schema: public; Owner: -
@@ -98,7 +92,6 @@ CREATE TABLE ab_variants (
   updated_at TIMESTAMP WITHOUT TIME ZONE NOT NULL
 );
 
-
 --
 -- Name: ab_variants_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
@@ -110,13 +103,11 @@ NO MINVALUE
 NO MAXVALUE
 CACHE 1;
 
-
 --
 -- Name: ab_variants_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
 ALTER SEQUENCE ab_variants_id_seq OWNED BY ab_variants.id;
-
 
 --
 -- Name: aliases; Type: TABLE; Schema: public; Owner: -
@@ -130,7 +121,6 @@ CREATE TABLE aliases (
   updated_at   TIMESTAMP WITHOUT TIME ZONE
 );
 
-
 --
 -- Name: aliases_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
@@ -142,13 +132,11 @@ NO MINVALUE
 NO MAXVALUE
 CACHE 1;
 
-
 --
 -- Name: aliases_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
 ALTER SEQUENCE aliases_id_seq OWNED BY aliases.id;
-
 
 --
 -- Name: ar_internal_metadata; Type: TABLE; Schema: public; Owner: -
@@ -160,7 +148,6 @@ CREATE TABLE ar_internal_metadata (
   created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL,
   updated_at TIMESTAMP WITHOUT TIME ZONE NOT NULL
 );
-
 
 --
 -- Name: comments; Type: TABLE; Schema: public; Owner: -
@@ -175,7 +162,6 @@ CREATE TABLE comments (
   updated_at TIMESTAMP WITHOUT TIME ZONE NOT NULL
 );
 
-
 --
 -- Name: comments_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
@@ -186,7 +172,6 @@ INCREMENT BY 1
 NO MINVALUE
 NO MAXVALUE
 CACHE 1;
-
 
 --
 -- Name: comments_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
@@ -255,7 +240,6 @@ CACHE 1;
 
 ALTER SEQUENCE docs_versions_id_seq OWNED BY docs_versions.id;
 
-
 --
 -- Name: flags; Type: TABLE; Schema: public; Owner: -
 --
@@ -273,7 +257,6 @@ CREATE TABLE flags (
   activity   JSONB DEFAULT '[]' :: JSONB                               NOT NULL
 );
 
-
 --
 -- Name: flags_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
@@ -285,13 +268,11 @@ NO MINVALUE
 NO MAXVALUE
 CACHE 1;
 
-
 --
 -- Name: flags_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
 ALTER SEQUENCE flags_id_seq OWNED BY flags.id;
-
 
 --
 -- Name: follows; Type: TABLE; Schema: public; Owner: -
@@ -306,7 +287,6 @@ CREATE TABLE follows (
   updated_at  TIMESTAMP WITHOUT TIME ZONE
 );
 
-
 --
 -- Name: follows_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
@@ -318,13 +298,11 @@ NO MINVALUE
 NO MAXVALUE
 CACHE 1;
 
-
 --
 -- Name: follows_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
 ALTER SEQUENCE follows_id_seq OWNED BY follows.id;
-
 
 --
 -- Name: forum_person_info; Type: TABLE; Schema: public; Owner: -
@@ -339,7 +317,6 @@ CREATE TABLE forum_person_info (
   updated_at               TIMESTAMP WITHOUT TIME ZONE
 );
 
-
 --
 -- Name: forum_person_info_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
@@ -351,13 +328,11 @@ NO MINVALUE
 NO MAXVALUE
 CACHE 1;
 
-
 --
 -- Name: forum_person_info_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
 ALTER SEQUENCE forum_person_info_id_seq OWNED BY forum_person_info.id;
-
 
 --
 -- Name: forum_post_versions; Type: TABLE; Schema: public; Owner: -
@@ -375,7 +350,6 @@ CREATE TABLE forum_post_versions (
   person_id  INTEGER
 );
 
-
 --
 -- Name: forum_post_versions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
@@ -387,13 +361,11 @@ NO MINVALUE
 NO MAXVALUE
 CACHE 1;
 
-
 --
 -- Name: forum_post_versions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
 ALTER SEQUENCE forum_post_versions_id_seq OWNED BY forum_post_versions.id;
-
 
 --
 -- Name: forum_posts; Type: TABLE; Schema: public; Owner: -
@@ -404,7 +376,7 @@ CREATE TABLE forum_posts (
   person_id               INTEGER,
   parent_id               INTEGER,
   slug                    CHARACTER VARYING(255),
-  sticky                  SMALLINT,
+  sticky                  BOOLEAN,
   score                   NUMERIC(5, 2),
   replies                 INTEGER,
   views                   INTEGER,
@@ -415,10 +387,9 @@ CREATE TABLE forum_posts (
   created_at              TIMESTAMP WITHOUT TIME ZONE,
   updated_at              TIMESTAMP WITHOUT TIME ZONE,
   thread_head             INTEGER,
-  deleted                 SMALLINT,
+  deleted                 BOOLEAN,
   initial_score           NUMERIC(5, 2)
 );
-
 
 --
 -- Name: forum_posts_id_seq; Type: SEQUENCE; Schema: public; Owner: -
@@ -431,13 +402,11 @@ NO MINVALUE
 NO MAXVALUE
 CACHE 1;
 
-
 --
 -- Name: forum_posts_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
 ALTER SEQUENCE forum_posts_id_seq OWNED BY forum_posts.id;
-
 
 --
 -- Name: hits; Type: TABLE; Schema: public; Owner: -
@@ -452,7 +421,6 @@ CREATE TABLE hits (
   updated_at   TIMESTAMP WITHOUT TIME ZONE NOT NULL
 );
 
-
 --
 -- Name: hits_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
@@ -464,13 +432,11 @@ NO MINVALUE
 NO MAXVALUE
 CACHE 1;
 
-
 --
 -- Name: hits_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
 ALTER SEQUENCE hits_id_seq OWNED BY hits.id;
-
 
 --
 -- Name: ignores; Type: TABLE; Schema: public; Owner: -
@@ -484,7 +450,6 @@ CREATE TABLE ignores (
   updated_at TIMESTAMP WITHOUT TIME ZONE
 );
 
-
 --
 -- Name: ignores_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
@@ -496,13 +461,11 @@ NO MINVALUE
 NO MAXVALUE
 CACHE 1;
 
-
 --
 -- Name: ignores_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
 ALTER SEQUENCE ignores_id_seq OWNED BY ignores.id;
-
 
 --
 -- Name: legacy_comments; Type: TABLE; Schema: public; Owner: -
@@ -519,7 +482,6 @@ CREATE TABLE legacy_comments (
   displayed_notes TEXT
 );
 
-
 --
 -- Name: legacy_comments_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
@@ -531,13 +493,11 @@ NO MINVALUE
 NO MAXVALUE
 CACHE 1;
 
-
 --
 -- Name: legacy_comments_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
 ALTER SEQUENCE legacy_comments_id_seq OWNED BY legacy_comments.id;
-
 
 --
 -- Name: legacy_flags; Type: TABLE; Schema: public; Owner: -
@@ -553,7 +513,6 @@ CREATE TABLE legacy_flags (
   displayed_notes TEXT
 );
 
-
 --
 -- Name: legacy_flags_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
@@ -565,13 +524,11 @@ NO MINVALUE
 NO MAXVALUE
 CACHE 1;
 
-
 --
 -- Name: legacy_flags_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
 ALTER SEQUENCE legacy_flags_id_seq OWNED BY legacy_flags.id;
-
 
 --
 -- Name: legacy_requesters; Type: TABLE; Schema: public; Owner: -
@@ -597,7 +554,6 @@ CREATE TABLE legacy_requesters (
   all_pending_or_didnt_do_hits INTEGER
 );
 
-
 --
 -- Name: legacy_requesters_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
@@ -609,13 +565,11 @@ NO MINVALUE
 NO MAXVALUE
 CACHE 1;
 
-
 --
 -- Name: legacy_requesters_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
 ALTER SEQUENCE legacy_requesters_id_seq OWNED BY legacy_requesters.id;
-
 
 --
 -- Name: notifications; Type: TABLE; Schema: public; Owner: -
@@ -626,12 +580,11 @@ CREATE TABLE notifications (
   person_id  INTEGER,
   title      TEXT,
   body       TEXT,
-  read       SMALLINT,
+  read       BOOLEAN,
   read_at    TIMESTAMP WITHOUT TIME ZONE,
   created_at TIMESTAMP WITHOUT TIME ZONE,
   updated_at TIMESTAMP WITHOUT TIME ZONE
 );
-
 
 --
 -- Name: notifications_id_seq; Type: SEQUENCE; Schema: public; Owner: -
@@ -644,13 +597,11 @@ NO MINVALUE
 NO MAXVALUE
 CACHE 1;
 
-
 --
 -- Name: notifications_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
 ALTER SEQUENCE notifications_id_seq OWNED BY notifications.id;
-
 
 --
 -- Name: people; Type: TABLE; Schema: public; Owner: -
@@ -661,18 +612,18 @@ CREATE TABLE people (
   email                      CHARACTER VARYING(255),
   hashed_password            CHARACTER VARYING(255),
   salt                       CHARACTER VARYING(255),
-  email_verified             SMALLINT,
+  email_verified             BOOLEAN,
   created_at                 TIMESTAMP WITHOUT TIME ZONE,
   updated_at                 TIMESTAMP WITHOUT TIME ZONE,
-  is_admin                   SMALLINT,
+  is_admin                   BOOLEAN,
   display_name               CHARACTER VARYING(255),
-  is_moderator               SMALLINT,
-  is_closed                  SMALLINT,
+  is_moderator               BOOLEAN,
+  is_closed                  BOOLEAN,
   closed_at                  TIMESTAMP WITHOUT TIME ZONE,
-  can_comment                SMALLINT,
-  commenting_requested       SMALLINT,
+  can_comment                BOOLEAN,
+  commenting_requested       BOOLEAN,
   commenting_requested_at    TIMESTAMP WITHOUT TIME ZONE,
-  commenting_request_ignored SMALLINT,
+  commenting_request_ignored BOOLEAN,
   commenting_enabled_by      INTEGER,
   commenting_enabled_at      TIMESTAMP WITHOUT TIME ZONE,
   commenting_disabled_by     INTEGER,
@@ -680,7 +631,6 @@ CREATE TABLE people (
   confirmation_token         CHARACTER VARYING,
   time_unit                  CHARACTER VARYING(3) DEFAULT 'hr' :: CHARACTER VARYING
 );
-
 
 --
 -- Name: people_id_seq; Type: SEQUENCE; Schema: public; Owner: -
@@ -693,13 +643,11 @@ NO MINVALUE
 NO MAXVALUE
 CACHE 1;
 
-
 --
 -- Name: people_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
 ALTER SEQUENCE people_id_seq OWNED BY people.id;
-
 
 --
 -- Name: posts; Type: TABLE; Schema: public; Owner: -
@@ -714,9 +662,8 @@ CREATE TABLE posts (
   created_at TIMESTAMP WITHOUT TIME ZONE,
   updated_at TIMESTAMP WITHOUT TIME ZONE,
   slug       CHARACTER VARYING(255),
-  is_sticky  SMALLINT
+  is_sticky  BOOLEAN
 );
-
 
 --
 -- Name: posts_id_seq; Type: SEQUENCE; Schema: public; Owner: -
@@ -729,13 +676,11 @@ NO MINVALUE
 NO MAXVALUE
 CACHE 1;
 
-
 --
 -- Name: posts_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
 ALTER SEQUENCE posts_id_seq OWNED BY posts.id;
-
 
 --
 -- Name: reports; Type: TABLE; Schema: public; Owner: -
@@ -754,9 +699,9 @@ CREATE TABLE reports (
   fast                INTEGER,
   pay                 INTEGER,
   comm                INTEGER,
-  is_flagged          SMALLINT,
-  is_hidden           SMALLINT,
-  tos_viol            SMALLINT,
+  is_flagged          BOOLEAN,
+  is_hidden           BOOLEAN,
+  tos_viol            BOOLEAN,
   amzn_requester_id   CHARACTER VARYING(255),
   displayed_notes     TEXT,
   amzn_requester_name CHARACTER VARYING(255),
@@ -765,10 +710,9 @@ CREATE TABLE reports (
   ip                  CHARACTER VARYING(255),
   ignore_count        INTEGER DEFAULT 0,
   hit_names           TEXT,
-  dont_censor         SMALLINT,
+  dont_censor         BOOLEAN,
   rejected            CHARACTER VARYING(255)
 );
-
 
 --
 -- Name: reports_id_seq; Type: SEQUENCE; Schema: public; Owner: -
@@ -781,13 +725,11 @@ NO MINVALUE
 NO MAXVALUE
 CACHE 1;
 
-
 --
 -- Name: reports_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
 ALTER SEQUENCE reports_id_seq OWNED BY reports.id;
-
 
 --
 -- Name: reputation_statements; Type: TABLE; Schema: public; Owner: -
@@ -804,7 +746,6 @@ CREATE TABLE reputation_statements (
   ip         CHARACTER VARYING(255)
 );
 
-
 --
 -- Name: reputation_statements_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
@@ -816,13 +757,11 @@ NO MINVALUE
 NO MAXVALUE
 CACHE 1;
 
-
 --
 -- Name: reputation_statements_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
 ALTER SEQUENCE reputation_statements_id_seq OWNED BY reputation_statements.id;
-
 
 --
 -- Name: requesters; Type: TABLE; Schema: public; Owner: -
@@ -837,7 +776,6 @@ CREATE TABLE requesters (
   updated_at TIMESTAMP WITHOUT TIME ZONE NOT NULL
 );
 
-
 --
 -- Name: requesters_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
@@ -849,13 +787,11 @@ NO MINVALUE
 NO MAXVALUE
 CACHE 1;
 
-
 --
 -- Name: requesters_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
 ALTER SEQUENCE requesters_id_seq OWNED BY requesters.id;
-
 
 --
 -- Name: reviews; Type: TABLE; Schema: public; Owner: -
@@ -863,9 +799,9 @@ ALTER SEQUENCE requesters_id_seq OWNED BY requesters.id;
 
 CREATE TABLE reviews (
   id                INTEGER                     NOT NULL,
-  tos               SMALLINT,
+  tos               BOOLEAN,
   tos_context       TEXT,
-  broken            SMALLINT,
+  broken            BOOLEAN,
   broken_context    TEXT,
   reward            NUMERIC(6, 2),
   "time"            INTEGER,
@@ -875,14 +811,13 @@ CREATE TABLE reviews (
   recommend         CHARACTER VARYING(255),
   recommend_context TEXT,
   context           TEXT,
-  valid_review      SMALLINT DEFAULT 1          NOT NULL,
+  valid_review      BOOLEAN DEFAULT TRUE        NOT NULL,
   hit_id            INTEGER,
   person_id         INTEGER,
   created_at        TIMESTAMP WITHOUT TIME ZONE NOT NULL,
   updated_at        TIMESTAMP WITHOUT TIME ZONE NOT NULL,
   ip                INET
 );
-
 
 --
 -- Name: reviews_id_seq; Type: SEQUENCE; Schema: public; Owner: -
@@ -895,13 +830,11 @@ NO MINVALUE
 NO MAXVALUE
 CACHE 1;
 
-
 --
 -- Name: reviews_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
 ALTER SEQUENCE reviews_id_seq OWNED BY reviews.id;
-
 
 --
 -- Name: rules_versions; Type: TABLE; Schema: public; Owner: -
@@ -910,13 +843,12 @@ ALTER SEQUENCE reviews_id_seq OWNED BY reviews.id;
 CREATE TABLE rules_versions (
   id                  INTEGER NOT NULL,
   parent_id           INTEGER,
-  is_current          SMALLINT,
+  is_current          BOOLEAN,
   edited_by_person_id INTEGER,
   created_at          TIMESTAMP WITHOUT TIME ZONE,
   updated_at          TIMESTAMP WITHOUT TIME ZONE,
   body                TEXT
 );
-
 
 --
 -- Name: rules_versions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
@@ -929,13 +861,11 @@ NO MINVALUE
 NO MAXVALUE
 CACHE 1;
 
-
 --
 -- Name: rules_versions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
 ALTER SEQUENCE rules_versions_id_seq OWNED BY rules_versions.id;
-
 
 --
 -- Name: schema_migrations; Type: TABLE; Schema: public; Owner: -
@@ -945,14 +875,12 @@ CREATE TABLE schema_migrations (
   version CHARACTER VARYING(255) NOT NULL
 );
 
-
 --
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ab_tests
   ALTER COLUMN id SET DEFAULT nextval('ab_tests_id_seq' :: REGCLASS);
-
 
 --
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
@@ -961,14 +889,12 @@ ALTER TABLE ONLY ab_tests
 ALTER TABLE ONLY ab_variants
   ALTER COLUMN id SET DEFAULT nextval('ab_variants_id_seq' :: REGCLASS);
 
-
 --
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY aliases
   ALTER COLUMN id SET DEFAULT nextval('aliases_id_seq' :: REGCLASS);
-
 
 --
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
@@ -977,14 +903,12 @@ ALTER TABLE ONLY aliases
 ALTER TABLE ONLY comments
   ALTER COLUMN id SET DEFAULT nextval('comments_id_seq' :: REGCLASS);
 
-
 --
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY docs_documents
   ALTER COLUMN id SET DEFAULT nextval('docs_documents_id_seq' :: REGCLASS);
-
 
 --
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
@@ -993,14 +917,12 @@ ALTER TABLE ONLY docs_documents
 ALTER TABLE ONLY docs_versions
   ALTER COLUMN id SET DEFAULT nextval('docs_versions_id_seq' :: REGCLASS);
 
-
 --
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY flags
   ALTER COLUMN id SET DEFAULT nextval('flags_id_seq' :: REGCLASS);
-
 
 --
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
@@ -1009,14 +931,12 @@ ALTER TABLE ONLY flags
 ALTER TABLE ONLY follows
   ALTER COLUMN id SET DEFAULT nextval('follows_id_seq' :: REGCLASS);
 
-
 --
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY forum_person_info
   ALTER COLUMN id SET DEFAULT nextval('forum_person_info_id_seq' :: REGCLASS);
-
 
 --
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
@@ -1025,14 +945,12 @@ ALTER TABLE ONLY forum_person_info
 ALTER TABLE ONLY forum_post_versions
   ALTER COLUMN id SET DEFAULT nextval('forum_post_versions_id_seq' :: REGCLASS);
 
-
 --
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY forum_posts
   ALTER COLUMN id SET DEFAULT nextval('forum_posts_id_seq' :: REGCLASS);
-
 
 --
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
@@ -1041,14 +959,12 @@ ALTER TABLE ONLY forum_posts
 ALTER TABLE ONLY hits
   ALTER COLUMN id SET DEFAULT nextval('hits_id_seq' :: REGCLASS);
 
-
 --
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ignores
   ALTER COLUMN id SET DEFAULT nextval('ignores_id_seq' :: REGCLASS);
-
 
 --
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
@@ -1057,14 +973,12 @@ ALTER TABLE ONLY ignores
 ALTER TABLE ONLY legacy_comments
   ALTER COLUMN id SET DEFAULT nextval('legacy_comments_id_seq' :: REGCLASS);
 
-
 --
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY legacy_flags
   ALTER COLUMN id SET DEFAULT nextval('legacy_flags_id_seq' :: REGCLASS);
-
 
 --
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
@@ -1073,14 +987,12 @@ ALTER TABLE ONLY legacy_flags
 ALTER TABLE ONLY legacy_requesters
   ALTER COLUMN id SET DEFAULT nextval('legacy_requesters_id_seq' :: REGCLASS);
 
-
 --
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY notifications
   ALTER COLUMN id SET DEFAULT nextval('notifications_id_seq' :: REGCLASS);
-
 
 --
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
@@ -1089,14 +1001,12 @@ ALTER TABLE ONLY notifications
 ALTER TABLE ONLY people
   ALTER COLUMN id SET DEFAULT nextval('people_id_seq' :: REGCLASS);
 
-
 --
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY posts
   ALTER COLUMN id SET DEFAULT nextval('posts_id_seq' :: REGCLASS);
-
 
 --
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
@@ -1105,14 +1015,12 @@ ALTER TABLE ONLY posts
 ALTER TABLE ONLY reports
   ALTER COLUMN id SET DEFAULT nextval('reports_id_seq' :: REGCLASS);
 
-
 --
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY reputation_statements
   ALTER COLUMN id SET DEFAULT nextval('reputation_statements_id_seq' :: REGCLASS);
-
 
 --
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
@@ -1135,45 +1043,40 @@ ALTER TABLE ONLY reviews
 ALTER TABLE ONLY rules_versions
   ALTER COLUMN id SET DEFAULT nextval('rules_versions_id_seq' :: REGCLASS);
 
-
 --
 -- Name: ab_tests_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ab_tests
-    ADD CONSTRAINT ab_tests_pkey PRIMARY KEY (id);
-
+  ADD CONSTRAINT ab_tests_pkey PRIMARY KEY (id);
 
 --
 -- Name: ab_variants_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ab_variants
-    ADD CONSTRAINT ab_variants_pkey PRIMARY KEY (id);
-
+  ADD CONSTRAINT ab_variants_pkey PRIMARY KEY (id);
 
 --
 -- Name: aliases_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY aliases
-    ADD CONSTRAINT aliases_pkey PRIMARY KEY (id);
-
+  ADD CONSTRAINT aliases_pkey PRIMARY KEY (id);
 
 --
 -- Name: ar_internal_metadata_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ar_internal_metadata
-    ADD CONSTRAINT ar_internal_metadata_pkey PRIMARY KEY (key);
-
+  ADD CONSTRAINT ar_internal_metadata_pkey PRIMARY KEY (key);
 
 --
 -- Name: comments_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY comments
-    ADD CONSTRAINT comments_pkey PRIMARY KEY (id);
+  ADD CONSTRAINT comments_pkey PRIMARY KEY (id);
 
 --
 -- Name: docs_documents_pkey; Type: CONSTRAINT; Schema: public; Owner: -
@@ -1189,158 +1092,138 @@ ALTER TABLE ONLY docs_documents
 ALTER TABLE ONLY docs_versions
   ADD CONSTRAINT docs_versions_pkey PRIMARY KEY (id);
 
-
 --
 -- Name: flags_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY flags
-    ADD CONSTRAINT flags_pkey PRIMARY KEY (id);
-
+  ADD CONSTRAINT flags_pkey PRIMARY KEY (id);
 
 --
 -- Name: follows_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY follows
-    ADD CONSTRAINT follows_pkey PRIMARY KEY (id);
-
+  ADD CONSTRAINT follows_pkey PRIMARY KEY (id);
 
 --
 -- Name: forum_person_info_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY forum_person_info
-    ADD CONSTRAINT forum_person_info_pkey PRIMARY KEY (id);
-
+  ADD CONSTRAINT forum_person_info_pkey PRIMARY KEY (id);
 
 --
 -- Name: forum_post_versions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY forum_post_versions
-    ADD CONSTRAINT forum_post_versions_pkey PRIMARY KEY (id);
-
+  ADD CONSTRAINT forum_post_versions_pkey PRIMARY KEY (id);
 
 --
 -- Name: forum_posts_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY forum_posts
-    ADD CONSTRAINT forum_posts_pkey PRIMARY KEY (id);
-
+  ADD CONSTRAINT forum_posts_pkey PRIMARY KEY (id);
 
 --
 -- Name: hits_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY hits
-    ADD CONSTRAINT hits_pkey PRIMARY KEY (id);
-
+  ADD CONSTRAINT hits_pkey PRIMARY KEY (id);
 
 --
 -- Name: ignores_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ignores
-    ADD CONSTRAINT ignores_pkey PRIMARY KEY (id);
-
+  ADD CONSTRAINT ignores_pkey PRIMARY KEY (id);
 
 --
 -- Name: legacy_comments_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY legacy_comments
-    ADD CONSTRAINT legacy_comments_pkey PRIMARY KEY (id);
-
+  ADD CONSTRAINT legacy_comments_pkey PRIMARY KEY (id);
 
 --
 -- Name: legacy_flags_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY legacy_flags
-    ADD CONSTRAINT legacy_flags_pkey PRIMARY KEY (id);
-
+  ADD CONSTRAINT legacy_flags_pkey PRIMARY KEY (id);
 
 --
 -- Name: legacy_requesters_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY legacy_requesters
-    ADD CONSTRAINT legacy_requesters_pkey PRIMARY KEY (id);
-
+  ADD CONSTRAINT legacy_requesters_pkey PRIMARY KEY (id);
 
 --
 -- Name: notifications_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY notifications
-    ADD CONSTRAINT notifications_pkey PRIMARY KEY (id);
-
+  ADD CONSTRAINT notifications_pkey PRIMARY KEY (id);
 
 --
 -- Name: people_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY people
-    ADD CONSTRAINT people_pkey PRIMARY KEY (id);
-
+  ADD CONSTRAINT people_pkey PRIMARY KEY (id);
 
 --
 -- Name: posts_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY posts
-    ADD CONSTRAINT posts_pkey PRIMARY KEY (id);
-
+  ADD CONSTRAINT posts_pkey PRIMARY KEY (id);
 
 --
 -- Name: reports_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY reports
-    ADD CONSTRAINT reports_pkey PRIMARY KEY (id);
-
+  ADD CONSTRAINT reports_pkey PRIMARY KEY (id);
 
 --
 -- Name: reputation_statements_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY reputation_statements
-    ADD CONSTRAINT reputation_statements_pkey PRIMARY KEY (id);
-
+  ADD CONSTRAINT reputation_statements_pkey PRIMARY KEY (id);
 
 --
 -- Name: requesters_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY requesters
-    ADD CONSTRAINT requesters_pkey PRIMARY KEY (id);
-
+  ADD CONSTRAINT requesters_pkey PRIMARY KEY (id);
 
 --
 -- Name: reviews_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY reviews
-    ADD CONSTRAINT reviews_pkey PRIMARY KEY (id);
-
+  ADD CONSTRAINT reviews_pkey PRIMARY KEY (id);
 
 --
 -- Name: rules_versions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY rules_versions
-    ADD CONSTRAINT rules_versions_pkey PRIMARY KEY (id);
-
+  ADD CONSTRAINT rules_versions_pkey PRIMARY KEY (id);
 
 --
 -- Name: schema_migrations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY schema_migrations
-    ADD CONSTRAINT schema_migrations_pkey PRIMARY KEY (version);
-
+  ADD CONSTRAINT schema_migrations_pkey PRIMARY KEY (version);
 
 --
 -- Name: index_ab_tests_on_name; Type: INDEX; Schema: public; Owner: -
@@ -1348,7 +1231,6 @@ ALTER TABLE ONLY schema_migrations
 
 CREATE INDEX index_ab_tests_on_name
   ON ab_tests USING GIN (name);
-
 
 --
 -- Name: index_ab_variants_on_name; Type: INDEX; Schema: public; Owner: -
@@ -1371,14 +1253,12 @@ CREATE INDEX index_ab_variants_on_test_id
 CREATE INDEX index_docs_versions_on_document_id
   ON docs_versions USING BTREE (document_id);
 
-
 --
 -- Name: index_flags_on_person_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_flags_on_person_id
   ON flags USING BTREE (person_id);
-
 
 --
 -- Name: index_flags_on_review_id; Type: INDEX; Schema: public; Owner: -
@@ -1387,14 +1267,12 @@ CREATE INDEX index_flags_on_person_id
 CREATE INDEX index_flags_on_review_id
   ON flags USING BTREE (review_id);
 
-
 --
 -- Name: index_flags_on_tags; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_flags_on_tags
   ON flags USING GIN (tags);
-
 
 --
 -- Name: index_people_on_confirmation_token; Type: INDEX; Schema: public; Owner: -
@@ -1403,14 +1281,12 @@ CREATE INDEX index_flags_on_tags
 CREATE INDEX index_people_on_confirmation_token
   ON people USING BTREE (confirmation_token);
 
-
 --
 -- Name: index_reviews_on_ip; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_reviews_on_ip
   ON reviews USING BTREE (ip);
-
 
 --
 -- Name: public_comments_person_id0_idx; Type: INDEX; Schema: public; Owner: -
@@ -1419,14 +1295,12 @@ CREATE INDEX index_reviews_on_ip
 CREATE INDEX public_comments_person_id0_idx
   ON comments USING BTREE (person_id);
 
-
 --
 -- Name: public_comments_review_id1_idx; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX public_comments_review_id1_idx
   ON comments USING BTREE (review_id);
-
 
 --
 -- Name: public_hits_requester_id0_idx; Type: INDEX; Schema: public; Owner: -
@@ -1435,14 +1309,12 @@ CREATE INDEX public_comments_review_id1_idx
 CREATE INDEX public_hits_requester_id0_idx
   ON hits USING BTREE (requester_id);
 
-
 --
 -- Name: public_hits_title1_idx; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX public_hits_title1_idx
   ON hits USING BTREE (title);
-
 
 --
 -- Name: public_requesters_rid0_idx; Type: INDEX; Schema: public; Owner: -
@@ -1451,14 +1323,12 @@ CREATE INDEX public_hits_title1_idx
 CREATE INDEX public_requesters_rid0_idx
   ON requesters USING BTREE (rid);
 
-
 --
 -- Name: public_requesters_rname1_idx; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX public_requesters_rname1_idx
   ON requesters USING BTREE (rname);
-
 
 --
 -- Name: public_reviews_hit_id0_idx; Type: INDEX; Schema: public; Owner: -
@@ -1467,14 +1337,12 @@ CREATE INDEX public_requesters_rname1_idx
 CREATE INDEX public_reviews_hit_id0_idx
   ON reviews USING BTREE (hit_id);
 
-
 --
 -- Name: public_reviews_person_id1_idx; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX public_reviews_person_id1_idx
   ON reviews USING BTREE (person_id);
-
 
 --
 -- Name: comments_person_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
@@ -1483,14 +1351,12 @@ CREATE INDEX public_reviews_person_id1_idx
 ALTER TABLE ONLY comments
   ADD CONSTRAINT comments_person_id_fkey FOREIGN KEY (person_id) REFERENCES people (id) ON UPDATE RESTRICT ON DELETE RESTRICT;
 
-
 --
 -- Name: comments_review_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY comments
   ADD CONSTRAINT comments_review_id_fkey FOREIGN KEY (review_id) REFERENCES reviews (id) ON UPDATE RESTRICT ON DELETE RESTRICT;
-
 
 --
 -- Name: fk_rails_05ab74abbd; Type: FK CONSTRAINT; Schema: public; Owner: -
@@ -1506,14 +1372,12 @@ ALTER TABLE ONLY flags
 ALTER TABLE ONLY docs_versions
   ADD CONSTRAINT fk_rails_13a9314e80 FOREIGN KEY (document_id) REFERENCES docs_documents (id);
 
-
 --
 -- Name: fk_rails_3fc4766dfa; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ab_variants
   ADD CONSTRAINT fk_rails_3fc4766dfa FOREIGN KEY (test_id) REFERENCES ab_tests (id);
-
 
 --
 -- Name: fk_rails_c3ef19e5b1; Type: FK CONSTRAINT; Schema: public; Owner: -
@@ -1522,14 +1386,12 @@ ALTER TABLE ONLY ab_variants
 ALTER TABLE ONLY flags
   ADD CONSTRAINT fk_rails_c3ef19e5b1 FOREIGN KEY (review_id) REFERENCES reviews (id);
 
-
 --
 -- Name: hits_requester_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY hits
   ADD CONSTRAINT hits_requester_id_fkey FOREIGN KEY (requester_id) REFERENCES requesters (id) ON UPDATE RESTRICT ON DELETE RESTRICT;
-
 
 --
 -- Name: reviews_hit_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
@@ -1538,14 +1400,12 @@ ALTER TABLE ONLY hits
 ALTER TABLE ONLY reviews
   ADD CONSTRAINT reviews_hit_id_fkey FOREIGN KEY (hit_id) REFERENCES hits (id) ON UPDATE RESTRICT ON DELETE RESTRICT;
 
-
 --
 -- Name: reviews_person_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY reviews
   ADD CONSTRAINT reviews_person_id_fkey FOREIGN KEY (person_id) REFERENCES people (id) ON UPDATE RESTRICT ON DELETE RESTRICT;
-
 
 --
 -- PostgreSQL database dump complete
