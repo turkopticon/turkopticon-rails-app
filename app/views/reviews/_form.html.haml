@@ -20,7 +20,7 @@
       %label.question.inline
         %input.mutator.context{type: :checkbox, name: :tos}
         This HIT violates TOS.
-      %span= link_to '[see TOS]', '', rel: :nofollow
+      %span= link_to '[see TOS]', 'https://requester.mturk.com/help/faq#can_explicit_offensive', rel: :nofollow
 
     %fieldset.hidden.merge-top{'data-name': :tos_context, 'data-role': :context}
       %input{placeholder: 'Please explain', name: :tos_context, type: :text}
@@ -29,7 +29,8 @@
       %label.question.inline
         %input.mutator.context{type: :checkbox, name: :broken}
         This HIT is broken.
-      %span= link_to '[what makes a HIT broken?]', ''
+      %span.fs-s{style:'color:black;opacity:0.8'}
+        (technical issue prevents completion, e.g. broken images, bugged submit button)
 
     %fieldset.hidden.merge-top{'data-name': :broken_context, 'data-role': :context}
       %input{placeholder: 'Please explain', name: :broken_context, type: :text}
