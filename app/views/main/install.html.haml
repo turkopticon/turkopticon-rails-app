@@ -1,25 +1,20 @@
--#{:id => "installinfo"}
+%span.title Installing Turkopticon
 
-.box
-  %h2 Installing Turkopticon for Chrome
-  %div
-    %div
-      As a user script (recommended)
-      %ol
-        %li Install the <a href="https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo?hl=en">Tampermonkey extension</a>.
-        %li Go to <a href="https://greasyfork.org/en/scripts/4391-turkopticon">this page</a> and click the green "Install this script" button.
-        %li Click "Install".
-    %div
-      As a browser extension through the
-      =link_to 'Chrome Web Store', 'https://chrome.google.com/webstore/detail/turkopticon/dgefbojfgdddnignhmfmnencgiloojpe?hl=en'
-  %h2 Installing Turkopticon for Firefox
-  %div
-    %div
-      As a user script (recommended)
-      %ol
-        %li Install the <a href="https://addons.mozilla.org/en-US/firefox/addon/greasemonkey/">Greasemonkey extension</a>.
-        %li Go to <a href="https://greasyfork.org/en/scripts/4391-turkopticon">this page</a> and click the green "Install this script" button.
-        %li Click "Install".
-    %div
-      As a browser extension through the
-      =link_to 'Firefox Add-Ons Directory', 'https://addons.mozilla.org/en-US/firefox/addon/turkopticon/'
+:markdown
+  We offer a user script to help workers on Mechanical Turk more easily assess requesters. If you're not familiar with user scripts, you'll need two things: a script manager and the script itself.
+
+  Installing is easy!
+
+  * First you'll need a script manager. [Tampermonkey](https://tampermonkey.net/) works for most browsers, but you may want [Greasemonkey](https://addons.mozilla.org/en-US/firefox/addon/greasemonkey/) if you're using Firefox.
+  * Then you just need the script. <a id="ghdl" href="https://github.com/turkopticon/turkoptiscript/raw/master/dist/turkoptiscript.es6.user.js">Grab it here</a><span id="gfsp"> or on [Greasy Fork](https://greasyfork.org/en/scripts/27512-turkoptiscript)</span>.
+
+:javascript
+  try {
+    class A {constructor(){this.a=1}}
+    class B extends A {}
+    3 ** 3 === 3*3*3 && new B(); const o = {a:0,b:0}; const {a,b} = o; a === b && void(o)
+  } catch (err) {
+    var gh=document.querySelector('#ghdl'),gf=document.querySelector('#gfsp');gh.href=gh.href.replace('6','5');gf.classList.toggle('hidden');
+    ga && ga('send', 'event', 'userscript', 'outdated', 'es5 fallback');
+  }
+
