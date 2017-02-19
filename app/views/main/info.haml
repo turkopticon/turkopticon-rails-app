@@ -1,47 +1,23 @@
-%p#advisory.big{:style => "padding: 15px;"}
-  %strong 6 July 2016
-  &nbsp;&nbsp;&nbsp;&nbsp;
-  The <a href="https://turkopticon.ucsd.edu/2016survey/">Turkopticon community survey results</a> are online.
+.mc.flex
+  .mdc.fs-s{style:'flex:2; margin-right:4em'}
+    %h1 Welcome to Turkopticon 2!
 
-#container
-  #side-a
-    <a class="twitter-timeline" data-dnt="true" href="https://twitter.com/turkopticon" data-widget-id="365016898619981825">Tweets by @turkopticon</a>
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
-   
-  #side-b
-    .box
-      %p.big Turkopticon helps the people in the 'crowd' of crowdsourcing watch out for each other&mdash;because nobody else seems to be.
-      %p.big
-        Almost half of the Mechanical Turk workers who wrote their Bill of Rights demanded protection from employers who take their work without paying.
-        %strong Turkopticon lets you REPORT and AVOID shady employers.
-      %p.big
-        snoogiebug from <a href="http://turkernation.com">turkernation</a> says, "if you do not have this please get it!!!! it does work and is worth it !!" 
+    :markdown
+      Turkopticon 2, just like Turkopticon, is a place for workers to help one another with information and their experiences about employers.
 
-    .box{:style => "padding-top: 1px; margin-top: 45px;"}
-      %p.big
-        %strong How Turkopticon works:
-      %img{:src => "https://turkopticon.ucsd.edu/to_screenshot.png", :alt => "Turkopticon in action", :align => "right", :style => "margin-left: 6px; border: 1px solid #cccccc"}
-      %p Turkopticon adds functionality to Amazon Mechanical Turk as you browse for HITs and review status of work you've done. As you browse HITs, Turkopticon places a button next to each requester and highlights requesters for whom there are reviews from other workers. Bad reviews let you avoid shady employers and good reviews help you find fair ones. You can view reports made against requesters with a quick click.
-      %p As you review HITs you've completed, are there HITs you weren't fairly paid for? Turkopticon adds a button that lets you review requesters from your "Status Detail" page.
-      %p.big
-        %strong Other Turking resources:
-        %ul
-          %li <a href="http://turkernation.com">Turker Nation</a>
-          %li <a href="http://mturkcrowd.com">MTurk Crowd</a>
-          %li <a href="http://www.mturkforum.com/">MTurk Forum</a>
-          %li <a href="http://www.cloudmebaby.com/forums/portal.php">CloudMeBaby Forum</a>
-          %li <a href="http://www.mturkgrind.com/forum.php">mTurk Grind forum</a>
-          %li <a href="http://database.proturkers.com/">Userscript database</a> on the <a href="http://proturkers.com/">ProTurkers Forum</a>
-          %li <a href="http://www.mturklist.com/">mTurk List</a>
-          %li
-            <a href="http://www.reddit.com/r/mturk/wiki/index">MTurk wiki on the MTurk subreddit</a>
-          %li Hide requesters script: <a href="http://userscripts-mirror.org/scripts/show/69128">for Greasemonkey</a>; <a href="http://userscripts-mirror.org/scripts/show/130929">for Google Chrome</a>
-          %li
-            <a href="http://www.reddit.com/r/HITsWorthTurkingFor/comments/sdyuo/turking_scripts_and_addons">List of useful Turking scripts and add-ons</a> from the <a href="http://www.reddit.com/r/HITsWorthTurkingFor/">HITsWorthTurkingFor subreddit</a>
-          %li
-            %a{:href => "https://www.reddit.com/r/mturk/comments/s4wk9/jamburgles_tips_for_a_splendidly_efficient_mturk"} Turking tips
-            from the
-            %a{:href => "https://www.reddit.com/r/mturk"} MTurk subreddit
-        %strong Notes for requesters:
-        %ul
-          %li <a href="http://turkernation.com/showthread.php?21352-The-Myth-of-Low-Cost-High-Quality-on-Amazon-s-Mechanical-Turk">"Low cost, high quality" is a myth; you must pay for quality</a>
+      But eight years of Turkopticon generated some lessons, and some challenges as the group grew bigger. Turkopticon2 is a response to those challenges. Many members of the community helped us understand those challenges through the [2016 Turkopticon Community Survey](https://turkopticon.ucsd.edu/2016survey/).
+
+      What’s different here?
+
+      * **Reviews are more practical and less prone to conflict.** The review form asks you straightforward questions about your experience. This is different than before, when you had to make up a rating from 1 through 5. The review form maintains a clearly demarcated space for your personal opinion, and it won’t be moderated unless you break [civility guidelines](/docs/civility-guidelines).
+
+      * **Flags are anonymous.** You shouldn‘t have to worry about any moderator’s specific opinions about people.
+
+      Please try Turkopticon 2 out. If you find problems, please report the issue at [GitHub](https://github.com/turkopticon/turkopticon-rails-app/issues). File each issue separately. That way we can track and respond to each.
+
+      Kai, Lilly, and Six
+
+  .twitter-feed{style:'flex:1'}
+    = link_to 'Tweets by @turkopticon', 'https://twitter.com/turkopticon', class: 'twitter-timeline', 'data-dnt': true, 'data-widget-id': '365016898619981825'
+    :javascript
+      !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
