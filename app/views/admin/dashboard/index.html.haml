@@ -9,4 +9,5 @@
     %span.block
       = doc.name
       = link_to :edit, edit_admin_document_path(doc)
+      = link_to :show, doc_path(name: doc.name)
 
