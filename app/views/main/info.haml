@@ -18,6 +18,6 @@
       Kai, Lilly, and Six
 
   .twitter-feed{style:'flex:1'}
-    = link_to 'Tweets by @turkopticon', 'https://twitter.com/turkopticon', class: 'twitter-timeline', 'data-dnt': true, 'data-widget-id': '365016898619981825'
+    = link_to 'Tweets by @turkopticon', 'https://twitter.com/turkopticon', class: 'twitter-timeline', 'data-dnt': true, 'data-widget-id': '365016898619981825', rel: :nofollow
     :javascript
-      !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
+      !function(d,s,id){var js;if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.async=true;js.src="//platform.twitter.com/widgets.js";d.head.appendChild(js);}}(document,"script","twitter-wjs");
