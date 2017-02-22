@@ -16,8 +16,8 @@ module ApplicationHelper
     end
   end
 
-  def markdown(txt)
-    options  = {
+  def markdown(txt, render_opts={})
+    options     = {
         space_after_headers: true,
         fenced_code_blocks:  true,
         autolink:            true,
@@ -26,11 +26,14 @@ module ApplicationHelper
         no_intra_emphasis:   true,
         tables:              true
     }
-    renderer = Redcarpet::Render::HTML.new filter_html:     true,
-                                           hard_wrap:       true,
-                                           with_toc_data:   true,
-                                           link_attributes: { rel: 'nofollow', target: '_blank' }
-    markdown = Redcarpet::Markdown.new renderer, options
+    render_opts = {
+        filter_html:     true,
+        hard_wrap:       true,
+        with_toc_data:   true,
+        link_attributes: { rel: 'nofollow', target: '_blank' }
+    }.merge render_opts
+    renderer    = Redcarpet::Render::HTML.new render_opts
+    markdown    = Redcarpet::Markdown.new renderer, options
 
     markdown.render(txt).html_safe
   end

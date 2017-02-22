@@ -5,4 +5,4 @@
     effective date:
     %time.timestamp{ datetime: @doc.updated_at }= @doc.updated_at.to_s.split[0]
 
-= markdown(@doc.body)
+= markdown(@doc.body, filter_html: false)
