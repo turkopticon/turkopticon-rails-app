@@ -34,7 +34,7 @@
     .comments
       - r.comments.each do |c|
         %div{ class: "comment-#{c.id}" }
-          = c.body
+          = c.body.censor
           .comment-footer
             %ul.inline
               %li
