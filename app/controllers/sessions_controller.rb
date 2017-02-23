@@ -16,7 +16,7 @@ class SessionsController < ApplicationController
       OMNILOGGER.account ltag(user, 'CREATE session (login)')
       redirect_to uri || root_path
     else
-      flash[:notice] = 'Sorry, invalid username/password combination'
+      flash.now[:notice] = 'Sorry, invalid username/password combination'
       render 'sessions/new'
     end
   end
