@@ -26,9 +26,7 @@ class ApplicationController < ActionController::Base
   end
 
   def ltag(user = nil, msg)
-    # usr = user.display_name.nil? || user.display_name.empty? ? user.email.split('@')[0] : user.display_name
-    # '%15s (%s#%d) -- %s' % [request.ip, usr, user.id, msg]
-    '%15s (u#%d) -- %s' % [request.ip, (user || @user).id, msg]
+    '%15s (u#%-6d) -- %s' % [request.ip, (user || @user).id, msg]
   end
 
 end
