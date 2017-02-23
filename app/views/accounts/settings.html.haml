@@ -22,11 +22,4 @@
 
 %section.form
   .form-title.bold.fs-l Change password
-  = form_for @user, url: account_path(@user.id), method: :put do |f|
-    %p
-      = f.hidden_field nil, name: :context, value: :change_password
-      = f.label :password, 'New password', class: :block
-      = f.password_field :password
-      = f.label :password_confirmation, 'Confirm new password', class: :block
-      = f.password_field :password_confirmation
-    %p= f.submit 'Update password', class: [:control, :small, :block]
+  = render 'password', user: @user, url: account_path(@user.id)

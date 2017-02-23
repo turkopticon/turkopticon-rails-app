@@ -663,21 +663,23 @@ ALTER SEQUENCE notifications_id_seq OWNED BY notifications.id;
 --
 
 CREATE TABLE people (
-  id                 INTEGER              NOT NULL,
-  email              CHARACTER VARYING(255),
-  hashed_password    CHARACTER VARYING(255),
-  salt               CHARACTER VARYING(255),
-  email_verified     BOOLEAN,
-  created_at         TIMESTAMP WITHOUT TIME ZONE,
-  updated_at         TIMESTAMP WITHOUT TIME ZONE,
-  is_admin           BOOLEAN,
-  display_name       CHARACTER VARYING(255),
-  is_moderator       BOOLEAN,
-  is_closed          BOOLEAN,
-  closed_at          TIMESTAMP WITHOUT TIME ZONE,
-  can_comment        BOOLEAN DEFAULT TRUE NOT NULL,
-  confirmation_token CHARACTER VARYING,
-  time_unit          CHARACTER VARYING(3) DEFAULT 'hr' :: CHARACTER VARYING
+  id                        INTEGER              NOT NULL,
+  email                     CHARACTER VARYING(255),
+  hashed_password           CHARACTER VARYING(255),
+  salt                      CHARACTER VARYING(255),
+  email_verified            BOOLEAN,
+  created_at                TIMESTAMP WITHOUT TIME ZONE,
+  updated_at                TIMESTAMP WITHOUT TIME ZONE,
+  is_admin                  BOOLEAN,
+  display_name              CHARACTER VARYING(255),
+  is_moderator              BOOLEAN,
+  is_closed                 BOOLEAN,
+  closed_at                 TIMESTAMP WITHOUT TIME ZONE,
+  can_comment               BOOLEAN DEFAULT TRUE NOT NULL,
+  confirmation_token        CHARACTER VARYING,
+  time_unit                 CHARACTER VARYING(3) DEFAULT 'hr' :: CHARACTER VARYING,
+  password_reset_token      CHARACTER VARYING(55),
+  password_reset_expiration TIMESTAMP WITHOUT TIME ZONE
 );
 
 
@@ -1141,12 +1143,14 @@ ALTER TABLE ONLY rules_versions
 ALTER TABLE ONLY ab_tests
   ADD CONSTRAINT ab_tests_pkey PRIMARY KEY (id);
 
+
 --
 -- Name: ab_variants_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ab_variants
   ADD CONSTRAINT ab_variants_pkey PRIMARY KEY (id);
+
 
 --
 -- Name: aliases_pkey; Type: CONSTRAINT; Schema: public; Owner: -
@@ -1155,12 +1159,14 @@ ALTER TABLE ONLY ab_variants
 ALTER TABLE ONLY aliases
   ADD CONSTRAINT aliases_pkey PRIMARY KEY (id);
 
+
 --
 -- Name: ar_internal_metadata_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ar_internal_metadata
   ADD CONSTRAINT ar_internal_metadata_pkey PRIMARY KEY (key);
+
 
 --
 -- Name: comments_pkey; Type: CONSTRAINT; Schema: public; Owner: -
@@ -1169,12 +1175,14 @@ ALTER TABLE ONLY ar_internal_metadata
 ALTER TABLE ONLY comments
   ADD CONSTRAINT comments_pkey PRIMARY KEY (id);
 
+
 --
 -- Name: docs_documents_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY docs_documents
   ADD CONSTRAINT docs_documents_pkey PRIMARY KEY (id);
+
 
 --
 -- Name: docs_versions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
@@ -1183,12 +1191,14 @@ ALTER TABLE ONLY docs_documents
 ALTER TABLE ONLY docs_versions
   ADD CONSTRAINT docs_versions_pkey PRIMARY KEY (id);
 
+
 --
 -- Name: flags_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY flags
   ADD CONSTRAINT flags_pkey PRIMARY KEY (id);
+
 
 --
 -- Name: follows_pkey; Type: CONSTRAINT; Schema: public; Owner: -
@@ -1197,12 +1207,14 @@ ALTER TABLE ONLY flags
 ALTER TABLE ONLY follows
   ADD CONSTRAINT follows_pkey PRIMARY KEY (id);
 
+
 --
 -- Name: forum_person_info_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY forum_person_info
   ADD CONSTRAINT forum_person_info_pkey PRIMARY KEY (id);
+
 
 --
 -- Name: forum_post_versions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
@@ -1211,12 +1223,14 @@ ALTER TABLE ONLY forum_person_info
 ALTER TABLE ONLY forum_post_versions
   ADD CONSTRAINT forum_post_versions_pkey PRIMARY KEY (id);
 
+
 --
 -- Name: forum_posts_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY forum_posts
   ADD CONSTRAINT forum_posts_pkey PRIMARY KEY (id);
+
 
 --
 -- Name: hits_pkey; Type: CONSTRAINT; Schema: public; Owner: -
@@ -1225,12 +1239,14 @@ ALTER TABLE ONLY forum_posts
 ALTER TABLE ONLY hits
   ADD CONSTRAINT hits_pkey PRIMARY KEY (id);
 
+
 --
 -- Name: ignores_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ignores
   ADD CONSTRAINT ignores_pkey PRIMARY KEY (id);
+
 
 --
 -- Name: legacy_comments_pkey; Type: CONSTRAINT; Schema: public; Owner: -
@@ -1239,12 +1255,14 @@ ALTER TABLE ONLY ignores
 ALTER TABLE ONLY legacy_comments
   ADD CONSTRAINT legacy_comments_pkey PRIMARY KEY (id);
 
+
 --
 -- Name: legacy_flags_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY legacy_flags
   ADD CONSTRAINT legacy_flags_pkey PRIMARY KEY (id);
+
 
 --
 -- Name: legacy_requesters_pkey; Type: CONSTRAINT; Schema: public; Owner: -
@@ -1253,12 +1271,14 @@ ALTER TABLE ONLY legacy_flags
 ALTER TABLE ONLY legacy_requesters
   ADD CONSTRAINT legacy_requesters_pkey PRIMARY KEY (id);
 
+
 --
 -- Name: notifications_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY notifications
   ADD CONSTRAINT notifications_pkey PRIMARY KEY (id);
+
 
 --
 -- Name: people_pkey; Type: CONSTRAINT; Schema: public; Owner: -
@@ -1267,12 +1287,14 @@ ALTER TABLE ONLY notifications
 ALTER TABLE ONLY people
   ADD CONSTRAINT people_pkey PRIMARY KEY (id);
 
+
 --
 -- Name: posts_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY posts
   ADD CONSTRAINT posts_pkey PRIMARY KEY (id);
+
 
 --
 -- Name: reports_pkey; Type: CONSTRAINT; Schema: public; Owner: -
@@ -1281,12 +1303,14 @@ ALTER TABLE ONLY posts
 ALTER TABLE ONLY reports
   ADD CONSTRAINT reports_pkey PRIMARY KEY (id);
 
+
 --
 -- Name: reputation_statements_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY reputation_statements
   ADD CONSTRAINT reputation_statements_pkey PRIMARY KEY (id);
+
 
 --
 -- Name: requesters_pkey; Type: CONSTRAINT; Schema: public; Owner: -
@@ -1295,12 +1319,14 @@ ALTER TABLE ONLY reputation_statements
 ALTER TABLE ONLY requesters
   ADD CONSTRAINT requesters_pkey PRIMARY KEY (id);
 
+
 --
 -- Name: reviews_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY reviews
   ADD CONSTRAINT reviews_pkey PRIMARY KEY (id);
+
 
 --
 -- Name: rules_versions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
@@ -1309,12 +1335,14 @@ ALTER TABLE ONLY reviews
 ALTER TABLE ONLY rules_versions
   ADD CONSTRAINT rules_versions_pkey PRIMARY KEY (id);
 
+
 --
 -- Name: schema_migrations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY schema_migrations
   ADD CONSTRAINT schema_migrations_pkey PRIMARY KEY (version);
+
 
 --
 -- Name: index_ab_tests_on_name; Type: INDEX; Schema: public; Owner: -
@@ -1378,6 +1406,13 @@ CREATE INDEX index_flags_on_tags
 CREATE INDEX index_people_on_confirmation_token
   ON people USING BTREE (confirmation_token);
 
+--
+-- Name: index_people_on_password_reset_token; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_people_on_password_reset_token
+  ON people USING BTREE (password_reset_token);
+
 
 --
 -- Name: index_reviews_on_ip; Type: INDEX; Schema: public; Owner: -
@@ -1409,6 +1444,7 @@ CREATE INDEX public_comments_review_id1_idx
 
 CREATE INDEX public_hits_requester_id0_idx
   ON hits USING BTREE (requester_id);
+
 
 --
 -- Name: public_hits_title1_idx; Type: INDEX; Schema: public; Owner: -
@@ -1534,6 +1570,6 @@ VALUES ('20081109050154'), ('20081109050712'), ('20081109051730'), ('20090107000
   ('20161030060407'), ('20161030072001'), ('20161030072723'), ('20161030075457'), ('20161030082820'),
   ('20161030083039'), ('20161119160536'), ('20161225103246'), ('20170125102921'), ('20170125103407'),
   ('20170127204507'), ('20170202193532'), ('20170203220801'), ('20170207064846'), ('20170216121604'),
-  ('20170216121845'), ('20170216221002'), ('20170219075537');
+  ('20170216121845'), ('20170216221002'), ('20170219075537'), ('20170223035217');
 
 

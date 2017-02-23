@@ -17,6 +17,7 @@ Rails.application.routes.draw do
     scope :account do
       get :settings, to: 'accounts#settings', as: :account_settings
       get '/activate/:token', to: 'accounts#activate', as: :activate_account
+      resources :password_resets, only: [:new, :create, :show, :update], param: :token, path: 'password_reset'
     end
     resources :sessions, only: [:new, :create, :destroy], path_names: { new: :login }
     resources :reviews

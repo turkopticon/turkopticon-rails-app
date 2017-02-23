@@ -28,7 +28,7 @@ class Person < ActiveRecord::Base
   has_many :flags
   has_many :ignores
 
-  before_create :set_confirmation_token
+  before_create { create_token :confirmation_token }
   before_validation { |r| r.email = r.email.downcase.strip }
 
   validates :email, presence: true, uniqueness: true, format: {
@@ -112,6 +112,12 @@ class Person < ActiveRecord::Base
     end
   end
 
+  def send_password_reset(ip)
+    create_token :password_reset_token
+    self.password_reset_expiration = 90.minutes.since
+    save validate: false and AccountMailer.password_reset(self, ip).deliver_later
+  end
+
   private
 
   def encrypted_password(password, salt)
@@ -123,8 +129,10 @@ class Person < ActiveRecord::Base
     self.salt = self.object_id.to_s + rand.to_s
   end
 
-  def set_confirmation_token
-    self.confirmation_token = SecureRandom.urlsafe_base64 40 if self.confirmation_token.nil?
+  def create_token(field)
+    begin
+      self[field] = SecureRandom.urlsafe_base64 40
+    end while Person.exists? field => self[field]
   end
 
 end
