@@ -1,4 +1,4 @@
-class Mod::FlagsController < Mod::DashboardController
+class Mod::FlagsController < ApplicationController
   def index
     @page          = { counts: Flag.counts }
     @page[:open]   = params[:s].nil? || params[:s] =~ /is:open/
