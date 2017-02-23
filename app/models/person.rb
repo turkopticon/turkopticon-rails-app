@@ -58,24 +58,6 @@ class Person < ActiveRecord::Base
     self.update_attributes(:is_closed => true, :closed_at => Time.now)
   end
 
-  def toggle_order_by_flag
-    if self.order_reviews_by_edit_date
-      self.order_reviews_by_edit_date = false
-    else
-      self.order_reviews_by_edit_date = true
-    end
-    self.save
-  end
-
-  def toggle_my_reviews_order_flag
-    if self.most_recent_first_in_my_reviews
-      self.most_recent_first_in_my_reviews = false
-    else
-      self.most_recent_first_in_my_reviews = true
-    end
-    self.save
-  end
-
   def recently_updated_review?
     reviews.where('updated_at > ?', 1.month.ago).size > 0
   end
