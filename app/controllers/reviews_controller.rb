@@ -11,6 +11,10 @@ class ReviewsController < ApplicationController
     end
   end
 
+  def show
+    @review = Review.find params[:id]
+  end
+
   def new
     @review = Review.new
     @state  = params.slice(:rid, :rname, :title, :reward).permit!.to_json

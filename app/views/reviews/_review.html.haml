@@ -13,8 +13,10 @@
         - if r.person.moderator? || r.person.admin?
           = user_class(r.person)
       %li
-        %time.timestamp{ datetime: r.created_at, title: "#{time_ago_in_words r.created_at} ago" }= r.created_at
-        - unless r.created_at == r.updated_at
+        - time = r.created_at
+        - ts = %[<time class="timestamp" datetime="#{time}" title="#{time_ago_in_words time} ago">#{time}</time>].html_safe
+        = link_to_unless_current ts, review_path(r)
+        - unless time == r.updated_at
           %time.edited{ datetime: r.updated_at, title: "edited #{time_ago_in_words r.updated_at} ago\n#{r.updated_at}" } [e]
       - if r.valid_review?
         %li{class: "flag-#{r.id}"}

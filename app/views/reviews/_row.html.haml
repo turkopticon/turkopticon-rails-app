@@ -1,0 +1,6 @@
+.row.tr.flex{class: "r-#{r.id}"}
+  .col-req= render 'requester', r: r
+  .col-stats.flex= render 'stats', r: r
+  .col-review= render 'review', r: r, flaggers: r.flags.status(:open).map(&:person_id)
+
+%hr.divider

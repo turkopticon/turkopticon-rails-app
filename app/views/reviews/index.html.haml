@@ -2,24 +2,10 @@
 .heading-bar
   = page_entries_info @reviews, entry_name: 'review'
   = paginate @reviews, window: 2
-.row.th.flex
-  .col-req Requester
-  .col-stats.flex
-    .col-ttc Time to Complete
-    .col-pay
-      HIT
-      %span.block Pay
-    .col-tta Time to Approve
-  .col-review Review
-%hr.divider
+
+= render 'header'
 
 - @reviews.each do |r|
-  .row.tr.flex{class: "r-#{r.id}"}
-
-    .col-req= render 'requester', r: r
-    .col-stats.flex= render 'stats', r: r
-    .col-review= render 'review', r: r, flaggers: r.flags.status(:open).map(&:person_id)
-
-  %hr.divider
+  = render 'row', r: r
 
 = javascript_include_tag 'reviews/comments'
