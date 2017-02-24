@@ -1,11 +1,11 @@
 - if action_name == 'index'
-  = link_to r.rname, requester_path(r.rid), class: 'bold'
+  = link_to r.name, requester_path(r.rid), class: 'bold'
 
 - if r.aliases.length > 0
   .aliases= "Aliases: #{r.aliases.reverse.join ', '}"
 
 .rid= "ID: #{r.rid}"
 %div
-  = link_to 'Add a review for this requester', new_review_path(rid: r.rid, rname: r.rname), class: 'arrow-link'
+  = link_to 'Add a review for this requester', new_review_path(rid: r.rid, name: r.name), class: 'arrow-link'
   = link_to 'Find requester on AMT', amt_search(r), class: 'arrow-link', rel: :nofollow
   = link_to 'Contact requester on AMT', amt_contact(r), class: 'arrow-link', rel: :nofollow

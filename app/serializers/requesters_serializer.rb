@@ -1,6 +1,6 @@
 class RequestersSerializer
   def initialize(obj, opts = {})
-    @allowed_attrs = %w(rname rid aggregates aliases)
+    @allowed_attrs = %w(name rid aggregates aliases)
     @serializable  = obj
     @attrs         = opts[:attrs] || @allowed_attrs
     @collection    = opts[:collection]

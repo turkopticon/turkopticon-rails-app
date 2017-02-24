@@ -6,14 +6,14 @@ class Requester < ApplicationRecord
   has_many :reviews, through: :hits
 
   validates :rid, presence: true, uniqueness: true
-  validates :rname, presence: true
+  validates :name, presence: true
   serialize :aliases, Array
 
   # noinspection RubyResolve
   after_touch -> { Rails.cache.delete([self.class.name, 'rid', rid]) } # assume only rid uses find_by()
 
   pg_search_scope :name_search,
-                  against: [[:rname, 'A'], [:aliases, 'B']],
+                  against: [[:name, 'A'], [:aliases, 'B']],
                   using:   { tsearch: { dictionary: 'english', prefix: true } }
 
   def aggregates
@@ -45,10 +45,10 @@ class Requester < ApplicationRecord
   end
 
   def manage_alias(name)
-    if self.rname && self.rname != name
-      self.aliases.push self.rname unless self.aliases.include? self.rname
+    if self.name && self.name != name
+      aliases.push self.name unless aliases.include? self.name
     end
-    self.rname = name
+    self.name = name
     self
   end
 

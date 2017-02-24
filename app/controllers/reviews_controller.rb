@@ -17,7 +17,7 @@ class ReviewsController < ApplicationController
 
   def new
     @review = Review.new
-    @state  = params.slice(:rid, :rname, :title, :reward).permit!.to_json
+    @state  = params.slice(:rid, :name, :title, :reward).permit!.to_json
   end
 
   def edit
@@ -26,20 +26,20 @@ class ReviewsController < ApplicationController
 
     rev         = @review.as_json.reject { |k, v| k =~ /(_(?:id|at|.+ew)\z|\Aid)/ || v.nil? }
     hit         = @review.hit.as_json.select { |k| %w(title reward).include? k }
-    req         = @review.requester.as_json.select { |k| %w(rname rid).include? k }
+    req         = @review.requester.as_json.select { |k| %w(name rid).include? k }
     @state      = rev.merge(hit.merge req).to_json
   end
 
   def create
     form      = form_params
-    condition = -> (key, _) { %w(rid rname title reward).include? key }
+    condition = -> (key, _) { %w(rid name title reward).include? key }
     review    = form.reject(&condition).merge ip: request.ip
     @review   = Review.new(review)
 
     @review.dependent_params = form.select(&condition).merge user: @user
 
     if @review.save
-      OMNILOGGER.review ltag("CREATE review for #{form[:rname]} [#{form[:rid]}]")
+      OMNILOGGER.review ltag("CREATE review for #{form[:name]} [#{form[:rid]}]")
       redirect_to requester_path @review.requester.rid
     else
       render 'new'
@@ -48,7 +48,7 @@ class ReviewsController < ApplicationController
 
   # noinspection RailsChecklist01
   def update
-    @review = Review.find(params[:id])
+    @review   = Review.find(params[:id])
 
     if request.put? && @user.moderator?
       state = mod_params[:valid_review].to_bool
@@ -59,7 +59,7 @@ class ReviewsController < ApplicationController
       return redirect_back fallback_location: mod_flags_path
     end
 
-    condition = -> (key, _) { %w(rid rname title reward).include? key }
+    condition = -> (key, _) { %w(rid name title reward).include? key }
     form      = form_params
     review    = form.reject(&condition) #.merge ip: request.ip
 

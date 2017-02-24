@@ -30,7 +30,7 @@ class Review < ApplicationRecord
   def dont_orphan_me_bro
     return unless @dependent_params
     params = @dependent_params
-    req    = Requester.find_or_initialize_by(rid: params['rid']).manage_alias(params['rname'])
+    req = Requester.find_or_initialize_by(rid: params['rid']).manage_alias(params['name'])
     req.save
     self.person = params[:user]
     self.hit    = Hit.find_or_create_by!(title: params['title'], reward: params['reward'], requester: req)

@@ -830,7 +830,7 @@ ALTER SEQUENCE reputation_statements_id_seq OWNED BY reputation_statements.id;
 --
 
 CREATE TABLE requesters (
-  rname      CHARACTER VARYING(255),
+  name       CHARACTER VARYING(255),
   rid        CHARACTER VARYING(30)       NOT NULL,
   aliases    TEXT,
   created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL,
@@ -1428,7 +1428,7 @@ CREATE INDEX public_hits_title1_idx
 --
 
 CREATE INDEX public_requesters_rname1_idx
-  ON requesters USING BTREE (rname);
+  ON requesters USING BTREE (name);
 
 
 --
@@ -1445,6 +1445,7 @@ CREATE INDEX public_reviews_hit_id0_idx
 
 CREATE INDEX public_reviews_person_id1_idx
   ON reviews USING BTREE (person_id);
+
 
 --
 -- Name: requesters_pkey; Type: INDEX; Schema: public; Owner: -
@@ -1501,6 +1502,7 @@ ALTER TABLE ONLY ab_variants
 ALTER TABLE ONLY flags
   ADD CONSTRAINT fk_rails_c3ef19e5b1 FOREIGN KEY (review_id) REFERENCES reviews (id);
 
+
 --
 -- Name: hits_requester_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
@@ -1515,6 +1517,7 @@ ALTER TABLE ONLY hits
 
 ALTER TABLE ONLY reviews
   ADD CONSTRAINT reviews_hit_id_fkey FOREIGN KEY (hit_id) REFERENCES hits (id) ON UPDATE RESTRICT ON DELETE RESTRICT;
+
 
 --
 -- Name: reviews_person_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
@@ -1544,6 +1547,7 @@ VALUES ('20081109050154'), ('20081109050712'), ('20081109051730'), ('20090107000
   ('20161030060407'), ('20161030072001'), ('20161030072723'), ('20161030075457'), ('20161030082820'),
   ('20161030083039'), ('20161119160536'), ('20161225103246'), ('20170125102921'), ('20170125103407'),
   ('20170127204507'), ('20170202193532'), ('20170203220801'), ('20170207064846'), ('20170216121604'),
-  ('20170216121845'), ('20170216221002'), ('20170219075537'), ('20170223035217'), ('20170224151406');
+  ('20170216121845'), ('20170216221002'), ('20170219075537'), ('20170223035217'), ('20170224151406'),
+  ('20170224183932');
 
 

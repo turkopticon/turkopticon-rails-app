@@ -6,7 +6,7 @@ module RequestersHelper
   end
 
   def amt_contact(requester)
-    build_uri 'contact', requesterId: requester.rid, requesterName: requester.rname
+    build_uri 'contact', requesterId: requester.rid, requesterName: requester.name
   end
 
   protected
