@@ -43,5 +43,6 @@
                 = link_to nameify(c.person), reviews_path(user: c.person.id)
                 - if c.person.moderator? || c.person.admin?
                   = user_class(c.person)
-              %li.timestamp= c.updated_at
+              %li
+                %time.timestamp{ datetime: c.updated_at, title: "#{time_ago_in_words c.updated_at} ago" }= c.updated_at
 
