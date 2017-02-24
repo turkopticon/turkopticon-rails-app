@@ -17,7 +17,6 @@ class RequestersSerializer
       tld[:data] = format_datum @serializable
     end
 
-    tld[:errors] = []
     tld[:status] = 200
     [:ok, tld]
   end
