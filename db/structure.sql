@@ -453,7 +453,7 @@ CREATE TABLE hits (
   id           INTEGER                     NOT NULL,
   title        CHARACTER VARYING(255),
   reward       NUMERIC(6, 2),
-  requester_id INTEGER,
+  requester_id CHARACTER VARYING(30),
   created_at   TIMESTAMP WITHOUT TIME ZONE NOT NULL,
   updated_at   TIMESTAMP WITHOUT TIME ZONE NOT NULL
 );
@@ -830,32 +830,12 @@ ALTER SEQUENCE reputation_statements_id_seq OWNED BY reputation_statements.id;
 --
 
 CREATE TABLE requesters (
-  id         INTEGER                     NOT NULL,
   rname      CHARACTER VARYING(255),
-  rid        CHARACTER VARYING(255),
+  rid        CHARACTER VARYING(30)       NOT NULL,
   aliases    TEXT,
   created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL,
   updated_at TIMESTAMP WITHOUT TIME ZONE NOT NULL
 );
-
-
---
--- Name: requesters_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE requesters_id_seq
-START WITH 1
-INCREMENT BY 1
-NO MINVALUE
-NO MAXVALUE
-CACHE 1;
-
-
---
--- Name: requesters_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE requesters_id_seq OWNED BY requesters.id;
 
 
 --
@@ -962,6 +942,7 @@ ALTER TABLE ONLY ab_tests
 ALTER TABLE ONLY ab_variants
   ALTER COLUMN id SET DEFAULT nextval('ab_variants_id_seq' :: REGCLASS);
 
+
 --
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
@@ -1041,6 +1022,7 @@ ALTER TABLE ONLY forum_posts
 ALTER TABLE ONLY hits
   ALTER COLUMN id SET DEFAULT nextval('hits_id_seq' :: REGCLASS);
 
+
 --
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
@@ -1112,13 +1094,6 @@ ALTER TABLE ONLY reports
 ALTER TABLE ONLY reputation_statements
   ALTER COLUMN id SET DEFAULT nextval('reputation_statements_id_seq' :: REGCLASS);
 
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY requesters
-  ALTER COLUMN id SET DEFAULT nextval('requesters_id_seq' :: REGCLASS);
 
 --
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
@@ -1313,14 +1288,6 @@ ALTER TABLE ONLY reputation_statements
 
 
 --
--- Name: requesters_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY requesters
-  ADD CONSTRAINT requesters_pkey PRIMARY KEY (id);
-
-
---
 -- Name: reviews_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1358,6 +1325,7 @@ CREATE INDEX index_ab_tests_on_name
 
 CREATE INDEX index_ab_variants_on_name
   ON ab_variants USING GIN (name);
+
 
 --
 -- Name: index_ab_variants_on_test_id; Type: INDEX; Schema: public; Owner: -
@@ -1405,6 +1373,7 @@ CREATE INDEX index_flags_on_tags
 
 CREATE INDEX index_people_on_confirmation_token
   ON people USING BTREE (confirmation_token);
+
 
 --
 -- Name: index_people_on_password_reset_token; Type: INDEX; Schema: public; Owner: -
@@ -1455,14 +1424,6 @@ CREATE INDEX public_hits_title1_idx
 
 
 --
--- Name: public_requesters_rid0_idx; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX public_requesters_rid0_idx
-  ON requesters USING BTREE (rid);
-
-
---
 -- Name: public_requesters_rname1_idx; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1485,6 +1446,13 @@ CREATE INDEX public_reviews_hit_id0_idx
 CREATE INDEX public_reviews_person_id1_idx
   ON reviews USING BTREE (person_id);
 
+--
+-- Name: requesters_pkey; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX requesters_pkey
+  ON requesters USING BTREE (rid);
+
 
 --
 -- Name: comments_person_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
@@ -1493,12 +1461,14 @@ CREATE INDEX public_reviews_person_id1_idx
 ALTER TABLE ONLY comments
   ADD CONSTRAINT comments_person_id_fkey FOREIGN KEY (person_id) REFERENCES people (id) ON UPDATE RESTRICT ON DELETE RESTRICT;
 
+
 --
 -- Name: comments_review_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY comments
   ADD CONSTRAINT comments_review_id_fkey FOREIGN KEY (review_id) REFERENCES reviews (id) ON UPDATE RESTRICT ON DELETE RESTRICT;
+
 
 --
 -- Name: fk_rails_05ab74abbd; Type: FK CONSTRAINT; Schema: public; Owner: -
@@ -1507,6 +1477,7 @@ ALTER TABLE ONLY comments
 ALTER TABLE ONLY flags
   ADD CONSTRAINT fk_rails_05ab74abbd FOREIGN KEY (person_id) REFERENCES people (id);
 
+
 --
 -- Name: fk_rails_13a9314e80; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
@@ -1514,12 +1485,14 @@ ALTER TABLE ONLY flags
 ALTER TABLE ONLY docs_versions
   ADD CONSTRAINT fk_rails_13a9314e80 FOREIGN KEY (document_id) REFERENCES docs_documents (id);
 
+
 --
 -- Name: fk_rails_3fc4766dfa; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ab_variants
   ADD CONSTRAINT fk_rails_3fc4766dfa FOREIGN KEY (test_id) REFERENCES ab_tests (id);
+
 
 --
 -- Name: fk_rails_c3ef19e5b1; Type: FK CONSTRAINT; Schema: public; Owner: -
@@ -1533,7 +1506,8 @@ ALTER TABLE ONLY flags
 --
 
 ALTER TABLE ONLY hits
-  ADD CONSTRAINT hits_requester_id_fkey FOREIGN KEY (requester_id) REFERENCES requesters (id) ON UPDATE RESTRICT ON DELETE RESTRICT;
+  ADD CONSTRAINT hits_requester_id_fkey FOREIGN KEY (requester_id) REFERENCES requesters (rid);
+
 
 --
 -- Name: reviews_hit_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
@@ -1570,6 +1544,6 @@ VALUES ('20081109050154'), ('20081109050712'), ('20081109051730'), ('20090107000
   ('20161030060407'), ('20161030072001'), ('20161030072723'), ('20161030075457'), ('20161030082820'),
   ('20161030083039'), ('20161119160536'), ('20161225103246'), ('20170125102921'), ('20170125103407'),
   ('20170127204507'), ('20170202193532'), ('20170203220801'), ('20170207064846'), ('20170216121604'),
-  ('20170216121845'), ('20170216221002'), ('20170219075537'), ('20170223035217');
+  ('20170216121845'), ('20170216221002'), ('20170219075537'), ('20170223035217'), ('20170224151406');
 
 

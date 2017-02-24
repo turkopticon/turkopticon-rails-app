@@ -1,4 +1,5 @@
 class Requester < ApplicationRecord
+  self.primary_key = 'rid'
   include PgSearch
 
   has_many :hits

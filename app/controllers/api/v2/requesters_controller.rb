@@ -12,8 +12,9 @@ class Api::V2::RequestersController < Api::V2::ApiController
     success, attrs = field_params
     return render json: attrs, status: :bad_request unless success
 
+    agg, id    = 'aggregates'.freeze, 'id'.freeze
     requesters = Requester.cached_multi_find_by(rid: rids).select { |_, v| v }
-                     .map { |_, v| v.as_json.merge({ 'aggregates' => v.cached_aggregates }) }
+                     .map { |_, v| v.as_json.merge!(agg => v.cached_aggregates, id => v.id) }
 
     status, json = ::RequestersSerializer.new(requesters, collection: true, attrs: attrs).call
     render json: json, status: status
@@ -27,7 +28,8 @@ class Api::V2::RequestersController < Api::V2::ApiController
       return render json: err, status: :not_found
     end
 
-    requester      = requester.as_json.merge({ 'aggregates' => requester.cached_aggregates })
+    agg, id   = 'aggregates'.freeze, 'id'.freeze
+    requester = requester.as_json.merge! agg => requester.cached_aggregates, id => requester.id
     success, attrs = field_params
     return render json: attrs, status: :bad_request unless success
 
