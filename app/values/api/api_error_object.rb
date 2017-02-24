@@ -18,6 +18,6 @@ class Api::ApiErrorObject
     err          = ERRORS[@status]
     err[:detail] = @message if @message
     err[:code]   = CODES[@code] if @code
-    { errors: [err] }
+    { errors: [err], status: err[:status].to_i }
   end
 end
