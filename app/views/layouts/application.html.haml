@@ -61,6 +61,6 @@
 
     :javascript
       if (typeof ga === 'function') {
-        ga('set', 'page', location.pathname);
+        ga('set', 'page', location.pathname + location.search);
         ga('send', 'pageview', { title: '#{controller_name}##{action_name}' })
       }
