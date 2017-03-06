@@ -33,15 +33,5 @@
       %span= pluralize size, 'comment'
       = link_to '(hide)', '#'
     .comments
-      - r.comments.each do |c|
-        %div{ class: "comment-#{c.id}" }
-          = c.body.censor
-          .comment-footer
-            %ul.inline
-              %li
-                = link_to nameify(c.person), comments_u_path(obs c.person.id)
-                - if c.person.moderator? || c.person.admin?
-                  = user_class(c.person)
-              %li
-                %time.timestamp{ datetime: c.updated_at, title: "#{time_ago_in_words c.updated_at} ago" }= c.updated_at
+      = render partial: 'comments/comment', collection: r.comments
 

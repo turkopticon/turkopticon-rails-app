@@ -1,0 +1,11 @@
+%div{ class: "comment-#{comment.id}" }
+  = comment.body.censor
+  .comment-footer
+    %ul.inline
+      %li
+        = link_to_unless_current nameify(comment.person), comments_u_path(obs comment.person.id)
+        = user_class comment.person
+      %li
+        %time.timestamp{ datetime: comment.updated_at, title: "#{time_ago_in_words comment.updated_at} ago" }= comment.updated_at
+      - if controller_name == 'users'
+        %li= link_to :context, review_path(comment.review_id)
