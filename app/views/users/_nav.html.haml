@@ -1,0 +1,11 @@
+-#.flex{ style: 'width:75%;margin-bottom:10px;' }
+  - oid = obs @usr.id
+  %div{ style: 'flex:1' }= link_to_unless_current "Reviews (#{@usr.reviews.size})", reviews_u_path(id: oid)
+  %div{ style: 'flex:1' }= link_to_unless_current "Comments (#{@usr.comments.size})", comments_u_path(id: oid)
+  -#- if @user.id == @usr.id || @user.admin?
+    %div{ style: 'flex:1' }= link_to_unless_current "Flags (#{@usr.flags.size})", flags_u_path(id: oid)
+
+%ul.inline{ style: 'margin-bottom:10px;' }
+  - oid = obs @usr.id
+  %li{ style: 'margin-right:10px' }= link_to_unless_current "Reviews (#{@usr.reviews.size})", reviews_u_path(id: oid)
+  %li{ style: 'margin-right:10px' }= link_to_unless_current "Comments (#{@usr.comments.size})", comments_u_path(id: oid)
