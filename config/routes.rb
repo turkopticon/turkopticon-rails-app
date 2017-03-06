@@ -24,6 +24,9 @@ Rails.application.routes.draw do
     resources :requesters, only: [:index, :show], param: :rid
     resources :comments, :flags, only: [:create, :update]
     resources :docs, only: [:show], param: :name
+    resources :u, controller: :users, only: [:show] do
+      get :reviews, :comments, :flags, on: :member
+    end
 
     namespace :mod do
       resources :dashboard, only: [:index]

@@ -9,9 +9,8 @@
   .review-footer
     %ul.inline
       %li
-        = link_to nameify(r.person), reviews_path(user: r.person.id)
-        - if r.person.moderator? || r.person.admin?
-          = user_class(r.person)
+        = link_to nameify(r.person), reviews_u_path(obs r.person.id)
+        = user_class(r.person)
       %li
         - time = r.created_at
         - ts = %[<time class="timestamp" datetime="#{time}" title="#{time_ago_in_words time} ago">#{time}</time>].html_safe
@@ -40,7 +39,7 @@
           .comment-footer
             %ul.inline
               %li
-                = link_to nameify(c.person), reviews_path(user: c.person.id)
+                = link_to nameify(c.person), comments_u_path(obs c.person.id)
                 - if c.person.moderator? || c.person.admin?
                   = user_class(c.person)
               %li
