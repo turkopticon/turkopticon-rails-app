@@ -37,4 +37,14 @@ module ApplicationHelper
 
     markdown.render(txt).html_safe
   end
+
+  def obs(int)
+    int = int.to_i
+    raise TypeError unless int > 0
+
+    x, y = (int >> 16) & 65535, int & 65535
+    fn   = ->(val) { (32767 * (((1366 * val + 15089) & 714025) / 714025.0)).to_i }
+    3.times { x, y = y, x ^ fn.call(y) }
+    (y << 16) + x
+  end
 end
