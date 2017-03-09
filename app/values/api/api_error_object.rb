@@ -6,6 +6,8 @@ class Api::ApiErrorObject
       bad_request:            { status: '400', title: 'Bad Request' },
       not_found:              { status: '404', title: 'Not Found' },
       unsupported_media_type: { status: '415', title: 'Unsupported Media Type' },
+      forbidden: { status: '403', title: 'Forbidden' },
+      conflict:  { status: '409', title: 'Conflict' }
   }.freeze
 
   def initialize(status, opt = {})
