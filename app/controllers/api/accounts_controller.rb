@@ -18,14 +18,18 @@ class Api::AccountsController < Api::ApiController
     user = Person.find_by email: params[:email]
     user.activate! unless user.nil?
 
-    data = { id: user[:id], email_verified: user[:email_verified] }
-    render json: { status: 200, data: data }, status: :ok
+    if user
+      data = { id: user[:id], email_verified: user[:email_verified] }
+      render json: { status: 200, data: data }, status: :ok
+    else
+      render json: Api::ApiErrorObject.new(:bad_request).call, status: :bad_request
+    end
   end
 
   private
 
   def person_params
-    attrs = %i(email display_name hashed_password salt)
+    attrs = %i(email display_name hashed_password salt email_verified)
     throw Exception unless attrs.all? { |v| params.include? v }
     params.slice(*attrs).permit!
   end
