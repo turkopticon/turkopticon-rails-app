@@ -7,6 +7,8 @@ Rails.application.routes.draw do
   scope module: :api, defaults: { format: :json }, constraints: { subdomain: 'api' } do
     root 'main#index', as: :api_root
     resources :requesters, only: [:index, :show], param: :rid, module: :v2, constraints: ApiConstraints.new(version: '2', default: true), as: :api_default_requesters
+    post :accounts, to: 'accounts#new'
+    get 'accounts/activate', to: 'accounts#activate'
     get '*path', to: 'api#error'
   end
 
