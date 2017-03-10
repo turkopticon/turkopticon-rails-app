@@ -1,7 +1,10 @@
 %span.title Edit review
 
-- if @authorized
+- t = 2.months.ago
+- if @authorized && @review.created_at > t
   = render 'form'
   = javascript_include_tag 'reviews/form_manifest'
+- elsif @review.created_at < t
+  %p To preserve data integrity, this review has been archived and can no longer be edited.
 - else
   %p You do not have permission to make edits on this review.

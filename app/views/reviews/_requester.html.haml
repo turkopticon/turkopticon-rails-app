@@ -1,4 +1,4 @@
 %span.rname.block.bold= link_to r.requester.name, requester_path(r.requester.rid)
 %span.rid.block= r.requester.rid
-- if @user.id == r.person_id
+- if @user.id == r.person_id && r.created_at > 2.months.ago
   = link_to 'Edit review', edit_review_path(r), class: 'arrow-link'

@@ -23,7 +23,7 @@
       - else
         %li{ style: 'text-transform:uppercase'} invalidated
       %li= link_to 'comment', ujs_path(:new_comment, r: r.id), remote: true, method: :patch
-      - if controller_name == 'requesters' && @user.id == r.person_id
+      - if controller_name == 'requesters' && @user.id == r.person_id && r.created_at > 2.months.ago
         %li= link_to 'edit', edit_review_path(r)
 
   %div{ class: "new-comment-#{r.id}" }
