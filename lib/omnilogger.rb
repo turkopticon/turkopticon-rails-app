@@ -1,21 +1,27 @@
-class Omnilogger
-  def initialize(*types)
-    @loggers = {}
-    types.each do |type|
-      @loggers[type]           = Logger.new("log/#{type.to_s.pluralize}.log", 'monthly')
-      @loggers[type].formatter = OmniFormatter.new '%Y-%m-%dT%H:%M:%S'
+module Omnilogger
+  @logs = %i(account flag review moderator admin)
+
+  class << self
+    def log(type, msg)
+      loggers[type].info msg
+    end
+
+    private
+
+    def loggers
+      @loggers ||= @logs.map { |type| [type] << make_logger(type) }.to_h
+    end
+
+    def make_logger(type)
+      l           = Logger.new("log/#{type.to_s.pluralize}.log", 'monthly')
+      l.formatter = OmniFormatter.new '%Y-%m-%dT%H:%M:%S'
+      l
     end
   end
 
-  def log(type, msg)
-    @loggers[type].info msg
-  end
-
-  private
-
-  def method_missing(method, *args, &block)
+  def self.method_missing(method, *args)
     begin
-      @loggers[method].info *args, &block
+      self.log method, *args
     rescue => err
       ApplicationController.logger.error err
     end
