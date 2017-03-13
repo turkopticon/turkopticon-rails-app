@@ -6,7 +6,7 @@ class AccountsController < ApplicationController
 
     if @usr.save
       AccountMailer.signup(@usr).deliver_later
-      OMNILOGGER.account ltag(@usr, 'CREATE account (registration)')
+      Omnilogger.account ltag(@usr, 'CREATE account (registration)')
       render 'verify'
     else
       render 'new'

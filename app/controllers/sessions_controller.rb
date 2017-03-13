@@ -13,7 +13,7 @@ class SessionsController < ApplicationController
       uri                    = session[:original_uri]
       session[:original_uri] = nil
 
-      OMNILOGGER.account ltag(user, 'CREATE session (login)')
+      Omnilogger.account ltag(user, 'CREATE session (login)')
       redirect_to uri || root_path
     else
       flash.now[:notice] = 'Sorry, invalid username/password combination'
@@ -22,7 +22,7 @@ class SessionsController < ApplicationController
   end
 
   def destroy
-    OMNILOGGER.account ltag('DESTROY session (logout)')
+    Omnilogger.account ltag('DESTROY session (logout)')
     @user               = nil
     session[:person_id] = nil
     flash[:notice]      = 'Logged out'

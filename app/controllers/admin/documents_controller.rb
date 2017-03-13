@@ -10,7 +10,7 @@ class Admin::DocumentsController < ApplicationController
 
     if @doc.save_doc doc_params
       flash[:success] = 'document saved'
-      OMNILOGGER.admin ltag("CREATE document: #{doc_params[:name]}")
+      Omnilogger.admin ltag("CREATE document: #{doc_params[:name]}")
       redirect_to admin_dashboard_index_path
     else
       flash[:error] = 'document was unable to be saved'
@@ -27,7 +27,7 @@ class Admin::DocumentsController < ApplicationController
 
     if @doc.save_doc doc_params
       flash[:success] = 'document updated'
-      OMNILOGGER.admin ltag("UPDATE document: #{doc_params[:name]}")
+      Omnilogger.admin ltag("UPDATE document: #{doc_params[:name]}")
       redirect_to admin_dashboard_index_path
     else
       flash[:error] = 'document was unable to be updated'

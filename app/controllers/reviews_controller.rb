@@ -39,7 +39,7 @@ class ReviewsController < ApplicationController
     @review.dependent_params = form.select(&condition).merge user: @user
 
     if @review.save
-      OMNILOGGER.review ltag("CREATE review for #{form[:name]} [#{form[:rid]}]")
+      Omnilogger.review ltag("CREATE review for #{form[:name]} [#{form[:rid]}]")
       redirect_to requester_path @review.requester.rid
     else
       render 'new'
@@ -55,7 +55,7 @@ class ReviewsController < ApplicationController
       issue = state.nil? || @review.flags.status(:open).empty?
       (@review.update_column(:valid_review, state) and @review.requester.touch) unless issue
 
-      OMNILOGGER.moderator(ltag("UPDATE review##{params[:id]} valid_review:#{state}")) unless issue
+      Omnilogger.moderator(ltag("UPDATE review##{params[:id]} valid_review:#{state}")) unless issue
       return redirect_back fallback_location: mod_flags_path
     end
 

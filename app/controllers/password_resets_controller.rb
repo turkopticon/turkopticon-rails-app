@@ -8,7 +8,7 @@ class PasswordResetsController < ApplicationController
   def create
     user = Person.find_by email: params[:email]
     if user
-      OMNILOGGER.account ltag(user, 'CREATE password reset')
+      Omnilogger.account ltag(user, 'CREATE password reset')
       user.send_password_reset request.ip
       render html: '<p>An email has been sent with password reset instructions</p>'.html_safe, layout: true
     else

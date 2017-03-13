@@ -5,6 +5,9 @@ class Api::AccountsController < Api::ApiController
     acct = Person.new person_params
     acct.save validate: false unless Person.exists?(email: params[:email])
     if acct[:id]
+      msg = "u##{params[:id]} FROM legacy CREATE account WITH #{params[:email]}"
+      Omnilogger.account '%15s (u#%6d) -- %s' % [request.ip, acct[:id], msg]
+
       data = { id: acct[:id] }
       render json: { status: 200, data: data }, status: :ok
     else

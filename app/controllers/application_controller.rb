@@ -5,8 +5,6 @@ class ApplicationController < ActionController::Base
   before_action :retrieve_user
   before_action :require_login
 
-  OMNILOGGER ||= Omnilogger.new :account, :flag, :review, :moderator, :admin
-
   private
 
   def retrieve_user
@@ -26,7 +24,7 @@ class ApplicationController < ActionController::Base
   end
 
   def ltag(user = nil, msg)
-    '%15s (u#%-6d) -- %s' % [request.ip, (user || @user).id, msg]
+    '%15s (u#%6d) -- %s' % [request.ip, (user || @user).id, msg]
   end
 
 end
