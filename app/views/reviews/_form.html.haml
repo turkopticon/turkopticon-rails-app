@@ -20,7 +20,7 @@
       %label.question.inline
         %input.mutator.context{type: :checkbox, name: :tos}
         This HIT violates TOS.
-      %span= link_to '[see TOS]', 'https://requester.mturk.com/help/faq#can_explicit_offensive', rel: :nofollow
+      %span= link_to '[see TOS]', 'https://requester.mturk.com/help/faq#can_explicit_offensive', rel: :nofollow, target: '_blank'
 
     %fieldset.hidden.merge-top{'data-name': :tos_context, 'data-role': :context}
       %input{placeholder: 'Please explain', name: :tos_context, type: :text}
