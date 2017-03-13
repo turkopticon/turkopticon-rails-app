@@ -40,6 +40,18 @@ CREATE EXTENSION IF NOT EXISTS btree_gin WITH SCHEMA public;
 
 COMMENT ON EXTENSION btree_gin IS 'support for indexing common datatypes in GIN';
 
+--
+-- Name: pg_trgm; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS pg_trgm WITH SCHEMA public;
+
+--
+-- Name: EXTENSION pg_trgm; Type: COMMENT; Schema: -; Owner: -
+--
+
+COMMENT ON EXTENSION pg_trgm IS 'text similarity measurement and index searching based on trigrams';
+
 
 SET search_path = public, pg_catalog;
 
@@ -1526,6 +1538,7 @@ ALTER TABLE ONLY reviews
 ALTER TABLE ONLY reviews
   ADD CONSTRAINT reviews_person_id_fkey FOREIGN KEY (person_id) REFERENCES people (id) ON UPDATE RESTRICT ON DELETE RESTRICT;
 
+
 --
 -- PostgreSQL database dump complete
 --
@@ -1548,6 +1561,6 @@ VALUES ('20081109050154'), ('20081109050712'), ('20081109051730'), ('20090107000
   ('20161030083039'), ('20161119160536'), ('20161225103246'), ('20170125102921'), ('20170125103407'),
   ('20170127204507'), ('20170202193532'), ('20170203220801'), ('20170207064846'), ('20170216121604'),
   ('20170216121845'), ('20170216221002'), ('20170219075537'), ('20170223035217'), ('20170224151406'),
-  ('20170224183932');
+  ('20170224183932'), ('20170313121904');
 
 
