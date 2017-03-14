@@ -8,7 +8,7 @@ class UjsController < ApplicationController
         'Rule violation: threat or incitement of violence',
         'Rule violation: discloses details about screener',
         'Review manipulation: possible requester self-review',
-        'Review manipulation: suspicious review; see reviewer\'s other reviews',
+        'Review manipulation: malicious review or falsifies information',
         'Other: review inconsistency',
         'Other: incorrectly claims TOS violation'
     ]
