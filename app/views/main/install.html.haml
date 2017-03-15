@@ -9,6 +9,7 @@
   * Then you just need the script. <a id="ghdl" href="https://github.com/turkopticon/turkoptiscript/raw/master/dist/turkoptiscript.es6.user.js">Grab it here</a><span id="gfsp"> or on [Greasy Fork](https://greasyfork.org/en/scripts/27512-turkoptiscript)</span>.
 
 :javascript
+  onEvent(document.getElementById('ghdl'),'click',function(){ga&&ga('send','event','userscript','click','download')});
   try {
     class A {constructor(){this.a=1}}
     class B extends A {}
