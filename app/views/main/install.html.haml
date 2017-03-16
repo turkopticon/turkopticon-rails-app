@@ -13,7 +13,7 @@
   try {
     class A {constructor(){this.a=1}}
     class B extends A {}
-    3 ** 3 === 3*3*3 && new B(); const o = {a:0,b:0}; const {a,b} = o; a === b && void(o)
+    eval('3 ** 3 === 3*3*3') && new B(); const o = {a:0,b:0}; const {a,b} = o; a === b && void(o)
   } catch (err) {
     var gh=document.querySelector('#ghdl'),gf=document.querySelector('#gfsp');gh.href=gh.href.replace('6','5');gf.classList.toggle('hidden');
     ga && ga('send', 'event', 'userscript', 'outdated', 'es5 fallback');
