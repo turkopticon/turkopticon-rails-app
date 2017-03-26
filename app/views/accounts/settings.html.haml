@@ -8,6 +8,9 @@
       = f.label :display_name, class: :block
       = f.text_field :display_name
     %p
+      = f.label :email, class: :block
+      = f.email_field :email
+    %p
       %span.block Time unit
       %span.block
         = f.radio_button :time_unit, :hr
