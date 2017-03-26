@@ -66,6 +66,7 @@
       this.validators = validators;
 
       this.view.bindMutateTime(this.updateField.bind(this));
+      this.view.bindMutateSpecific(this.updateField.bind(this));
       this.view.bindMutateContext(this.removeField.bind(this));
       onEvent(this.view.form, 'change', ({ target }) => this.validate(target.closest('fieldset')));
 
@@ -91,11 +92,13 @@
                                              .map(v => Validator[v](props.value, ...validators[v]))
                                              .filter(v => !v[0]) || [];
 
-      if (field.dataset.type === 'time' && result.length && field.querySelector('.mutator:checked') && /greater/.test(result[0][1]))
-        void(result.shift());
+      const allDisabled        = field.querySelectorAll(':disabled').length === field.querySelectorAll('input').length;
+      const timeMutatorChecked = field.dataset.type === 'time' && field.querySelector('.mutator:checked');
+      const hasError           = result.length && /greater/.test(result[0][1]);
+      if ((allDisabled || timeMutatorChecked) && hasError) void(result.shift());
       props.isvalid = result.length ? result[0][0] : true;
       props.error   = result.length ? result[0][1] : null;
-      this.updateField(field, props, field)
+      this.updateField(field, props)
     }
 
     get isValid() {
@@ -127,6 +130,35 @@
           context.dataset.error = null;
           callback(context);
         }
+      });
+    }
+
+    // hack TODO: refactor
+    bindMutateSpecific(callback) {
+      function mutate(selectors, handler) {
+        (!!selectors.map && selectors || [selectors])
+          .map(s => Array.from(document.querySelectorAll(s)))
+          .filter(list => list.length)
+          .reduce((a, list) => a.concat(list), [])
+          .forEach(handler)
+      }
+
+      delegateEvent(this.form, '.mutator.skip-rejection', 'click', ({ target }) => {
+        const disable = target.checked;
+        mutate('.skippable', field => {
+          if (disable) {
+            field.querySelector('legend').classList.remove('required');
+            [].forEach.call(field.querySelectorAll('input'), el => {
+              el.disabled = true;
+              el.checked  = false;
+              el.value    = isNaN(el.value) ? el.value : null;
+            });
+          } else {
+            field.querySelector('legend').classList.add('required');
+            [].forEach.call(field.querySelectorAll('input'), el => { el.disabled = false; });
+          }
+          callback(field, { value: getValueOf(field) })
+        });
       });
     }
 
@@ -162,6 +194,8 @@
 
   function getValueOf(field) {
     const { name, type } = field.dataset;
+    if (field.querySelectorAll(':disabled').length === field.querySelectorAll('input').length)
+      return type === 'time' ? -1 : 'n/a';
 
     switch (type) {
       case 'radio':
@@ -187,26 +221,30 @@
   function setValueOf(field, value) {
     const { name, type } = field.dataset;
 
-    switch (type) {
-      case 'radio':
-        return field.querySelector(`[value="${value}"]`).click();
-      case 'checkbox':
-        return value && field.querySelector(`[name=${name}]`).click();
-      case 'time':
-        if (value < 1)
+    try {
+      switch (type) {
+        case 'radio':
           return field.querySelector(`[value="${value}"]`).click();
+        case 'checkbox':
+          return value && field.querySelector(`[name=${name}]`).click();
+        case 'time':
+          if (value < 1)
+            return field.querySelector(`[value="${value}"]`).click();
 
-        const values = [0, value];
-        if (name === 'time' && value >= 60) {
-          values[0] = Math.floor(value / 60);
-          values[1] = value % 60;
-        } else if (name === 'time_pending') {
-          values[0] = Math.floor(value / 86400);
-          values[1] = values[0] === 0 ? +(value / 3600).toFixed(2) : Math.floor(value % 86400 / 3600);
-        }
-        return [].forEach.call(field.querySelectorAll('[type=number]'), (el, i) => el.value = values[i]);
-      default:
-        field.querySelector(`[name=${name}]`).value = value;
+          const values = [0, value];
+          if (name === 'time' && value >= 60) {
+            values[0] = Math.floor(value / 60);
+            values[1] = value % 60;
+          } else if (name === 'time_pending') {
+            values[0] = Math.floor(value / 86400);
+            values[1] = values[0] === 0 ? +(value / 3600).toFixed(2) : Math.floor(value % 86400 / 3600);
+          }
+          return [].forEach.call(field.querySelectorAll('[type=number]'), (el, i) => el.value = values[i]);
+        default:
+          field.querySelector(`[name=${name}]`).value = value;
+      }
+    } catch (err) {
+      void err;
     }
   }
 

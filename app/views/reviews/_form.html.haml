@@ -49,7 +49,7 @@
         I don't know.
       %br
       %label.inline
-        %input.mutator{type: :checkbox, name: :time, value: -2}
+        %input.mutator.skip-rejection{type: :checkbox, name: :time, value: -2}
         I didn't finish the HIT.
 
     %fieldset{'data-name': :comm, 'data-type': :radio, 'data-role': :default}
@@ -64,7 +64,7 @@
         %input{type: :radio, name: :comm, value: 'yes'}
         Yes, the requester responded to my satisfaction.
 
-    %fieldset{'data-name': :rejected, 'data-type': :radio, 'data-role': :default}
+    %fieldset.skippable{'data-name': :rejected, 'data-type': :radio, 'data-role': :default}
       %legend.required How much of your work was rejected?
       %label.inline
         %input{type: :radio, name: :rejected, value: 'all'}
@@ -73,13 +73,13 @@
         %input{type: :radio, name: :rejected, value: 'some'}
         Some
       %label.inline
-        %input{type: :radio, name: :rejected, value: 'none'}
+        %input{type: :radio, name: :rejected, value: 'none', checked: true}
         None
       %label.block
         %input{type: :radio, name: :rejected, value: 'overturned'}
         All rejections were overturned.
 
-    %fieldset{'data-name': :time_pending, 'data-type': :time, 'data-role': :time}
+    %fieldset.skippable{'data-name': :time_pending, 'data-type': :time, 'data-role': :time}
       %legend.required Approximately how long did it take to approve or reject?
       %label.inline
         %input{type: :number, name: :time_pending, step: 1, min: 0}
