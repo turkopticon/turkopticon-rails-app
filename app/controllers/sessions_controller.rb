@@ -2,7 +2,7 @@ class SessionsController < ApplicationController
   skip_before_action :require_login
 
   def create
-    user = Person.find_by(email: params[:email])
+    user = Person.find_by(email: params[:email].downcase)
     if user && !user.is_closed? && user.authenticate(params[:password])
       # return redirect_to '/reg/change_email', notice: msg unless user.verified?
 
