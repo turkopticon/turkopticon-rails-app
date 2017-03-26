@@ -194,7 +194,7 @@
 
   function getValueOf(field) {
     const { name, type } = field.dataset;
-    if (field.querySelectorAll(':disabled').length === field.querySelectorAll('input').length)
+    if (field.querySelectorAll(':disabled').length === field.querySelectorAll('input, textarea').length)
       return type === 'time' ? -1 : 'n/a';
 
     switch (type) {
