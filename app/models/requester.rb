@@ -13,8 +13,8 @@ class Requester < ApplicationRecord
   after_touch -> { Rails.cache.delete([self.class.name, 'rid', rid]) } # assume only rid uses find_by()
 
   pg_search_scope :name_search,
-                  against: [[:name, 'A'], [:aliases, 'B']],
-                  using:   { tsearch: { dictionary: 'english', prefix: true } }
+                  against: [[:name, 'A'], [:aliases, 'B'], [:rid, 'C']],
+                  using:   { tsearch: { dictionary: 'simple', prefix: true } }
 
   def aggregates
     agg = { all: {}, recent: {} }
