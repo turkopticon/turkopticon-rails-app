@@ -5,12 +5,12 @@ class UsersController < ApplicationController
 
   def reviews
     @usr     = load_user
-    @reviews = @usr.reviews.page params[:page]
+    @reviews = @usr.reviews.order(created_at: :desc).page params[:page]
   end
 
   def comments
     @usr      = load_user
-    @comments = @usr.comments.page params[:page]
+    @comments = @usr.comments.order(created_at: :desc).page params[:page]
   end
 
   def flags
