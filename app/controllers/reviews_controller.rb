@@ -37,9 +37,10 @@ class ReviewsController < ApplicationController
     @review   = Review.new(review)
 
     @review.dependent_params = form.select(&condition).merge user: @user
+    byebug
 
     if @review.save
-      Omnilogger.review ltag("CREATE review for #{form[:name]} [#{form[:rid]}]")
+      Omnilogger.review ltag("CREATE review for #{form['name']} [#{form['rid']}]")
       redirect_to requester_path @review.requester.rid
     else
       render 'new'
