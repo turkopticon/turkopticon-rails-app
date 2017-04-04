@@ -22,8 +22,8 @@ class Requester < ApplicationRecord
     # TODO: optimize
 
     [:all, :recent].each do |period|
-      review = period == :all ? self.reviews.valid : self.reviews.recent.valid
-      total  = review.size
+      review  = period == :all ? self.reviews.valid : self.reviews.recent.valid
+      total   = review.size
       revt    = review.where 'time > 0'
       rewards = revt.map { |rev| [rev.hit.reward.to_f, rev.time] }
 
@@ -32,8 +32,8 @@ class Requester < ApplicationRecord
       agg[period][:pending]   = review.average(:time_pending).to_f
 
       [:comm, :recommend, :rejected].each do |key|
-        n                = review.where.not(key => 'n/a').size
-        x = n > 0 ? review.where(key => 'yes').size : 0
+        n = review.where.not(key => 'n/a').size
+        x = n > 0 ? review.where(key => %w(yes all some)).size : 0
 
         agg[period][key] = [x, n, total]
       end
