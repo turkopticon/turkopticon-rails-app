@@ -1,5 +1,5 @@
 %div{ class: "comment-#{comment.id}" }
-  = comment.body.censor
+  = minimd comment.body.censor
   .comment-footer
     %ul.inline
       %li

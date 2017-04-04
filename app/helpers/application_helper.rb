@@ -38,6 +38,10 @@ module ApplicationHelper
     markdown.render(txt).html_safe
   end
 
+  def minimd(txt)
+    MiniMarkdown.render(txt).html_safe
+  end
+
   def obs(int)
     int = int.to_i
     raise TypeError unless int > 0

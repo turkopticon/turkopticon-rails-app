@@ -4,7 +4,7 @@
     - r.tags.each do |t|
       %span.inline.tag{'data-context': t[2], class: tag_class(t)}= tag_label t
 
-  .review-body= r.context.censor unless r.context.nil?
+  .review-body= minimd r.context.censor unless r.context.nil?
 
   .review-footer
     %ul.inline
