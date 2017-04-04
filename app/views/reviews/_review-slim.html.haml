@@ -1,8 +1,7 @@
 .review-header
   %span.hit-title.bold= r.hit.title
-  .tagbox
-    - r.tags.each do |t|
-      %span.inline.tag{'data-context': t[2], class: tag_class(t)}= tag_label t
+
+  = render 'reviews/tags', tags: r.tags
 
   .review-body= minimd r.context.censor unless r.context.nil?
 
