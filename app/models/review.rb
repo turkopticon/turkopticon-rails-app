@@ -21,8 +21,12 @@ class Review < ApplicationRecord
     tags = %w( tos broken recommend )
                .map { |t| [t, self[t], self["#{t}_context"]] }
                .select { |t| t[1] == true || t[1] =~ /(no|yes)/ || t[1] == 1 }
-    tags.unshift ['rejected', true, 'some or all of my work was rejected'] if self.rejected == 'yes'
+    tags.unshift ['rejected', true, 'some or all of my work was rejected'] if self.rejected?
     tags
+  end
+
+  def rejected?
+    self[:rejected] == 'all' || self[:rejected] == 'some'
   end
 
   private
