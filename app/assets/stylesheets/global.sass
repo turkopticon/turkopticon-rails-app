@@ -190,19 +190,20 @@ hr.divider
 
 .tag
   @extend .fs-xs
-  color: white
-  background-color: #000
-  opacity: 0.7
-  border-radius: 5px
-  padding: 3px
+  color: rgba(255, 255, 255, 0.85)
+  background-color: rgba(36, 36, 36, 0.65)
+  border-radius: 7px
+  padding: 4px
   margin-right: 3px
   cursor: default
   min-width: 20px
   text-align: center
   &.critical
-    background-color: rgb(237, 20, 20)
+    background-color: rgba(237, 20, 20, 0.65)
   &.positive
-    background-color: rgb(0, 135, 0)
+    background-color: rgba(0, 135, 0, 0.65)
+
+.tt, .user
   &::before, &::after
     content: ''
     display: block
@@ -216,34 +217,33 @@ hr.divider
     left: 50%
     margin-left: -5px
     border: 5px solid transparent
-    border-top-color: black
+    border-top-color: #2b2b2b
     height: 0
     width: 0
   &::after
     bottom: calc(100% + 5px)
     left: 50%
-    margin-left: -63px
-    width: 125px
+    min-width: 100px
     content: attr(data-context)
-    background-color: black
+    background-color: #2b2b2b
     border-radius: 5px
     padding: 5px 2px
-  &.user
-    min-width: 10px
-    background-color: transparent
-    margin-right: 0
-    color: $h-brownish
-    font-weight: 700
-    font-size: inherit
-  &.user.admin::after
-    content: 'This user is an Admin'
-  &.user.mod::after
-    content: 'This user is a Moderator'
-  &:hover
+    transform: translateX(-50%)
+  &:hover::before, &:hover::after
+    display: block
     opacity: 1
-    &::before, &::after
-      display: block
-      opacity: 1
+
+.user
+  min-width: 10px
+  background-color: transparent
+  margin-right: 0
+  color: $h-brownish
+  font-weight: 700
+  font-size: inherit
+  &.admin::after
+    content: 'This user is an Admin'
+  &.mod::after
+    content: 'This user is a Moderator'
 
 .review-header
   margin-bottom: 5px
