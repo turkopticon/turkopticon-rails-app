@@ -251,7 +251,7 @@
   const validators = {
     default: { required: [] },
     reward : { required: [], pattern: [/^(\d*(\.\d{0,2})?$)/, 'reward'] },
-    id     : { required: [], lengthGreaterThan: [7], negPattern: [/[^A-Z0-9]/, 'requester ID'] },
+    id     : { required: [], lengthGreaterThan: [7], pattern: [/^A[A-Z0-9]{7,25}$/, 'requester ID'] },
     context: { required: [], lengthBetween: [5, 200] },
     time   : { required: [], valueGreaterThan: [0, 'Time', 'seconds'] },
   };
