@@ -1,8 +1,6 @@
 %span.title= @page[:title]
 
-.heading-bar
-  = page_entries_info @page[:requesters], entry_name: 'requester'
-  = paginate @page[:requesters], window: 2
+= pager :top, @page[:requesters], name: 'requester'
 
 .row.th.flex
   .col-1 Requester
@@ -17,3 +15,5 @@
     .col-1.requester= render 'requester', r: r
     .col-2.aggregates.flex= render 'aggregates', a: r.cached_aggregates
   %hr.divider
+
+= pager :bottom, @page[:requesters]

@@ -47,4 +47,12 @@ module ApplicationHelper
     3.times { x, y = y, x ^ fn.call(y) }
     (y << 16) + x
   end
+
+  def pager(location, collection, opt = {})
+    if location == :top
+      render 'layouts/pager', info: true, collection: collection, name: opt[:name] || 'entry'
+    else
+      render 'layouts/pager', info: false, collection: collection if collection.total_pages > 1
+    end
+  end
 end

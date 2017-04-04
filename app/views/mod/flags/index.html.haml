@@ -4,9 +4,7 @@
     %span.tab= link_to_unless @page[:open], "#{@page[:counts][:open]} open", mod_flags_path
     %span.tab= link_to_unless @page[:closed], "#{@page[:counts][:closed]} closed", mod_flags_path(s: 'is:closed')
   - unless @flags.empty?
-    .heading-bar
-      = page_entries_info @flags, entry_name: 'flag'
-      = paginate @flags, window: 2
+    = pager :top, @flags, name: 'flag'
     = render @flags
   - else
     There are no flags requiring your attention.

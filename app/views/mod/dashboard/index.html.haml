@@ -5,9 +5,7 @@
 
   .flag-queue
     - unless @flags.empty?
-      .heading-bar
-        = page_entries_info @flags, entry_name: 'flag'
-        = paginate @flags, window: 2
+      = pager :top, @flags, name: 'flag'
       = render partial: 'mod/flags/flag', collection: @flags
     - else
       There are no flags requiring your attention.

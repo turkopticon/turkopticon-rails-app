@@ -1,0 +1,8 @@
+- if info
+  .heading-bar
+    = page_entries_info collection, entry_name: name
+    = paginate collection, window: 2
+- else
+  .heading-bar
+    &nbsp;
+    = paginate collection, window: 2

@@ -2,10 +2,12 @@
 
 = render 'nav'
 
-.heading-bar
-  = page_entries_info @reviews, entry_name: 'review'
-  = paginate @reviews, window: 2
+= pager :top, @reviews, name: 'review'
+
 = render 'reviews/header'
 
 - @reviews.each do |r|
   = render 'reviews/row', r: r
+
+= pager :bottom, @reviews
+

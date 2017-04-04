@@ -2,8 +2,8 @@
 
 = render 'nav'
 
-.heading-bar
-  = page_entries_info @comments, entry_name: 'comment'
-  = paginate @comments, window: 2
+= pager :top, @comments, name: 'comment'
 
 = render partial: 'comments/comment', collection: @comments
+
+= pager :bottom, @comments
