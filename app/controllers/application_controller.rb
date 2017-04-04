@@ -11,7 +11,7 @@ class ApplicationController < ActionController::Base
     @user ||= session[:person_id] ? Person.find(session[:person_id]) : nil
 
     @notifications         = {}
-    @notifications[:flags] = Flag.status(:open).size if @user.moderator?
+    @notifications[:flags] = Flag.status(:open).size if @user && @user.moderator?
   end
 
   def require_login
