@@ -116,7 +116,7 @@ hr.divider
 .fs-xl
   font-size: $fs-bigger
 
-.required:after
+.required::after
   content: ' *'
   color: crimson
   font-size: 12px
@@ -203,7 +203,7 @@ hr.divider
     background-color: rgb(237, 20, 20)
   &.positive
     background-color: rgb(0, 135, 0)
-  &:before, &:after
+  &::before, &::after
     content: ''
     display: block
     position: absolute
@@ -211,7 +211,7 @@ hr.divider
     opacity: 0
     pointer-events: none
     color: white
-  &:before
+  &::before
     top: -5px
     left: 50%
     margin-left: -5px
@@ -219,7 +219,7 @@ hr.divider
     border-top-color: black
     height: 0
     width: 0
-  &:after
+  &::after
     bottom: calc(100% + 5px)
     left: 50%
     margin-left: -63px
@@ -235,13 +235,13 @@ hr.divider
     color: $h-brownish
     font-weight: 700
     font-size: inherit
-  &.user.admin:after
+  &.user.admin::after
     content: 'This user is an Admin'
-  &.user.mod:after
+  &.user.mod::after
     content: 'This user is a Moderator'
   &:hover
     opacity: 1
-    &:before, &:after
+    &::before, &::after
       display: block
       opacity: 1
 

@@ -110,7 +110,7 @@ a:hover {
   font-size: 1.2em;
 }
 
-.success:before {
+.success::before {
   content: url(../images/accept.gif);
 }
 
@@ -121,7 +121,7 @@ a:hover {
   font-weight: bold;
 }
 
-.error:before {
+.error::before {
   content: url(../images/error.gif);
 }
 

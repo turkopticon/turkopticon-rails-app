@@ -2,7 +2,7 @@
   fieldset, legend
     border: none
     padding: 0
-  .validation-error:after
+  .validation-error::after
     @extend .bold
     content: attr(data-error)
     position: absolute
@@ -15,7 +15,7 @@
     pointer-events: none
   .submit
     width: 38.22%
-  #reward:before
+  #reward::before
     @extend .bold
     content: '$'
     position: absolute
@@ -30,7 +30,7 @@
     &.c1
       flex: 1
       font-size: $fs-small
-      .validation-error:after
+      .validation-error::after
         top: -3px
         right: 3px
       section
