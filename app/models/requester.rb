@@ -44,12 +44,11 @@ class Requester < ApplicationRecord
     agg
   end
 
-  def manage_alias(name)
-    if self.name && self.name != name
-      aliases.push self.name unless aliases.include? self.name
+  def name=(name)
+    if self[:name] && self[:name] != name
+      aliases.push self[:name] unless aliases.include? self[:name]
     end
-    self.name = name
-    self
+    self[:name] = name
   end
 
   def cached_aggregates
