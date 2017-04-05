@@ -5,7 +5,7 @@ function onEvent(target, type, handler) {
 function delegateEvent(target, selector, type, handler) {
   function dispatcher(event) {
     const targets = target.querySelectorAll(selector);
-    let i         = targets.length;
+    let i = targets.length;
 
     while (i--) {
       if (event.target === targets[i]) {
@@ -16,4 +16,12 @@ function delegateEvent(target, selector, type, handler) {
   }
 
   onEvent(target, type, dispatcher);
+}
+
+function qs(selector, ctx = document) {
+  return ctx.querySelector(selector)
+}
+
+function qsa(selector, ctx = document) {
+  return Array.from(ctx.querySelectorAll(selector))
 }
