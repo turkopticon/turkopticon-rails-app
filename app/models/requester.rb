@@ -29,10 +29,10 @@ class Requester < ApplicationRecord
 
       agg[period][:reward]    = rewards.reduce([0, 0]) { |a, b| a[0] += b[0]; a[1] += b[1]; a } << revt.size
       agg[period][:reward][0] = agg[period][:reward][0].round(2)
-      agg[period][:pending]   = review.average(:time_pending).to_f
+      agg[period][:pending]   = review.where('time_pending > 0').average(:time_pending).to_f
 
       [:comm, :recommend, :rejected].each do |key|
-        n = review.where.not(key => 'n/a').size
+        n = review.where.not(key => ['n/a', nil]).size
         x = n > 0 ? review.where(key => %w(yes all some)).size : 0
 
         agg[period][key] = [x, n, total]
