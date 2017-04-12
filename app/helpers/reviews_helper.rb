@@ -40,8 +40,8 @@ module ReviewsHelper
     if opt[:approx]
       est = sec.to_f / 60**2
       if est < 24
-        span = est.round
-        pre  = est % 1 > 0 && (opt[:slim] ? '~' : 'about') || ''
+        span = [1, est.round].max
+        pre  = est % 1 > 0 && (opt[:slim] ? '~' : 'about ') || ''
         unit = opt[:slim] ? 'hr' : 'hour'
       else
         span = sec/1.day.to_f
@@ -49,7 +49,7 @@ module ReviewsHelper
         unit = 'day'
       end
 
-      "%s #{span % 1 > 0 ? '%.2f' : '%i'} %s" % [pre, span, unit.pluralize(span)]
+      "%s#{span % 1 > 0 ? '%.2f' : '%i'} %s" % [pre, span, unit.pluralize(span)]
     else
       units = %w(d h m s)
       [sec/86400, sec%86400/3600, sec/60%60, sec%60]
