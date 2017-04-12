@@ -18,7 +18,7 @@
           %time.edited{ datetime: r.updated_at, title: "edited #{time_ago_in_words r.updated_at} ago\n#{r.updated_at}" } [e]
       - if r.valid_review?
         %li{class: "flag-#{r.id}"}
-          = link_to_unless(flaggers.include?(@user.id), 'flag', ujs_path(:new_flag, r: r.id), remote: true, method: :patch) { 'flagged' }
+          = link_to_unless(user_flags.include?(r.id), 'flag', ujs_path(:new_flag, r: r.id), remote: true, method: :patch) { 'flagged' }
       - else
         %li{ style: 'text-transform:uppercase'} invalidated
       %li= link_to 'comment', ujs_path(:new_comment, r: r.id), remote: true, method: :patch

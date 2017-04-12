@@ -3,8 +3,9 @@
 = pager :top, @reviews, name: 'review'
 = render 'header'
 
+- user_flags = @user.flags.map(&:review_id)
 - @reviews.each do |r|
-  = render 'row', r: r
+  = render 'row', r: r, user_flags: user_flags
 
 = pager :bottom, @reviews
 

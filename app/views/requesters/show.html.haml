@@ -24,11 +24,12 @@
   .col-2.col-review Review
 %hr.divider
 
+- user_flags = @user.flags.map(&:review_id)
 - @page[:reviews].each do |r|
   .row.tr.flex{class:"r-#{r.id}"}
 
     .col-1.col-stats.flex= render 'reviews/stats', r: r
-    .col-2.col-review= render 'reviews/review', r: r, flaggers: r.flags.status(:open).map(&:person_id)
+    .col-2.col-review= render 'reviews/review', r: r, user_flags: user_flags
 
   %hr.divider
 
