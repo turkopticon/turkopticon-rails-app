@@ -1,9 +1,7 @@
 .tagbox
-  - tags.each do |t|
-    %span.inline.tag{class: tag_class(t)}= tag_label t
-
-%ul.exl.tags.tag-context.fs-xs
-  - tags.reject {|t| t[0] == 'rejected'}.each do |t|
-    %li
-      %span.ddt= tag_label t
-      = t[2]
+  %ul.tags.tag-context.fs-xs
+    - tags.each {|t| t[0] == 'rejected'}.each do |t|
+      %li
+        %span.inline.tag{ class: tag_class(t) }= tag_label t
+        - unless t[0] == 'rejected'
+          = t[2]
