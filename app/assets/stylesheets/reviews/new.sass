@@ -1,7 +1,8 @@
 .reviews-new, .reviews-edit
-  fieldset, legend
-    border: none
-    padding: 0
+  label:not(.question)
+    color: dimgrey
+  input:disabled + label
+    color: rgba(102, 102, 102, 0.55)
   .validation-error::after
     @extend .bold
     content: attr(data-error)
@@ -15,7 +16,7 @@
     pointer-events: none
   .submit
     width: 38.22%
-  #reward::before
+  .sym::before
     @extend .bold
     content: '$'
     position: absolute
@@ -33,7 +34,7 @@
       .validation-error::after
         top: -3px
         right: 3px
-      section
+      .nest
         padding: 5px
         margin-bottom: 10px
         &.invert
@@ -51,7 +52,7 @@
 
     &.c2
       flex: 2
-      fieldset
+      .field
         border-left: 2px solid transparent
         padding-left: 5px
       .validation-error
@@ -59,14 +60,10 @@
       input[type=number]
         width: 45px
         margin: 0 3px 3px 0
-      > fieldset:not(:first-child):not(.merge-top)
+      > .field:not(:first-child):not(.merge-top)
         margin-top: 15px
       textarea
         width: 100%
         height: 100px
         resize: vertical
-      label
-        margin-right: 5px
-        &:not(.question)
-          color: dimgrey
 

@@ -5,7 +5,7 @@ class Review < ApplicationRecord
   has_many :comments
   has_many :flags
 
-  attr_writer :dependent_params
+  accepts_nested_attributes_for :hit
 
   default_scope { includes(:requester, :hit, :person) }
   scope :newest, -> { order(created_at: :desc) }
@@ -15,7 +15,6 @@ class Review < ApplicationRecord
   scope :recent, -> (frame = (90.days.ago .. Time.now)) { where(created_at: frame) }
   # scope :with, -> (*args) { joins(*args) }
 
-  before_validation :dont_orphan_me_bro
 
   def tags
     tags = %w( tos broken recommend )
@@ -29,15 +28,9 @@ class Review < ApplicationRecord
     self[:rejected] == 'all' || self[:rejected] == 'some'
   end
 
-  private
-
-  def dont_orphan_me_bro
-    return unless @dependent_params
-    params = @dependent_params
-    req = Requester.find_or_initialize_by(rid: params['rid']).manage_alias(params['name'])
-    req.save
-    self.person = params[:user]
-    self.hit    = Hit.find_or_create_by!(title: params['title'], reward: params['reward'], requester: req)
+  def hit_attributes=(attrs)
+    query = { requester_id: attrs[:requester_attributes][:rid], title: attrs[:title], reward: attrs[:reward] }
+    (self.hit = Hit.find_by(query)) || self.build_hit.update(attrs)
   end
 
 end

@@ -17,30 +17,24 @@ class ReviewsController < ApplicationController
 
   def new
     @review = Review.new
-    @state  = params.slice(:rid, :name, :title, :reward).permit!.to_json
+    @review.build_hit.build_requester
+    %i(rid name).each { |k| @review.hit.requester[k] = params[k] }
+    %i(title reward).each { |k| @review.hit[k] = params[k] }
+    @review[:rejected]  = 'none'
+    @review[:recommend] = @review[:comm] = 'n/a'
   end
 
   def edit
     @review     = Review.find(params[:id])
     @authorized = @review.person_id == @user.id
-
-    rev         = @review.as_json.reject { |k, v| k =~ /(_(?:id|at|.+ew)\z|\Aid)/ || v.nil? }
-    hit         = @review.hit.as_json.select { |k| %w(title reward).include? k }
-    req         = @review.requester.as_json.select { |k| %w(name rid).include? k }
-    @state      = rev.merge(hit.merge req).to_json
   end
 
   def create
-    form      = form_params
-    condition = -> (key, _) { %w(rid name title reward).include? key }
-    review    = form.reject(&condition).merge ip: request.ip
-    @review   = Review.new(review)
-
-    @review.dependent_params = form.select(&condition).merge user: @user
-
+    @review = Review.new form_params.merge(person: @user, ip: request.ip)
+    req     = @review.hit.requester
     if @review.save
-      Omnilogger.review ltag("CREATE review for #{form['name']} [#{form['rid']}]")
-      redirect_to requester_path @review.requester.rid
+      Omnilogger.review ltag("CREATE review FOR #{req[:name]} [#{req[:id]}]")
+      redirect_to requester_path @review.hit.requester_id
     else
       render 'new'
     end
@@ -48,9 +42,12 @@ class ReviewsController < ApplicationController
 
   # noinspection RailsChecklist01
   def update
-    @review   = Review.find(params[:id])
+    @review = Review.find(params[:id])
 
     if request.put? && @user.moderator?
+
+      # TODO: move to model
+
       state = mod_params[:valid_review].to_bool
       issue = state.nil? || @review.flags.status(:open).empty?
       (@review.update_column(:valid_review, state) and @review.requester.touch) unless issue
@@ -59,12 +56,7 @@ class ReviewsController < ApplicationController
       return redirect_back fallback_location: mod_flags_path
     end
 
-    condition = -> (key, _) { %w(rid name title reward).include? key }
-    form      = form_params
-    review    = form.reject(&condition) #.merge ip: request.ip
-
-    @review.dependent_params = form.select(&condition).merge user: @user
-    if @review.update(review)
+    if @review.update(form_params.merge(person: @user, ip: request.ip))
       redirect_to requester_path @review.requester.rid
     else
       render 'edit'
@@ -74,7 +66,8 @@ class ReviewsController < ApplicationController
   private
 
   def form_params
-    JSON.parse(params.require(:review).permit(:state).to_h[:state])
+    props = %i(tos tos_context broken broken_context time comm time_pending rejected recommend recommend_context context bonus)
+    params.require(:review).permit(*props, hit_attributes: [:title, :reward, requester_attributes: [:name, :rid]])
   end
 
   def mod_params

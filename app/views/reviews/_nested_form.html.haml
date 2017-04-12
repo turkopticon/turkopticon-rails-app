@@ -1,0 +1,104 @@
+- explain = 'Please explain'.freeze
+= form_for @review do |f|
+  .rf.flex
+    .col.c1
+      = f.fields_for :hit do |hf|
+        .nest.invert
+          .field.required{ 'data-type': :text, 'data-for': :title }
+            = hf.text_field :title, title: 'HIT Title', placeholder: 'HIT title'
+          .field.required{ 'data-type': :number, 'data-for': :reward }
+            %i.sym
+            = hf.number_field :reward, step: 0.01, min: 0, placeholder: 'Reward', title: 'Reward'
+          .small the HIT
+        = hf.fields_for :requester do |qf|
+          .nest
+            .field.required{ 'data-type': :text, 'data-for': :name }
+              = qf.text_field :name, title: 'Requester Name', placeholder: 'Requester name'
+            .field.required{ 'data-type': :text, 'data-for': :rid }
+              = qf.text_field :rid, title: 'Requester ID', placeholder: 'Requester ID'
+            .small the Requester
+
+    .col.c2
+      .field{ 'data-for': :tos, 'data-type': :checkbox }
+        = f.check_box :tos, class: [:mutator, :context], 'data-mutate': :context
+        = f.label :tos, 'This HIT violates TOS', class: :question
+        = link_to '[see TOS]', 'https://requester.mturk.com/help/faq#can_explicit_offensive', rel: :nofollow, target: '_blank'
+      .field.required.hidden{ 'data-for': :tos_context, 'data-type': :text }
+        = f.text_field :tos_context, style: 'width:50%', placeholder: explain
+
+      .field{ 'data-for': :broken, 'data-type': :checkbox }
+        = f.check_box :broken, class: [:mutator, :context], 'data-mutate': :context
+        = f.label :broken, 'This HIT is broken', class: :question
+        %span.fs-s{ style: 'color:black; opacity:0.8' }
+          (technical issue prevents completion, e.g. broken images, bugged submit button, etc.)
+      .field.required.hidden{ 'data-for': :broken_context, 'data-type': :text }
+        = f.text_field :broken_context, style: 'width:50%', placeholder: explain
+
+      .field{ 'data-for': :time, 'data-type': :time }
+        .question.required Approximately how long did it take you to complete each HIT?
+        = f.hidden_field :time
+        = number_field_tag :time, nil, step: 1, min: 0, id: :t_min
+        = label_tag :t_min, :minutes, style: 'margin-right:5px'
+        = number_field_tag :time, nil, step: 1, min: 0, id: :t_sec
+        = label_tag :t_sec, :seconds
+        %br
+        = check_box_tag :time, -1, false, id: :time_na1, class: :mutator, 'data-mutate': :local
+        = label_tag :time_na1, "I don't know"
+        %br
+        = check_box_tag :time, -2, false, id: :time_na2, class: :mutator, 'data-mutate': 'local rejected time_pending'
+        = label_tag :time_na2, "I didn't finish the HIT"
+
+      .field{ 'data-for': :comm, 'data-type': :radio }
+        .question.required Was the requester communicative and responsive?
+        = f.radio_button :comm, 'n/a'
+        = f.label :comm, 'I did not contact the requester.', value: 'n/a'
+        %br
+        = f.radio_button :comm, :no
+        = f.label :comm, 'No, the requester did not respond to my satisfaction', value: :no
+        %br
+        = f.radio_button :comm, :yes
+        = f.label :comm, 'Yes, the requester responded to my satisfaction', value: :yes
+
+      .field{ 'data-for': :time_pending, 'data-type': :time }
+        .question.required Approximately how long did it take to approve or reject?
+        = f.hidden_field :time_pending
+        = number_field_tag :time_pending, nil, step: 1, min: 0, id: :tp_days
+        = label_tag :tp_days, :days, style: 'margin-right:5px'
+        = number_field_tag :time_pending, nil, step: 1, min: 0, id: :tp_hours
+        = label_tag :tp_hours, :hours
+        %br
+        = check_box_tag :time_pending_na1, -1, false, class: :mutator, 'data-mutate': 'local rejected'
+        = label_tag :time_pending_na1, "I'm still waiting"
+
+      .field{ 'data-for': :rejected, 'data-type': :radio }
+        .question.required How much of your work was rejected?
+        = f.radio_button :rejected, :all
+        = f.label :rejected, 'All', value: :all
+        = f.radio_button :rejected, :some
+        = f.label :rejected, 'Some', value: :some
+        = f.radio_button :rejected, :none
+        = f.label :rejected, 'None', value: :none
+        %br
+        = f.radio_button :rejected, :overturned
+        = f.label :rejected, 'All rejections were overturned', value: :overturned
+        = f.radio_button :rejected, 'n/a', class: :hidden
+
+      .field{ 'data-for': :recommend, 'data-type': :radio }
+        .question.required Would you recommend this HIT to others?
+        = f.radio_button :recommend, 'n/a', class: :mutator, 'data-mutate': :context
+        = f.label :recommend, 'No opinion', value: 'n/a'
+        = f.radio_button :recommend, :no, class: :mutator, 'data-mutate': :context
+        = f.label :recommend, 'No', value: :no
+        = f.radio_button :recommend, :yes, class: :mutator, 'data-mutate': :context
+        = f.label :recommend, 'Yes', value: :yes
+      .field.required.hidden{ 'data-for': :recommend_context, 'data-type': :text }
+        = f.text_field :recommend_context, style: 'width:50%', placeholder: explain
+
+      .field{ 'data-for': :context, 'data-type': :text }
+        .question You can give additional information, context, or constructive comments below.
+        %br
+        = f.text_area :context
+
+      = f.submit 'Submit review', class: [:control, :submit, :block]
+
+= javascript_include_tag 'reviews/form_manifest'
