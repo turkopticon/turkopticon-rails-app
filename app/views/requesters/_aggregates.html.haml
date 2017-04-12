@@ -5,7 +5,7 @@
       %span.bold= pr[0]
       = "/ #{pr[1]}"
     %span.block
-      %span.bold= "#{htime(a[frame][:pending]) || '-- days'}"
+      %span.bold= "#{htime(a[frame][:pending], true) || '-- days'}"
       pending
     %span.block
       %span.bold= "#{pct a[frame][:comm]}"

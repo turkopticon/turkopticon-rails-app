@@ -34,18 +34,23 @@ module ReviewsHelper
     [str, opt[:unit]]
   end
 
-  def htime(sec, approx = true)
+  def htime(sec, approx = false)
     sec = sec.to_i
     return nil unless sec && sec > 0
-    if sec >= 86400 && approx
-      est = sec/86400.0
-      tmp = est > 1 ? '%.2f ' : '%i '
-      (tmp % est) << 'day'.pluralize(est)
+    if approx
+      est = sec.to_f / 60**2
+      if est < 24
+        est = est.round
+        "about #{est} " << 'hour'.pluralize(est)
+      else
+        est = sec/1.day.to_f
+        tmp = est % 1 > 0 ? '%.2f ' : '%i '
+        (tmp % est) << 'day'.pluralize(est)
+      end
     else
       units = %w(d h m s)
       [sec/86400, sec%86400/3600, sec/60%60, sec%60]
-          .map { |v| v.to_s.rjust(2, '0') }
-          .map.with_index { |v, i| v << units[i] }
+          .map.with_index { |v, i| v.to_s << units[i] }
           .select { |v| v =~ /[1-9]/ }
           .join
     end
