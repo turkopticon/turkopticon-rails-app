@@ -2,5 +2,5 @@
 .col-pay
   %span.block= '$' << '%.2f' % r.hit.reward
   %span.block.ppt= pay_rate r.hit.reward, r.time, unit: @user.time_unit.to_sym
-.col-tta= htime(r.time_pending, true) unless r.time_pending.nil?
+.col-tta= htime(r.time_pending, approx: true, slim: true) unless r.time_pending.nil?
 

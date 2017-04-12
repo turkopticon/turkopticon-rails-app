@@ -34,19 +34,22 @@ module ReviewsHelper
     [str, opt[:unit]]
   end
 
-  def htime(sec, approx = false)
+  def htime(sec, opt = {})
     sec = sec.to_i
     return nil unless sec && sec > 0
-    if approx
+    if opt[:approx]
       est = sec.to_f / 60**2
       if est < 24
-        est = est.round
-        "about #{est} " << 'hour'.pluralize(est)
+        span = est.round
+        pre  = est % 1 > 0 && (opt[:slim] ? '~' : 'about') || ''
+        unit = opt[:slim] ? 'hr' : 'hour'
       else
-        est = sec/1.day.to_f
-        tmp = est % 1 > 0 ? '%.2f ' : '%i '
-        (tmp % est) << 'day'.pluralize(est)
+        span = sec/1.day.to_f
+        pre  = ''
+        unit = 'day'
       end
+
+      "%s #{span % 1 > 0 ? '%.2f' : '%i'} %s" % [pre, span, unit.pluralize(span)]
     else
       units = %w(d h m s)
       [sec/86400, sec%86400/3600, sec/60%60, sec%60]
