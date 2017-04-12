@@ -14,11 +14,11 @@ class AccountsController < ApplicationController
   end
 
   def update
-    old_email     = @user.email
-    email_changed = @user.email == params[:email].downcase
+    old_email  = @user.email
+    same_email = @user.email == params[:person][:email].downcase
     @user.assign_attributes person_params
     if @user.save context: params[:context].to_sym
-      Omnilogger.account ltag(@user, "UPDATE email TO #{@user.email} FROM #{old_email}") if email_changed
+      Omnilogger.account ltag(@user, "UPDATE email TO #{@user.email} FROM #{old_email}") unless same_email
       flash[:success] = 'Settings updated'
     else
       flash[:error] = 'Changes were unable to be saved'
