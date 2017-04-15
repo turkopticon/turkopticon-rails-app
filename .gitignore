@@ -1,27 +1,10 @@
-API_INSTALL_LOG
-INSTALL_LOG
-LAST_BACKUP
-
 backups/
 
-# don't think these need to be ignored anymore since
-#  secret stuff should be abstracted away internally
-#  we'll see... allow them for now
-#config/environment.rb
-#config/initializers/app_url.rb
-#config/initializers/cookie_verification_secret.rb
-#config/initializers/log.rb
-#config/initializers/session_store.rb
-
 index/
-php_api/dbconn.php
-php_api/mysqli-dbconn.php
 public/*
 !public/images/
 !public/javascripts/
 !public/stylesheets/
-!public/turkopticon_installpage/
-!public/turkopticon-2014.01.28.1207.user.js
 
 node_modules/
 
