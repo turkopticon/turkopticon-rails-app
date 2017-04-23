@@ -37,9 +37,9 @@
       .field{ 'data-for': :time, 'data-type': :time }
         .question.required Approximately how long did it take you to complete each HIT?
         = f.hidden_field :time
-        = number_field_tag :time, nil, step: 1, min: 0, id: :t_min
+        = number_field_tag :time, nil, step: :any, min: 0, id: :t_min
         = label_tag :t_min, :minutes, style: 'margin-right:5px'
-        = number_field_tag :time, nil, step: 1, min: 0, id: :t_sec
+        = number_field_tag :time, nil, step: :any, min: 0, id: :t_sec
         = label_tag :t_sec, :seconds
         %br
         = check_box_tag :time, -1, false, id: :time_na1, class: :mutator, 'data-mutate': :local
@@ -62,9 +62,9 @@
       .field{ 'data-for': :time_pending, 'data-type': :time }
         .question.required Approximately how long did it take to approve or reject?
         = f.hidden_field :time_pending
-        = number_field_tag :time_pending, nil, step: 1, min: 0, id: :tp_days
+        = number_field_tag :time_pending, nil, step: :any, min: 0, id: :tp_days
         = label_tag :tp_days, :days, style: 'margin-right:5px'
-        = number_field_tag :time_pending, nil, step: 1, min: 0, id: :tp_hours
+        = number_field_tag :time_pending, nil, step: :any, min: 0, id: :tp_hours
         = label_tag :tp_hours, :hours
         %br
         = check_box_tag :time_pending_na1, -1, false, class: :mutator, 'data-mutate': 'local rejected'
