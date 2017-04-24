@@ -38,18 +38,8 @@ module ReviewsHelper
     sec = sec.to_i
     return nil unless sec && sec > 0
     if opt[:approx]
-      est = sec.to_f / 60**2
-      if est < 24
-        span = [1, est.round].max
-        pre  = est % 1 > 0 && (opt[:slim] ? '~' : 'about ') || ''
-        unit = opt[:slim] ? 'hr' : 'hour'
-      else
-        span = sec/1.day.to_f
-        pre  = ''
-        unit = 'day'
-      end
-
-      "%s#{span % 1 > 0 ? '%.2f' : '%i'} %s" % [pre, span, unit.pluralize(span)]
+      hours = sec.to_f / 60**2
+      '%s%s %s' % htime_approx(hours, opt)
     else
       units = %w(d h m s)
       [sec/86400, sec%86400/3600, sec/60%60, sec%60]
@@ -82,5 +72,31 @@ module ReviewsHelper
     else
       tag[0]
     end
+  end
+
+  private
+
+  def htime_approx(hours, opt = {})
+    pre    = opt[:slim] ? '<' : 'less than '
+    unit   = :hour
+    abbrev = ->(u, o) { return u unless o[:slim]; map = { hour: :hr, minute: :min }; map[u] }
+
+    if hours < 0.5
+      span = 30
+      unit = :minute
+    elsif hours < 1
+      span = 1
+    elsif hours < 24
+      span = [1, hours.round].max
+      pre  = hours % 1 > 0 && (opt[:slim] ? '~' : 'about ') || ''
+    else
+      span = hours / 24
+      pre  = ''
+      unit = :day
+    end
+
+    [pre,
+     (span % 1 > 0 ? '%.2f' : '%i') % span,
+     (abbrev.call unit, opt).to_s.pluralize(span)]
   end
 end
