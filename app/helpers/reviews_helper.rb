@@ -79,7 +79,7 @@ module ReviewsHelper
   def htime_approx(hours, opt = {})
     pre    = opt[:slim] ? '<' : 'less than '
     unit   = :hour
-    abbrev = ->(u, o) { return u unless o[:slim]; map = { hour: :hr, minute: :min }; map[u] }
+    abbrev = ->(u, o) {return u unless o[:slim]; map = { hour: :hr, minute: :min, day: :day }; map[u]}
 
     if hours < 0.5
       span = 30
